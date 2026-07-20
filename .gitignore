@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -20,11 +18,14 @@
 # production
 /build
 
-# source videos (too large for git; used to build public/films/)
+# videos — source clips & old 4K film (only optimized H.264 versions in public/films/ are tracked)
 /videos/
-
-# old 4K film (replaced by optimized 1080p + mobile versions)
 /public/films/home-film.mp4
+/public/films/chapters/
+/public/films/concat.txt
+
+# design reference files (not production)
+/public/brand-concepts.html
 
 # misc
 .DS_Store
