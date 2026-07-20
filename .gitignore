@@ -20,6 +20,12 @@
 # production
 /build
 
+# source videos (too large for git; used to build public/films/)
+/videos/
+
+# old 4K film (replaced by optimized 1080p + mobile versions)
+/public/films/home-film.mp4
+
 # misc
 .DS_Store
 *.pem

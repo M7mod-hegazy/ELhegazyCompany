@@ -1,0 +1,1435 @@
+{
+  "Nav": {
+    "home": "Home",
+    "marketing": "Digital Marketing",
+    "pos": "POS System",
+    "ecommerce": "E-commerce",
+    "work": "Our Work",
+    "start": "Start a project",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "privacy": "Privacy",
+    "terms": "Terms"
+  },
+  "Home": {
+    "kicker": "Creative & Digital Agency",
+    "headlineLine1": "We build brands",
+    "headlineLine2": "people see",
+    "lead": "Paid ads, image & video production, and brand identity — from a team that builds and runs its own real commerce.",
+    "cta": "Start with us",
+    "ctaWhatsapp": "Chat on WhatsApp",
+    "statement1": "We don't just sell ads —",
+    "statement2": "we build brands people remember."
+  },
+  "Offerings": {
+    "kicker": "Our Services",
+    "title": "What we craft",
+    "details": "Details",
+    "marketing": {
+      "title": "Digital Marketing",
+      "goal": "We plan and launch your Facebook & Instagram campaigns and produce scroll-stopping images and video",
+      "desc": "Measuring every pound you spend and optimizing for results.",
+      "stat": "3.8x",
+      "statLabel": "average ROAS",
+      "bullets": ["Paid Meta campaigns", "Design & creative", "Video & reels", "Brand identity"],
+      "beat1": {
+        "title": "Paid Meta Campaigns",
+        "desc": "Facebook & Instagram campaigns with precise interest & behavior targeting — A/B creative testing on every ad, continuous ROAS optimization, and clear weekly reports.",
+        "stat": "2M+",
+        "statLabel": "impressions delivered",
+        "features": ["Precise interest & behavior targeting", "A/B creative testing", "Continuous ROAS optimization", "Clear weekly reports"],
+        "cta": "See ad packages"
+      },
+      "beat2": {
+        "title": "Design & Creative",
+        "desc": "Scroll-stopping ad creative — designs in your brand identity, professional product shots, ready carousels & stories, and ad copy that sells.",
+        "stat": "40+",
+        "statLabel": "brands served",
+        "features": ["Designs in your brand identity", "Professional product shots", "Ready carousels & stories", "Ad copy that sells"],
+        "cta": "See our creative work"
+      },
+      "beat3": {
+        "title": "Video & Reels",
+        "desc": "Short videos and reels that attract and sell — scroll-stopping reels, editing & motion graphics, on-location shooting, and formats for every platform.",
+        "stat": "10M+",
+        "statLabel": "views generated",
+        "features": ["Scroll-stopping short reels", "Editing & motion graphics", "On-location shooting", "Formats for every platform"],
+        "cta": "See video work"
+      },
+      "beat4": {
+        "title": "Brand Identity",
+        "desc": "A full visual identity from scratch — logo, colors, typography, ready social templates, and brand usage guide so your brand is seen everywhere.",
+        "stat": "95%",
+        "statLabel": "clients who stay",
+        "features": ["Logo & full identity", "Colors, type & tone of voice", "Ready social templates", "Brand usage guide"],
+        "cta": "Start your brand identity"
+      },
+      "long": "We plan and launch campaigns on Facebook and Instagram, produce scroll-stopping images and video, and build a complete visual identity — then measure every pound and optimize the results.",
+      "pillars": {
+        "ads": "Paid Meta campaigns",
+        "creative": "Design & creative",
+        "video": "Video & reels",
+        "brand": "Brand identity"
+      },
+      "pillarsDesc": {
+        "ads": "Facebook & Instagram campaigns with precise targeting and constant ROI optimization.",
+        "creative": "Scroll-stopping ad creative — visuals and content with a strong identity.",
+        "video": "Short videos and reels that attract and sell.",
+        "brand": "A full visual identity: logo, colors and fonts."
+      }
+    },
+    "pos": {
+      "title": "Retail POS",
+      "goal": "A fully-Arabic cashier, inventory & accounting system — we build and run it in our own shops before we sell it to you",
+      "desc": "Works offline, and safe on your machine.",
+      "stat": "60+",
+      "statLabel": "integrated tools",
+      "bullets": ["Truly Arabic RTL", "Works offline", "100+ ready reports", "10 shop types"],
+      "beat1": {
+        "title": "Point of Sale",
+        "desc": "Sell in seconds — barcode scan, split payment, installments, and held tickets. A fast Arabic cashier app that works fully offline with no internet needed.",
+        "stat": "100+",
+        "statLabel": "ready reports",
+        "features": ["Barcode scan & split payment", "Installments & held tickets", "Works fully offline", "Instant receipt printing"],
+        "cta": "Try it free"
+      },
+      "beat2": {
+        "title": "Inventory & Stock",
+        "desc": "Inventory under control — multi-warehouse, branch transfers, stock-take, and WACC/FIFO costing. Each branch runs independently while HQ sees everything.",
+        "stat": "10",
+        "statLabel": "shop types supported",
+        "features": ["Multi-warehouse & branch transfers", "Stock-take & WACC/FIFO costing", "Serial & IMEI tracking", "Batch expiry with FEFO"],
+        "cta": "Learn about inventory"
+      },
+      "beat3": {
+        "title": "Reports & Analytics",
+        "desc": "Decisions by the numbers — 100+ reports, owner dashboard, PDF/Excel export, and VAT filing. Know your top products and best-performing branches instantly.",
+        "stat": "100%",
+        "statLabel": "offline & secure",
+        "features": ["100+ ready reports", "Owner dashboard", "PDF/Excel/Word export", "VAT filing ready"],
+        "cta": "View reports"
+      },
+      "beat4": {
+        "title": "WhatsApp Marketing",
+        "desc": "Market to customers from inside the POS — loyalty points, WhatsApp campaigns, message templates, and inbox management. Built-in CRM without leaving the app.",
+        "stat": "100%",
+        "statLabel": "Arabic-first RTL",
+        "features": ["Loyalty points system", "WhatsApp campaigns", "Message templates", "Built-in inbox"],
+        "cta": "See WhatsApp CRM"
+      },
+      "long": "A complete Arabic point-of-sale system we build and run in our own stores: shifts, treasuries & banks, multi-warehouse stock, and loyalty — fast and fully offline.",
+      "pillars": {
+        "shifts": "Shifts & daily close",
+        "inventory": "Multi-warehouse",
+        "treasury": "Treasuries & banks",
+        "loyalty": "Loyalty points"
+      },
+      "pillarsDesc": {
+        "shifts": "Open/close shifts with a count that matches expected vs. actual.",
+        "inventory": "Multiple warehouses & branches, transfers, and precise stock-takes.",
+        "treasury": "A unified cash ledger with running balance and transfers across treasuries & banks.",
+        "loyalty": "Loyalty points, WhatsApp CRM and campaigns for your customers."
+      }
+    },
+    "ecommerce": {
+      "title": "E-commerce",
+      "goal": "Fast Arabic online stores with a real 3D experience and an interactive room planner",
+      "desc": "From product to checkout to analytics, everything under your control.",
+      "stat": "50+",
+      "statLabel": "stores launched",
+      "bullets": ["Arabic-first RTL", "3D room planner", "Mobile-first", "Analytics included"],
+      "beat1": {
+        "title": "Storefront",
+        "desc": "A store your customers love to browse — Arabic-first RTL, mobile-first design, instant search, and fast page loads. From homepage to product page, every pixel is intentional.",
+        "stat": "10K+",
+        "statLabel": "products listed",
+        "features": ["Arabic-first RTL design", "Mobile-first responsive", "Instant search & filtering", "Fast page loads"],
+        "cta": "See store examples"
+      },
+      "beat2": {
+        "title": "3D Room Planner",
+        "desc": "Let customers see products in their space — a unique 3D room planner that reduces returns and builds trust. Interactive product viewer, AR-ready.",
+        "stat": "360°",
+        "statLabel": "interactive view",
+        "features": ["3D room planner", "Interactive product viewer", "AR-ready", "Reduces returns"],
+        "cta": "Try the 3D experience"
+      },
+      "beat3": {
+        "title": "Payments & Shipping",
+        "desc": "Take their money, their way — multiple gateways, COD supported, smart shipping zones, and auto invoices. From payment to doorstep delivery.",
+        "stat": "5+",
+        "statLabel": "payment gateways",
+        "features": ["Multiple payment gateways", "Cash on delivery", "Smart shipping zones", "Auto invoices"],
+        "cta": "See payment options"
+      },
+      "beat4": {
+        "title": "Analytics & Insights",
+        "desc": "Know your numbers, grow your sales — real-time dashboard, sales analytics, customer insights, and inventory reports. Everything you need to make decisions.",
+        "stat": "99.9%",
+        "statLabel": "uptime guaranteed",
+        "features": ["Real-time dashboard", "Sales analytics", "Customer insights", "Inventory reports"],
+        "cta": "View analytics dashboard"
+      },
+      "long": "Fast Arabic online stores with a real 3D experience and an interactive room planner — from product to checkout to analytics, everything under your control.",
+      "pillars": {
+        "storefront": "Elegant storefront",
+        "builder3d": "3D room planner",
+        "payments": "Payments & shipping",
+        "analytics": "Analytics & sales"
+      },
+      "pillarsDesc": {
+        "storefront": "A fast, elegant modern storefront that sells.",
+        "builder3d": "A 3D experience and interactive room planner for customers.",
+        "payments": "Integrated, secure payment and shipping gateways.",
+        "analytics": "Analytics dashboards and real-time sales tracking."
+      }
+    },
+    "readyTitle": "Ready to grow your business?",
+    "readySub": "Start your project with us today, or see the details first — we're with you step by step."
+  },
+  "CTA": {
+    "title": "Ready to begin?",
+    "subtitle": "Tell us about your project, and let's turn it into a brand people see.",
+    "primary": "Start a project",
+    "whatsapp": "Chat on WhatsApp"
+  },
+  "Footer": {
+    "blurb": "A creative & digital agency born from real commerce — we craft brands, launch campaigns, and build stores.",
+    "explore": "Explore",
+    "contact": "Contact",
+    "madeBy": "Crafted with care in Egypt"
+  },
+  "Start": {
+    "title": "Start a project",
+    "subtitle": "Tell us about your project and we'll get back to you within hours.",
+    "services": "What do you need?",
+    "serviceOptions": {
+      "ads": "Paid ads",
+      "creative": "Design & creative",
+      "video": "Video & reels",
+      "brand": "Brand identity",
+      "web": "Website / store",
+      "pos": "POS system"
+    },
+    "budget": "Approximate budget",
+    "budgetOptions": {
+      "s": "Under 5,000",
+      "m": "5,000 – 20,000",
+      "l": "20,000 – 50,000",
+      "xl": "Over 50,000"
+    },
+    "timeline": "Timeline",
+    "timelineOptions": {
+      "asap": "As soon as possible",
+      "m1": "Within a month",
+      "m3": "Within 3 months",
+      "flex": "Flexible"
+    },
+    "about": "About your project",
+    "aboutPlaceholder": "A short brief about your project and goals...",
+    "name": "Name",
+    "contact": "Phone or email",
+    "submit": "Send via WhatsApp",
+    "note": "WhatsApp opens with a ready message containing your brief."
+  },
+  "Stats": {
+    "roas": "Average ROAS",
+    "reach": "Impressions",
+    "brands": "Brands served",
+    "years": "Years of craft"
+  },
+  "Marquee": {
+    "title": "Brands we're proud to work with"
+  },
+  "Common": {
+    "details": "Details",
+    "language": "العربية",
+    "download": "Try free",
+    "pricing": "Pricing",
+    "tryFree": "Try it free or see the pricing plans"
+  },
+  "Worlds": {
+    "pos": {
+      "kicker": "Point of Sale · POS",
+      "hero": "A POS built for your shop",
+      "promise": "A fully-Arabic cashier, inventory & accounting system — we build and run it in our own shops before we sell it to you. Works offline, and safe on your machine.",
+      "scroll": "Scroll",
+      "video": {
+        "kicker": "Full tour",
+        "title": "See it work — step by step",
+        "play": "Play video",
+        "comingSoon": "Full walkthrough — coming soon",
+        "chaptersTitle": "Chapters",
+        "chapters": {
+          "intro": "Intro",
+          "checkout": "Sell & pay",
+          "shifts": "Shifts & cash",
+          "inventory": "Inventory",
+          "reports": "Reports",
+          "crm": "WhatsApp & CRM",
+          "modules": "Shop types",
+          "print": "Invoice design",
+          "offline": "Security & backup"
+        }
+      },
+      "chapters": {
+        "checkout": {
+          "kicker": "Selling",
+          "title": "Sell in seconds",
+          "body": "Scan a barcode, split payment across cash, card and credit, or set a flexible installment plan. Park a ticket and return to it — all with the live shift in view.",
+          "bullets": [
+            "Fast barcode",
+            "Split payment",
+            "Installments",
+            "Held tickets"
+          ]
+        },
+        "shifts": {
+          "kicker": "Cash",
+          "title": "Close your day with confidence",
+          "body": "Open a shift with a float and close it with a count that matches expected vs. actual. Every cash movement lands in one unified ledger with a live running balance.",
+          "bullets": [
+            "Open/close shift",
+            "Cash count",
+            "Unified ledger",
+            "Treasury transfers"
+          ]
+        },
+        "inventory": {
+          "kicker": "Inventory",
+          "title": "Inventory under control",
+          "body": "Multiple warehouses, inter-branch transfers, physical stock-takes, and 4 costing methods. Know your real stock at any moment.",
+          "bullets": [
+            "Multi-warehouse",
+            "Branch transfers",
+            "Stock-take",
+            "WACC/FIFO cost"
+          ]
+        },
+        "reports": {
+          "kicker": "Reports",
+          "title": "Decisions by the numbers",
+          "body": "A reports center with 100+ reports — sales, profit, VAT, dead stock — exported to PDF, Excel and Word. Plus an owner's dashboard that sums up your day in one screen.",
+          "bullets": [
+            "100+ reports",
+            "Owner dashboard",
+            "PDF/Excel export",
+            "VAT filing"
+          ]
+        },
+        "crm": {
+          "kicker": "Marketing",
+          "title": "Market to customers from inside",
+          "body": "Loyalty points, plus WhatsApp with bulk messages, campaigns, templates and an inbox — the first Arabic POS that markets, not just records.",
+          "bullets": [
+            "Loyalty points",
+            "WhatsApp campaigns",
+            "Message templates",
+            "Inbox"
+          ]
+        },
+        "print": {
+          "kicker": "Printing",
+          "title": "Invoices your way",
+          "body": "A drag-and-drop print designer — arrange the logo, items and totals however you like. Print A4, thermal 80/58mm, or barcode labels.",
+          "bullets": [
+            "Drag-and-drop",
+            "Thermal 80/58",
+            "A4",
+            "Barcode labels"
+          ]
+        },
+        "offline": {
+          "kicker": "Security",
+          "title": "Works offline, and safe",
+          "body": "A desktop app that runs offline with your data on your machine. License or Windows-ACL protection, backup & restore, user roles and a full activity log.",
+          "bullets": [
+            "100% offline",
+            "Backup & restore",
+            "User roles",
+            "Activity log"
+          ]
+        }
+      },
+      "modulesKicker": "One app",
+      "modulesTitle": "One shop… for every kind of shop",
+      "modulesBody": "The same system reshapes into your shop type with one toggle — enable the module that fits you.",
+      "modules": {
+        "restaurant": {
+          "name": "Restaurants & cafés",
+          "desc": "Table map, modifiers, recipe-based auto stock deduction, and kitchen tickets."
+        },
+        "gold": {
+          "name": "Gold & jewelry",
+          "desc": "Pricing by weight × daily gram rate + making charge, with a daily-rate entry."
+        },
+        "serials": {
+          "name": "Mobiles & electronics",
+          "desc": "Serial/IMEI tracking, warranty period, and serial lookup."
+        },
+        "pharmacy": {
+          "name": "Pharmacy & food",
+          "desc": "Batch expiry tracking with FEFO and near-expiry alerts."
+        },
+        "clothing": {
+          "name": "Clothing & shoes",
+          "desc": "Size × color matrix (parent and child items)."
+        },
+        "repair": {
+          "name": "Repair centers",
+          "desc": "Repair orders: intake, diagnosis, parts, deposit, and convert to invoice."
+        }
+      },
+      "shots": {
+        "pos-checkout": "POS sale screen with the split-payment modal open and an installment plan visible.",
+        "shift-close": "Shift-close modal (expected vs. counted).",
+        "treasury-ledger": "Daily treasury screen with the cashflow ledger and running balance.",
+        "stock-transfer": "Stock transfer between branches/warehouses.",
+        "physical-count": "Physical count (stock-take sheet).",
+        "reports-center": "Reports Center — the card grid with Arabic previews.",
+        "owner-dash": "Owner's dashboard (day summary).",
+        "whatsapp-crm": "WhatsApp CRM — inbox and campaigns.",
+        "print-designer": "Print designer (drag-and-drop canvas).",
+        "receipt-80": "80mm thermal receipt preview.",
+        "backup": "Backup & restore screen.",
+        "mod-restaurant": "Restaurant mode — table map.",
+        "mod-gold": "Daily gold rates screen.",
+        "mod-serials": "Serial/IMEI lookup with warranty.",
+        "mod-pharmacy": "Expiry report (FEFO).",
+        "mod-clothing": "An item with a size × color matrix.",
+        "mod-repair": "A repair/service order.",
+        "theme-dark": "The app in the dark theme (default).",
+        "theme-gold": "The app in a gold / bronze theme.",
+        "theme-light": "The app in the light theme.",
+        "theme-blue": "The app in a calm blue theme."
+      },
+      "proof": {
+        "reports": "Ready reports",
+        "shopTypes": "Shop types",
+        "offline": "Offline",
+        "rtl": "Truly Arabic"
+      },
+      "abilitiesKicker": "Core capabilities",
+      "abilitiesTitle": "Tools that run your whole shop — not just a till",
+      "abilities": {
+        "treasury": {
+          "title": "Total control of your cash",
+          "desc": "One unified ledger with a live running balance, treasuries & banks with transfers, revenues, expenses and withdrawals — every pound tracked."
+        },
+        "reports": {
+          "title": "100+ ready reports",
+          "desc": "Sales, profit, VAT, dead stock, and an owner's dashboard that sums up your day — exported to PDF, Excel and Word."
+        },
+        "crm": {
+          "title": "Built-in WhatsApp marketing",
+          "desc": "Campaigns, bulk messages, templates and an inbox, plus loyalty points — the first POS that markets, not just records."
+        },
+        "credit": {
+          "title": "Installments & credit, controlled",
+          "desc": "Flexible installment plans, debt tracking, and aging for both customers and suppliers."
+        },
+        "inventory": {
+          "title": "Precise inventory",
+          "desc": "Multiple warehouses & branches with transfers, physical counts, and 4 costing methods (WACC/FIFO/LIFO/last purchase)."
+        },
+        "offline": {
+          "title": "Runs offline, and secure",
+          "desc": "A desktop app with no internet needed, license or Windows-ACL protection, backup & restore, user roles and a full activity log."
+        },
+        "print": {
+          "title": "Invoices your way",
+          "desc": "A drag-and-drop print designer, thermal 80/58mm, A4, and barcode labels."
+        }
+      },
+      "indexKicker": "Breadth",
+      "indexTitle": "All of this inside one app",
+      "indexBody": "60+ tools in one integrated system — and always growing.",
+      "statement": "Not a cash register. A system that runs your whole shop — from the first sale to month-end.",
+      "hfeaturesKicker": "And more",
+      "hfeaturesTitle": "Many more tools inside the system",
+      "hfeaturesHint": "Scroll sideways to explore →",
+      "hfeatures": {
+        "purchases": {
+          "title": "A full purchasing cycle",
+          "desc": "Quotation → purchase order → receipt, with supplier price history and purchase returns."
+        },
+        "sales": {
+          "title": "Sales, returns & quotes",
+          "desc": "A complete sales ledger, serial-locked returns, and quotations that convert to invoices."
+        },
+        "accounts": {
+          "title": "Customer & supplier accounts",
+          "desc": "Statements, balances, and debt aging (30/60/90+) for both sides."
+        },
+        "vat": {
+          "title": "VAT",
+          "desc": "Output & input VAT and the effect of returns — ready to file."
+        },
+        "employees": {
+          "title": "Staff, payroll & advances",
+          "desc": "Payroll runs, deductions & bonuses, advances & settlements, full history."
+        },
+        "promotions": {
+          "title": "Promotions & discounts",
+          "desc": "A promotions engine that applies automatically at the point of sale."
+        },
+        "cheques": {
+          "title": "Cheque management",
+          "desc": "Incoming & outgoing cheques, due dates, collection, bounce and replacement."
+        },
+        "import": {
+          "title": "Item import",
+          "desc": "A 10-step import wizard: upload, column mapping, duplicates, and review."
+        },
+        "labels": {
+          "title": "Barcode label printing",
+          "desc": "Design and print price & barcode labels in different sizes."
+        },
+        "analytics": {
+          "title": "Dashboards & analytics",
+          "desc": "Charts, daily & weekly KPIs, and your top items and customers."
+        },
+        "search": {
+          "title": "Global search & alerts",
+          "desc": "Find anything in a second, plus a notifications center for what matters."
+        },
+        "branches": {
+          "title": "Multi-branch",
+          "desc": "More than one branch with roles, transfers and sync."
+        },
+        "theming": {
+          "title": "Customizable themes",
+          "desc": "Colors, themes and fonts — the system wears your shop's identity."
+        },
+        "workspaces": {
+          "title": "Role-based workspaces",
+          "desc": "Landing screens by role: finance, purchases, inventory, team, operations."
+        }
+      },
+      "heroChips": [
+        "Truly Arabic · RTL",
+        "Works offline",
+        "100+ reports",
+        "One app, every shop"
+      ],
+      "hfeaturesTag": "Included",
+      "trustKicker": "Why us",
+      "trustTitle": "Why ElHegazi?",
+      "trust": [
+        {
+          "t": "Arabic-first",
+          "d": "Every screen, report and invoice designed in Arabic, RTL."
+        },
+        {
+          "t": "Works offline",
+          "d": "No internet needed; your data stays safe on your machine."
+        },
+        {
+          "t": "We run it ourselves",
+          "d": "We use it in our own shops before selling it to you."
+        },
+        {
+          "t": "All-in-one",
+          "d": "From till to inventory to accounts — in one place."
+        }
+      ],
+      "bigNums": [
+        {
+          "v": "100+",
+          "l": "Ready reports"
+        },
+        {
+          "v": "10",
+          "l": "Shop types"
+        },
+        {
+          "v": "60+",
+          "l": "Integrated tools"
+        },
+        {
+          "v": "100%",
+          "l": "Offline & safe"
+        }
+      ],
+      "compareKicker": "Comparison",
+      "compareTitle": "ElHegazi vs. any ordinary till",
+      "compareUs": "ElHegazi",
+      "compareThem": "Ordinary POS",
+      "compareFeature": "Feature",
+      "compareRows": [
+        "Fully Arabic RTL",
+        "Works offline",
+        "Unified cash ledger",
+        "100+ reports & export",
+        "WhatsApp CRM & campaigns",
+        "10 shop types",
+        "Installments, credit & cheques",
+        "Backup & user roles"
+      ],
+      "quote1": "We don't just write software… we run our shops with it every day.",
+      "quote2": "From the barcode scan to month-end close — all in one place.",
+      "wheelKicker": "Ecosystem",
+      "wheelTitle": "Every tool in one orbit",
+      "wheelCenter": "One system",
+      "pricing": {
+        "kicker": "Pricing",
+        "title": "Start free… scale when you're ready",
+        "subtitle": "Try it free, then own the full version with a one-time payment — no monthly subscription.",
+        "note": "One-time payment · no subscription · works offline · Arabic updates & support",
+        "free": {
+          "tag": "Trial",
+          "name": "Free version",
+          "price": "Free",
+          "priceNote": "Try the essentials on your machine",
+          "cta": "Try free",
+          "features": [
+            "Point of sale & invoices",
+            "One warehouse",
+            "Basic reports",
+            "Demo data",
+            "No advanced modules"
+          ]
+        },
+        "full": {
+          "tag": "Everything",
+          "name": "Full version",
+          "badge": "Best value",
+          "price": "One-time",
+          "priceNote": "Perpetual license — no monthly subscription",
+          "cta": "Order the full version",
+          "features": [
+            "All features & 100+ reports",
+            "10 shop types (all modules)",
+            "WhatsApp CRM & campaigns",
+            "Multiple warehouses & branches",
+            "Backup, user roles & activity log",
+            "Works offline + updates",
+            "Arabic technical support"
+          ]
+        }
+      },
+      "themesKicker": "Customizable",
+      "themesTitle": "Restyle the app to your taste",
+      "themesBody": "Ready themes, colors and fonts, plus a custom theme editor to craft your own.",
+      "themes": {
+        "theme-dark": "Dark mode",
+        "theme-gold": "Luxe gold",
+        "theme-light": "Light mode",
+        "theme-blue": "Calm blue"
+      },
+      "dl": {
+        "title": "Download the POS system",
+        "subtitle": "Start with the free trial, and activate the full version when you're ready.",
+        "requirements": "Windows 7 / 10 / 11 · works offline · your data on your machine",
+        "back": "Back to product page",
+        "preview": {
+          "name": "Trial version",
+          "price": "Free",
+          "desc": "Try the essentials on your machine before you buy.",
+          "features": [
+            "Point of sale & invoices",
+            "One warehouse",
+            "Basic reports",
+            "Demo data"
+          ],
+          "cta": "Download trial",
+          "waCta": "Request the trial link"
+        },
+        "full": {
+          "name": "Full version",
+          "price": "One-time",
+          "priceNote": "Perpetual license — no monthly subscription",
+          "badge": "Best value",
+          "desc": "All features and modules, with support and updates.",
+          "features": [
+            "All features & 100+ reports",
+            "10 shop types (all modules)",
+            "WhatsApp CRM & multi-branch",
+            "Backup, roles & support"
+          ],
+          "cta": "Download full version",
+          "waCta": "Order the full version"
+        }
+      }
+    },
+    "ecommerce": {
+      "kicker": "E-commerce · Online Store",
+      "hero": "An e‑commerce store that actually sells",
+      "promise": "Fast Arabic online stores with a real 3D experience and an interactive room planner — from product to checkout to analytics, everything under your control.",
+      "scroll": "Scroll",
+      "video": {
+        "kicker": "Full tour",
+        "title": "See your store come to life",
+        "play": "Play video",
+        "comingSoon": "Full walkthrough — coming soon",
+        "chaptersTitle": "Chapters",
+        "chapters": {
+          "intro": "Intro",
+          "storefront": "Elegant storefront",
+          "builder3d": "3D room planner",
+          "payments": "Payments & shipping",
+          "analytics": "Analytics & reports",
+          "dashboard": "Owner dashboard"
+        }
+      },
+      "chapters": {
+        "storefront": {
+          "kicker": "Storefront",
+          "title": "A store your customers love to browse",
+          "body": "A fast, elegant modern storefront designed for Arabic shoppers — with smooth navigation, instant search, and a mobile-first experience that converts.",
+          "bullets": [
+            "Arabic-first RTL",
+            "Mobile-first design",
+            "Instant search",
+            "Fast page loads"
+          ]
+        },
+        "builder3d": {
+          "kicker": "3D Experience",
+          "title": "Let customers see products in their space",
+          "body": "An interactive 3D room planner and product viewer — customers place furniture, rugs, and decor in their own room before they buy. Reduces returns and builds confidence.",
+          "bullets": [
+            "3D room planner",
+            "Interactive product viewer",
+            "AR-ready",
+            "Reduces returns"
+          ]
+        },
+        "payments": {
+          "kicker": "Payments",
+          "title": "Take their money, their way",
+          "body": "Integrated payment gateways, cash on delivery, and flexible shipping zones — with automatic invoice generation and payment status tracking.",
+          "bullets": [
+            "Multiple gateways",
+            "COD supported",
+            "Smart shipping zones",
+            "Auto invoices"
+          ]
+        },
+        "analytics": {
+          "kicker": "Analytics",
+          "title": "Know your numbers, grow your sales",
+          "body": "Real-time dashboards, sales reports, customer insights, and inventory analytics — everything you need to make data-driven decisions.",
+          "bullets": [
+            "Real-time dashboard",
+            "Sales analytics",
+            "Customer insights",
+            "Inventory reports"
+          ]
+        },
+        "products": {
+          "kicker": "Products",
+          "title": "Manage thousands of products effortlessly",
+          "body": "Bulk import, categories, variants (size/color), tags, SEO meta, and image galleries — all from one clean interface.",
+          "bullets": [
+            "Bulk import",
+            "Variants & options",
+            "SEO meta fields",
+            "Image galleries"
+          ]
+        },
+        "mobile": {
+          "kicker": "Mobile",
+          "title": "Your store in every pocket",
+          "body": "A fully responsive mobile experience plus a dedicated customer app — push notifications, order tracking, and favorites on the go.",
+          "bullets": [
+            "Responsive design",
+            "Customer app",
+            "Push notifications",
+            "Order tracking"
+          ]
+        }
+      },
+      "modulesKicker": "One platform",
+      "modulesTitle": "Built for any industry",
+      "modulesBody": "Our e-commerce platform adapts to your product type — from fashion to furniture and everything in between.",
+      "modules": {
+        "fashion": {
+          "name": "Fashion & apparel",
+          "desc": "Size & color variants, lookbooks, seasonal collections, and size guides."
+        },
+        "electronics": {
+          "name": "Electronics & gadgets",
+          "desc": "Serial/IMEI tracking, warranty management, spec sheets, and price history."
+        },
+        "food": {
+          "name": "Food & beverages",
+          "desc": "Expiry tracking, batch management, delivery zones, and subscription boxes."
+        },
+        "furniture": {
+          "name": "Furniture & decor",
+          "desc": "3D room planner integration, dimensions filter, material swatches, and large-item shipping."
+        },
+        "books": {
+          "name": "Books & media",
+          "desc": "ISBN lookup, author collections, pre-orders, and digital downloads."
+        },
+        "services": {
+          "name": "Services & bookings",
+          "desc": "Appointment booking, service packages, recurring billing, and availability calendar."
+        }
+      },
+      "shots": {
+        "ec-storefront": "The main storefront with category navigation and featured products.",
+        "ec-room-planner": "The 3D room planner — customer placing furniture in a virtual room.",
+        "ec-3d-viewer": "Product 3D viewer with rotate/zoom and material swatches.",
+        "ec-checkout": "Checkout page with payment method selection and address form.",
+        "ec-payment-methods": "Mobile payment confirmation screen.",
+        "ec-dashboard": "Owner dashboard with sales chart, orders, and visitor stats.",
+        "ec-reports": "Sales and analytics report view.",
+        "ec-products": "Product management interface with grid and bulk actions.",
+        "ec-mobile": "The store viewed on a phone screen.",
+        "mod-fashion": "Fashion storefront with filtering by size and color.",
+        "mod-electronics": "Electronics category with spec comparison.",
+        "mod-food": "Food store with delivery zone selector.",
+        "mod-furniture": "Furniture store with 3D preview badge on products.",
+        "mod-books": "Book store with categories and search.",
+        "mod-services": "Service booking page with calendar picker.",
+        "theme-dark": "The store in dark mode.",
+        "theme-light": "The store in light mode."
+      },
+      "proof": {
+        "stores": "Stores launched",
+        "products": "Products listed",
+        "gateways": "Payment gateways",
+        "languages": "Languages supported"
+      },
+      "abilitiesKicker": "Core capabilities",
+      "abilitiesTitle": "Everything your online store needs — built-in",
+      "abilities": {
+        "storefront": {
+          "title": "Elegant storefront",
+          "desc": "A fast, beautiful Arabic storefront with instant search, smart filtering, and a mobile-first experience designed to convert."
+        },
+        "builder3d": {
+          "title": "3D room planner",
+          "desc": "Let customers place products in their own space with our interactive 3D room planner and product viewer — reduces returns, builds trust."
+        },
+        "payments": {
+          "title": "Payments & shipping",
+          "desc": "Integrated gateways, cash on delivery, flexible shipping zones, and automatic invoicing — all managed from one dashboard."
+        },
+        "analytics": {
+          "title": "Analytics & insights",
+          "desc": "Real-time dashboards, sales reports, customer behaviour, and inventory analytics to help you grow with confidence."
+        },
+        "seo": {
+          "title": "Built for SEO",
+          "desc": "SEO-optimized architecture, meta fields, sitemaps, and structured data — so your products get found on Google."
+        },
+        "mobile": {
+          "title": "Mobile-first experience",
+          "desc": "Responsive by default with a dedicated customer app — push notifications, order tracking, and wishlists on the go."
+        },
+        "multilang": {
+          "title": "Multi-language & multi-currency",
+          "desc": "Full Arabic & English support with RTL layout, plus multi-currency pricing for regional customers."
+        }
+      },
+      "indexKicker": "Breadth",
+      "indexTitle": "Every feature you need to sell online",
+      "indexBody": "40+ integrated features in one platform — and always growing.",
+      "statement": "Not just a store. A complete selling platform — from product upload to doorstep delivery.",
+      "hfeaturesKicker": "And more",
+      "hfeaturesTitle": "Powerful tools inside your store",
+      "hfeaturesHint": "Scroll sideways to explore →",
+      "hfeatures": {
+        "catalog": {
+          "title": "Product catalog management",
+          "desc": "Bulk import via CSV/Excel, categories, variants, tags, SEO meta, and rich image galleries."
+        },
+        "orders": {
+          "title": "Order management",
+          "desc": "Full order lifecycle: pending, confirmed, shipped, delivered, returned — with status notifications."
+        },
+        "customers": {
+          "title": "Customer accounts & profiles",
+          "desc": "Registration, address book, order history, wishlists, and loyalty points."
+        },
+        "coupons": {
+          "title": "Coupons & promotions",
+          "desc": "Discount codes, buy-one-get-one, free shipping thresholds, and automated sale events."
+        },
+        "reviews": {
+          "title": "Product reviews & ratings",
+          "desc": "Customer reviews, star ratings, photo reviews, and moderation control."
+        },
+        "shipping": {
+          "title": "Smart shipping",
+          "desc": "Zone-based rates, carrier integration, real-time tracking, and delivery date estimates."
+        },
+        "tax": {
+          "title": "Tax & VAT",
+          "desc": "Automatic tax calculation by region, VAT invoices, and tax report generation."
+        },
+        "inventory": {
+          "title": "Inventory tracking",
+          "desc": "Real-time stock counts, low-stock alerts, and multi-warehouse support."
+        },
+        "blog": {
+          "title": "Built-in blog & CMS",
+          "desc": "Blog posts, pages, and SEO content — no separate CMS needed."
+        },
+        "social": {
+          "title": "Social & WhatsApp integration",
+          "desc": "Share products on social media, WhatsApp ordering, and social login."
+        },
+        "localization": {
+          "title": "Full localization",
+          "desc": "Arabic/English interface, RTL, multi-currency, and regional date/number formats."
+        },
+        "search": {
+          "title": "Advanced search & filters",
+          "desc": "Instant search with auto-complete, multi-faceted filtering, and sort options."
+        },
+        "notifications": {
+          "title": "Automated notifications",
+          "desc": "Email and SMS order confirmations, shipping updates, and abandoned cart recovery."
+        },
+        "export": {
+          "title": "Export & reporting",
+          "desc": "Export orders, products, and customers to CSV/Excel/PDF — ready for accounting."
+        }
+      },
+      "heroChips": [
+        "Arabic-first · RTL",
+        "3D room planner",
+        "Mobile-first",
+        "Analytics included"
+      ],
+      "hfeaturesTag": "Built-in",
+      "trustKicker": "Why us",
+      "trustTitle": "Why ElHegazi for your online store?",
+      "trust": [
+        {
+          "t": "We build what we run",
+          "d": "Our own e-commerce store runs on the same platform we sell to you."
+        },
+        {
+          "t": "Arabic-first, always",
+          "d": "Every screen, label, and notification designed in Arabic from day one."
+        },
+        {
+          "t": "3D experience",
+          "d": "A unique 3D room planner that reduces returns and wows customers."
+        },
+        {
+          "t": "All-in-one",
+          "d": "Store, 3D, payments, analytics, and marketing — one platform, one dashboard."
+        }
+      ],
+      "bigNums": [
+        {
+          "v": "50+",
+          "l": "Stores launched"
+        },
+        {
+          "v": "10K+",
+          "l": "Products listed"
+        },
+        {
+          "v": "5+",
+          "l": "Payment gateways"
+        },
+        {
+          "v": "99.9%",
+          "l": "Uptime"
+        }
+      ],
+      "compareKicker": "Comparison",
+      "compareTitle": "ElHegazi vs. any ordinary e-commerce platform",
+      "compareUs": "ElHegazi",
+      "compareThem": "Others",
+      "compareFeature": "Feature",
+      "compareRows": [
+        "Full Arabic RTL interface",
+        "3D room planner & product viewer",
+        "Built-in analytics dashboard",
+        "Multi-currency & localization",
+        "Mobile app included",
+        "WhatsApp & social integration",
+        "SEO-optimized architecture",
+        "No monthly subscription — one-time"
+      ],
+      "quote1": "We don't just build stores… we run our own store on the same platform every day.",
+      "quote2": "From the first product upload to the final delivery — everything in one place.",
+      "wheelKicker": "Ecosystem",
+      "wheelTitle": "Every tool in one orbit",
+      "wheelCenter": "One platform",
+      "pricing": {
+        "kicker": "Pricing",
+        "title": "A store for every budget",
+        "subtitle": "Start with a free trial, then own the full store with a one-time payment — no monthly subscription.",
+        "note": "One-time payment · no subscription · 3D room planner · Arabic support",
+        "free": {
+          "tag": "Trial",
+          "name": "Basic store",
+          "price": "Free",
+          "priceNote": "Try the essentials before you commit",
+          "cta": "Try free",
+          "features": [
+            "Storefront & product listing",
+            "Up to 50 products",
+            "Basic payment gateway",
+            "Standard analytics",
+            "No 3D room planner"
+          ]
+        },
+        "full": {
+          "tag": "Everything",
+          "name": "Full store",
+          "badge": "Best value",
+          "price": "One-time",
+          "priceNote": "Full platform — no monthly subscription",
+          "cta": "Order your full store",
+          "features": [
+            "Complete store with 3D room planner",
+            "Unlimited products & categories",
+            "All payment gateways & shipping",
+            "Mobile app & push notifications",
+            "Advanced analytics & reports",
+            "SEO, blog & multi-language",
+            "Arabic support & updates"
+          ]
+        }
+      },
+      "themesKicker": "Customizable",
+      "themesTitle": "Make the store yours",
+      "themesBody": "Choose from ready themes or customize colors, fonts, and layouts to match your brand identity.",
+      "themes": {
+        "theme-dark": "Dark mode",
+        "theme-light": "Light mode"
+      },
+      "dl": {
+        "title": "Launch your online store",
+        "subtitle": "Start with a free trial store, and activate the full version when you're ready to scale.",
+        "requirements": "Cloud-hosted · works on any device · your data secure and backed up",
+        "back": "Back to product page",
+        "preview": {
+          "name": "Trial store",
+          "price": "Free",
+          "desc": "Try the essentials before you commit to a full store.",
+          "features": [
+            "Storefront & product listing",
+            "Up to 50 products",
+            "Basic payment gateway",
+            "Standard analytics"
+          ],
+          "cta": "Start free trial",
+          "waCta": "Request trial access"
+        },
+        "full": {
+          "name": "Full store",
+          "price": "One-time",
+          "priceNote": "Full platform — no monthly subscription",
+          "badge": "Best value",
+          "desc": "Everything included: store, 3D, mobile app, analytics, and support.",
+          "features": [
+            "Complete store & 3D room planner",
+            "Unlimited products & categories",
+            "All gateways & mobile app",
+            "Advanced analytics & support"
+          ],
+          "cta": "Launch full store",
+          "waCta": "Order your full store"
+        }
+      }
+    }
+  },
+  "Film": {
+    "filmLabel": "The ElHegazi film",
+    "scroll": "Scroll",
+    "railLabel": "Film chapters",
+    "rail": {
+      "intro": "Opening",
+      "marketing": "Marketing",
+      "pos": "POS",
+      "ecommerce": "Store",
+      "outro": "Start"
+    },
+    "visitStore": "See the live store"
+  },
+  "Order": {
+    "title": "Complete your order",
+    "subtitle": "Pick a plan and leave your details — we follow up on WhatsApp to finish payment and activation.",
+    "plan": "Choose a plan",
+    "recommended": "Best fit",
+    "name": "Name",
+    "phone": "WhatsApp number",
+    "business": "Business / shop name",
+    "businessPh": "e.g. Al-Nour Furniture",
+    "city": "City",
+    "notes": "Notes (optional)",
+    "notesPh": "Anything you want to add...",
+    "submit": "Confirm order",
+    "submitting": "One moment...",
+    "afterNote": "No online payment — confirming reserves your order, then we contact you.",
+    "confirmedKicker": "Order received",
+    "confirmedTitle": "We got your order",
+    "refLabel": "Order ref",
+    "nextTitle": "What happens next",
+    "steps": [
+      "We review your order and prepare your final quote",
+      "We contact you on WhatsApp within hours to confirm details",
+      "Pay the way that suits you — activation and delivery follow immediately"
+    ],
+    "waCta": "Continue on WhatsApp with your ref",
+    "dlCta": "Download the trial now",
+    "backHome": "Home",
+    "required": "Please enter your name and WhatsApp number",
+    "payTitle": "Payment methods",
+    "payMethods": [
+      "Instapay",
+      "Vodafone Cash",
+      "Bank transfer",
+      "Cash"
+    ]
+  },
+  "Catalog": {
+    "pos": {
+      "name": "POS System",
+      "plans": {
+        "free": {
+          "name": "Trial version",
+          "price": "Free",
+          "note": "Try the essentials on your machine before buying"
+        },
+        "full": {
+          "name": "Full version",
+          "price": "EGP 4,900",
+          "note": "One payment — perpetual license, all modules and support"
+        }
+      }
+    },
+    "ecommerce": {
+      "name": "Online Store",
+      "plans": {
+        "starter": {
+          "name": "Starter store",
+          "price": "EGP 6,900",
+          "note": "Fast launch with your products and a basic payment gateway"
+        },
+        "full": {
+          "name": "Full store + 3D",
+          "price": "EGP 14,900",
+          "note": "The whole platform with the 3D room planner and mobile app"
+        }
+      }
+    },
+    "marketing": {
+      "name": "Digital Marketing",
+      "plans": {
+        "starter": {
+          "name": "Launch package",
+          "price": "EGP 3,500/mo",
+          "note": "Meta campaign management + essential creatives"
+        },
+        "growth": {
+          "name": "Growth package",
+          "price": "EGP 7,500/mo",
+          "note": "Campaigns + full creative + monthly reels + reports"
+        },
+        "pro": {
+          "name": "Pro package",
+          "price": "EGP 15,000/mo",
+          "note": "Full team: campaigns, production, identity, daily follow-up"
+        }
+      }
+    }
+  },
+  "Marketing": {
+    "kicker": "01 · Digital Marketing",
+    "hero": "Ads that reach, content that sells",
+    "promise": "We plan and launch your Facebook & Instagram campaigns and produce scroll-stopping images and video — measuring every pound you spend.",
+    "ctaPackages": "See packages",
+    "ctaWhatsapp": "Talk on WhatsApp",
+    "pillarKicker": "Pillar",
+    "pillarBullets": {
+      "ads": [
+        "Precise interest & behavior targeting",
+        "A/B creative testing",
+        "Continuous ROAS optimization",
+        "Clear weekly reports"
+      ],
+      "creative": [
+        "Designs in your brand identity",
+        "Professional product shots",
+        "Ready carousels & stories",
+        "Ad copy that sells"
+      ],
+      "video": [
+        "Scroll-stopping short reels",
+        "Editing & motion graphics",
+        "On-location shooting at your shop",
+        "Formats for every platform"
+      ],
+      "brand": [
+        "Logo & full identity",
+        "Colors, type & tone of voice",
+        "Ready social templates",
+        "Brand usage guide"
+      ]
+    },
+    "processKicker": "How we work",
+    "processTitle": "From idea to growth",
+    "process": [
+      {
+        "t": "Discover",
+        "d": "We learn your business, audience and competitors before spending a pound."
+      },
+      {
+        "t": "Create",
+        "d": "Designs and videos in your brand identity — not templates."
+      },
+      {
+        "t": "Launch",
+        "d": "Properly targeted campaigns on Facebook & Instagram."
+      },
+      {
+        "t": "Grow",
+        "d": "Continuous measurement and optimization — reports you actually understand."
+      }
+    ],
+    "proof": [
+      {
+        "v": "3.8x",
+        "l": "Average ROAS"
+      },
+      {
+        "v": "2M+",
+        "l": "Impressions"
+      },
+      {
+        "v": "40+",
+        "l": "Brands"
+      },
+      {
+        "v": "95%",
+        "l": "Clients who stay"
+      }
+    ],
+    "statement": "We are not an agency experimenting with your money — we advertise our own commerce daily with the same tools we run for you.",
+    "packagesKicker": "Packages",
+    "packagesTitle": "Pick the package that fits your stage",
+    "packagesSub": "Clear monthly pricing, no long contracts — switch packages anytime.",
+    "popular": "Most popular",
+    "order": "Order package",
+    "packageFeatures": {
+      "starter": [
+        "Meta campaign management (FB + IG)",
+        "8 designs per month",
+        "Pixel setup & targeting",
+        "Monthly report"
+      ],
+      "growth": [
+        "Everything in Launch",
+        "16 designs + 4 reels per month",
+        "Continuous A/B testing",
+        "Inbox & comment management",
+        "Weekly report"
+      ],
+      "pro": [
+        "Everything in Growth",
+        "Monthly on-location shoot",
+        "Full brand identity",
+        "Dedicated account manager",
+        "Daily follow-up & quarterly plan"
+      ]
+    }
+  },
+  "Social": {
+    "kicker": "Social advertising",
+    "title": "Your brand on social — work that stops the scroll",
+    "body": "Paid campaigns, reels, and designs in your brand identity — from a team that advertises its own commerce daily. Clear monthly packages that start small and grow with you.",
+    "cta": "See marketing packages",
+    "ctaDetails": "Details"
+  },
+  "Work": {
+    "kicker": "Our work",
+    "title": "We sell what we run ourselves",
+    "subtitle": "Not a theoretical portfolio — these are products and platforms genuinely running our own commerce every day.",
+    "statement": "The strongest proof we can offer: we are the first customer of everything we build.",
+    "cases": {
+      "store": {
+        "tag": "E-commerce store",
+        "title": "ElHegazi furniture & furnishings store",
+        "body": "Our real store — furniture with a 3D experience and interactive room planner, live and selling. The same platform we build for clients.",
+        "stats": [
+          {
+            "v": "Live",
+            "l": "Running now"
+          },
+          {
+            "v": "3D",
+            "l": "Room planner"
+          },
+          {
+            "v": "RTL",
+            "l": "Arabic-first"
+          }
+        ],
+        "cta": "Visit the store"
+      },
+      "pos": {
+        "tag": "POS system",
+        "title": "ElHegazi retail management system",
+        "body": "The complete system running our shops daily: shifts, treasury & banks, warehouses & branches, 100+ reports, WhatsApp CRM — fully offline.",
+        "stats": [
+          {
+            "v": "100+",
+            "l": "Reports"
+          },
+          {
+            "v": "10",
+            "l": "Shop types"
+          },
+          {
+            "v": "100%",
+            "l": "Offline"
+          }
+        ],
+        "cta": "Explore the system"
+      },
+      "campaigns": {
+        "tag": "Ad campaigns",
+        "title": "Social campaigns for our commerce and clients",
+        "body": "Paid campaigns, reels and creatives we launch for our own store and for clients — tight targeting, continuous ROAS optimization.",
+        "stats": [
+          {
+            "v": "3.8x",
+            "l": "Average ROAS"
+          },
+          {
+            "v": "2M+",
+            "l": "Impressions"
+          },
+          {
+            "v": "40+",
+            "l": "Brands"
+          }
+        ],
+        "cta": "Marketing services"
+      }
+    },
+    "gallery": {
+      "kicker": "Gallery",
+      "title": "More of our work",
+      "all": "All",
+      "close": "Close",
+      "visit": "Visit project",
+      "categories": {
+        "marketing": "Campaigns & marketing",
+        "brand": "Brand identity",
+        "video": "Video & reels",
+        "web": "Websites",
+        "pos": "POS",
+        "ecommerce": "E-commerce"
+      }
+    }
+  },
+  "Contact": {
+    "kicker": "Contact",
+    "title": "Talk to us — we reply fast",
+    "subtitle": "WhatsApp is the fastest path. Or email us, or follow on social.",
+    "email": "Email",
+    "hours": "Daily 10am – 10pm",
+    "briefTitle": "Have a project?",
+    "briefBody": "Fill a quick brief about your project and we come back with a clear plan.",
+    "briefCta": "Start your project"
+  },
+  "Faq": {
+    "kicker": "FAQ",
+    "title": "Everything you need to know",
+    "more": "Question not here?",
+    "moreCta": "Talk to us",
+    "items": [
+      {
+        "q": "How do I buy the POS system?",
+        "a": "Try the free version first from the download page. When ready, order the full version on the site — we confirm on WhatsApp, you pay however suits you (Instapay / Vodafone Cash / transfer), then we send the installer and your activation code."
+      },
+      {
+        "q": "What are the activation code and machine code?",
+        "a": "After installing the full version, the app shows your PC's machine code. Send it to us on WhatsApp and we reply with an activation code bound to your device — paste it once and the app runs fully offline forever."
+      },
+      {
+        "q": "Is there a monthly subscription for the POS?",
+        "a": "No — the full version is a one-time payment with a perpetual license. Optional yearly support & updates packages exist if you want them."
+      },
+      {
+        "q": "Does the system work without internet?",
+        "a": "Yes, it is designed to run 100% offline with your data on your machine. Internet is only needed for optional features like WhatsApp campaigns."
+      },
+      {
+        "q": "What happens after I order an online store?",
+        "a": "We contact you within hours, collect products and identity, and launch your store within days — Arabic storefront, payment gateway, and a full dashboard."
+      },
+      {
+        "q": "How do marketing packages bill?",
+        "a": "Clear monthly packages (excluding the paid ad budget that goes to Meta). Start small and scale — no long contracts."
+      },
+      {
+        "q": "What shop types do you work with?",
+        "a": "The POS supports 10 shop types: restaurants, gold, mobiles, pharmacies, clothing, repair and more — same for stores and marketing: we tailor to your field."
+      },
+      {
+        "q": "Is there after-sales support?",
+        "a": "Yes — Arabic support on WhatsApp and continuous updates. We use the same systems in our own shops, so keeping them excellent is our own interest."
+      }
+    ]
+  },
+  "Legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "updated": "Last updated: July 2026",
+      "sections": [
+        {
+          "h": "Data we collect",
+          "p": "When you place an order or a project brief we store your name, contact method and order details so we can serve you. We do not collect personal browsing data or sell your data to anyone."
+        },
+        {
+          "h": "How we use it",
+          "p": "We use your data only to contact you about your order and to provide the service and support."
+        },
+        {
+          "h": "Storage & security",
+          "p": "Data is stored securely with access limited to our team. You can request deletion anytime via WhatsApp or email."
+        },
+        {
+          "h": "Contact",
+          "p": "For any privacy question, reach us via WhatsApp or the email on the contact page."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "updated": "Last updated: July 2026",
+      "sections": [
+        {
+          "h": "Services",
+          "p": "We provide digital marketing, POS systems, and e-commerce stores. Each service's details and price are confirmed in writing (WhatsApp) before work starts."
+        },
+        {
+          "h": "Payment",
+          "p": "Ordering on the site reserves your spot with no online payment. Payment is agreed (Instapay / Vodafone Cash / bank transfer), after which delivery or activation begins."
+        },
+        {
+          "h": "Software licenses",
+          "p": "The POS full-version license is perpetual and bound to one device. Moving it to a new device is available by contacting us."
+        },
+        {
+          "h": "Refunds",
+          "p": "The free trial exists so you can test before buying. After activation, refunds are evaluated case-by-case within 14 days."
+        },
+        {
+          "h": "Intellectual property",
+          "p": "All designs and systems remain property of ElHegazi Company until full payment, after which the agreed usage rights transfer to the client."
+        }
+      ]
+    }
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "body": "The link may have changed or was mistyped. Head back home and continue from there.",
+    "cta": "Home"
+  }
+}
