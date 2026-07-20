@@ -45,7 +45,6 @@ function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const targetRef = useRef(0);
   const [active, setActive] = useState(0);
-  const [videoReady, setVideoReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const t = useTranslations("Film");
 
@@ -114,26 +113,15 @@ function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
       aria-label={t("filmLabel")}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-ink-900">
-        {/* Poster frame — shown until video is ready */}
-        {!videoReady && (
-          <img
-            src={homeFilm.poster}
-            alt=""
-            className="absolute inset-0 h-full w-full object-cover"
-            aria-hidden
-          />
-        )}
-
         <video
           ref={videoRef}
           src={isMobile ? homeFilm.srcMobile : homeFilm.src}
+          poster={homeFilm.poster}
           muted
           playsInline
           preload="auto"
           onError={onVideoError}
-          onLoadedData={() => setVideoReady(true)}
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ opacity: videoReady ? 1 : 0 }}
         />
 
         {/* cinematic letterbox + legibility scrim */}
