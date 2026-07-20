@@ -70,26 +70,52 @@ function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
 
   // Scrub loop: ease the playhead toward the scroll target every frame.
   // The film is encoded all-keyframe, so seeking is cheap and smooth.
+  // Pauses when the film section is off-screen or the tab is hidden.
   useEffect(() => {
     let raf = 0;
     let cur = 0;
+    let inView = true;
+    let visible = true;
+
+    const section = trackRef.current;
+    const observer = section
+      ? new IntersectionObserver(
+          ([e]) => {
+            inView = e.isIntersecting;
+          },
+          { threshold: 0 },
+        )
+      : null;
+    if (section && observer) observer.observe(section);
+
+    const onVis = () => {
+      visible = !document.hidden;
+    };
+    document.addEventListener("visibilitychange", onVis);
+
     const tick = () => {
-      const vid = videoRef.current;
-      if (vid && vid.readyState >= 1 && Number.isFinite(vid.duration)) {
-        const target = targetRef.current * Math.max(0, vid.duration - 0.05);
-        cur += (target - cur) * 0.16;
-        if (Math.abs(vid.currentTime - cur) > 0.002) {
-          try {
-            vid.currentTime = cur;
-          } catch {
-            /* seek can throw mid-load; next frame retries */
+      if (inView && visible) {
+        const vid = videoRef.current;
+        if (vid && vid.readyState >= 1 && Number.isFinite(vid.duration)) {
+          const target = targetRef.current * Math.max(0, vid.duration - 0.05);
+          cur += (target - cur) * 0.16;
+          if (Math.abs(vid.currentTime - cur) > 0.002) {
+            try {
+              vid.currentTime = cur;
+            } catch {
+              /* seek can throw mid-load; next frame retries */
+            }
           }
         }
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      observer?.disconnect();
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, []);
 
   const lenis = useLenis();
@@ -119,7 +145,7 @@ function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
           poster={homeFilm.poster}
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
           onError={onVideoError}
           className="absolute inset-0 h-full w-full object-cover"
         />

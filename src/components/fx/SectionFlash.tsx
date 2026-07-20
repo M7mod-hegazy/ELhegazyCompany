@@ -9,14 +9,22 @@ export function SectionFlash() {
   const [k, setK] = useState(0);
   const last = useRef<string | null>("hero");
   useEffect(() => {
-    const iv = setInterval(() => {
-      const a = resolveActive().id;
-      if (a && a !== last.current) {
-        last.current = a;
-        setK((v) => v + 1);
+    let raf = 0;
+    let lastCheck = 0;
+    const check = () => {
+      const now = performance.now();
+      if (now - lastCheck > 250) {
+        lastCheck = now;
+        const a = resolveActive().id;
+        if (a && a !== last.current) {
+          last.current = a;
+          setK((v) => v + 1);
+        }
       }
-    }, 140);
-    return () => clearInterval(iv);
+      raf = requestAnimationFrame(check);
+    };
+    raf = requestAnimationFrame(check);
+    return () => cancelAnimationFrame(raf);
   }, []);
   return (
     <AnimatePresence>

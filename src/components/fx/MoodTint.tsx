@@ -15,11 +15,19 @@ const ACCENTS: Record<string, string> = {
 export function MoodTint() {
   const [color, setColor] = useState(ACCENTS.hero);
   useEffect(() => {
-    const iv = setInterval(() => {
-      const a = resolveActive().id;
-      if (a && ACCENTS[a]) setColor(ACCENTS[a]);
-    }, 160);
-    return () => clearInterval(iv);
+    let raf = 0;
+    let lastCheck = 0;
+    const check = () => {
+      const now = performance.now();
+      if (now - lastCheck > 250) {
+        lastCheck = now;
+        const a = resolveActive().id;
+        if (a && ACCENTS[a]) setColor(ACCENTS[a]);
+      }
+      raf = requestAnimationFrame(check);
+    };
+    raf = requestAnimationFrame(check);
+    return () => cancelAnimationFrame(raf);
   }, []);
   return (
     <div
