@@ -1,20 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { m, AnimatePresence } from "framer-motion";
 import { Link } from "@/i18n/navigation";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 import { LocaleToggle } from "./LocaleToggle";
-import { cn } from "@/lib/cn";
+
 
 export function Navbar() {
   const t = useTranslations("Nav");
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const el = headerRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      el.classList.toggle("scrolled", window.scrollY > 24);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -37,10 +41,8 @@ export function Navbar() {
   return (
     <>
       <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-50 transition-all duration-500",
-          scrolled ? "border-b border-brass/10 bg-ink-900/80 py-3 backdrop-blur-md" : "py-5",
-        )}
+        ref={headerRef}
+        className="fixed inset-x-0 top-0 z-50 py-5 transition-all duration-500 [&.scrolled]:border-b [&.scrolled]:border-brass/10 [&.scrolled]:bg-ink-900/80 [&.scrolled]:py-3 [&.scrolled]:backdrop-blur-md"
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 sm:px-6">
           <Link href="/" aria-label="الحجازي">

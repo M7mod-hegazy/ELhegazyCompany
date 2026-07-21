@@ -90,16 +90,18 @@ export default function Template({ children }: { children: React.ReactNode }) {
         <Overlay kind={kind} />
       </m.div>
 
-      {/* Content: hidden until overlay fades */}
-      <m.div
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: ready ? 1 : 0,
-          transition: { duration: 0.6, ease: "easeOut" },
-        }}
-      >
-        {children}
-      </m.div>
+      {/* Content: mounts immediately behind overlay (z-110), fades in when overlay clears */}
+      <div className="relative z-0">
+        <m.div
+          initial={{ opacity: 0 }}
+          animate={{
+            opacity: ready ? 1 : 0,
+            transition: { duration: 0.6, ease: "easeOut" },
+          }}
+        >
+          {children}
+        </m.div>
+      </div>
     </>
   );
 }

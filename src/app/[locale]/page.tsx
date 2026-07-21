@@ -1,10 +1,31 @@
 import { use } from "react";
 import { setRequestLocale } from "next-intl/server";
+import dynamic from "next/dynamic";
 import { HomeFilm } from "@/components/film/HomeFilm";
-import { Stats } from "@/components/site/Stats";
-import { SocialAdsBand } from "@/components/site/SocialAdsBand";
-import { LogoMarquee } from "@/components/site/LogoMarquee";
-import { CtaBand } from "@/components/site/CtaBand";
+
+const Stats = dynamic(
+  () => import("@/components/site/Stats").then((m) => ({ default: m.Stats })),
+  { ssr: false },
+);
+const SocialAdsBand = dynamic(
+  () =>
+    import("@/components/site/SocialAdsBand").then((m) => ({
+      default: m.SocialAdsBand,
+    })),
+  { ssr: false },
+);
+const LogoMarquee = dynamic(
+  () =>
+    import("@/components/site/LogoMarquee").then((m) => ({
+      default: m.LogoMarquee,
+    })),
+  { ssr: false },
+);
+const CtaBand = dynamic(
+  () =>
+    import("@/components/site/CtaBand").then((m) => ({ default: m.CtaBand })),
+  { ssr: false },
+);
 
 export default function HomePage({
   params,

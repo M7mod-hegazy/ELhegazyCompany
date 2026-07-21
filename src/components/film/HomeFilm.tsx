@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, forwardRef } from "react";
+import { useEffect, useRef, useState, useCallback, forwardRef } from "react";
 import {
   m,
   useScroll,
@@ -20,116 +20,78 @@ import {
   type FilmChapterDef,
 } from "@/config/film";
 import { Magnetic } from "@/components/fx/Magnetic";
+import {
+  detectBackend,
+  shouldLoadVideo,
+  type VideoBackend,
+} from "@/lib/video/capabilities";
 
 /**
  * The home page IS a film: one pinned full-screen video scrubbed by scroll,
- * five chapters (intro → marketing → pos → ecommerce → outro). Offering
- * chapters (2-4) have sub-beats that cycle through as scroll progresses,
- * revealing different aspects of the service step by step.
+ * five chapters (intro → marketing → pos → ecommerce → outro).
  *
- * Fallbacks: prefers-reduced-motion or a video load failure render the
- * chapters as stacked poster sections with the same copy — nothing breaks.
+ * Performance architecture:
+ *   - WebCodecs frame decoding (Chrome, Safari 26+, Firefox desktop)
+ *   - requestVideoFrameCallback fallback (Firefox Android, older Safari)
+ *   - <video> currentTime seeking (last resort)
+ *   - StackedFallback posters (reduced-motion, failure, slow connections)
+ *
+ * RAF loop only runs while scroll is actively changing — zero CPU when idle.
  */
 export function HomeFilm() {
   const reduced = useReducedMotion();
+  const [backend, setBackend] = useState<VideoBackend | null>(null);
   const [videoFailed, setVideoFailed] = useState(false);
 
-  if (reduced || videoFailed) return <StackedFallback />;
-  return <ScrubbedFilm onVideoError={() => setVideoFailed(true)} />;
+  useEffect(() => {
+    detectBackend().then(setBackend);
+  }, []);
+
+  // Decision tree
+  if (reduced || videoFailed || backend === "none") return <StackedFallback />;
+  if (!shouldLoadVideo()) return <StackedFallback />;
+  if (backend === null) return <StackedFallback />; // loading state — show posters
+
+  return <ScrubbedFilm backend={backend} onVideoError={() => setVideoFailed(true)} />;
 }
 
 /* ------------------------------------------------------------------ */
 
-function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
+function ScrubbedFilm({
+  backend,
+  onVideoError,
+}: {
+  backend: VideoBackend;
+  onVideoError: () => void;
+}) {
   const trackRef = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const targetRef = useRef(0);
   const [active, setActive] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const t = useTranslations("Film");
-
   const n = homeFilm.chapters.length;
+
   const { scrollYProgress } = useScroll({
     target: trackRef,
     offset: ["start start", "end end"],
   });
 
-  // Detect mobile on mount
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 640);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    targetRef.current = v;
     const idx = Math.min(n - 1, Math.floor(v * n));
     setActive((prev) => (prev === idx ? prev : idx));
   });
 
-  // Scrub loop: ease the playhead toward the scroll target every frame.
-  // The film is encoded all-keyframe, so seeking is cheap and smooth.
-  // Pauses when the film section is off-screen or the tab is hidden.
-  useEffect(() => {
-    let raf = 0;
-    let cur = 0;
-    let inView = true;
-    let visible = true;
-
-    const section = trackRef.current;
-    const observer = section
-      ? new IntersectionObserver(
-          ([e]) => {
-            inView = e.isIntersecting;
-          },
-          { threshold: 0 },
-        )
-      : null;
-    if (section && observer) observer.observe(section);
-
-    const onVis = () => {
-      visible = !document.hidden;
-    };
-    document.addEventListener("visibilitychange", onVis);
-
-    const tick = () => {
-      if (inView && visible) {
-        const vid = videoRef.current;
-        if (vid && vid.readyState >= 1 && Number.isFinite(vid.duration)) {
-          const target = targetRef.current * Math.max(0, vid.duration - 0.05);
-          cur += (target - cur) * 0.16;
-          if (Math.abs(vid.currentTime - cur) > 0.002) {
-            try {
-              vid.currentTime = cur;
-            } catch {
-              /* seek can throw mid-load; next frame retries */
-            }
-          }
-        }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(raf);
-      observer?.disconnect();
-      document.removeEventListener("visibilitychange", onVis);
-    };
-  }, []);
-
   const lenis = useLenis();
-  const scrollToChapter = (i: number) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const top = el.offsetTop;
-    const usable = el.offsetHeight - window.innerHeight;
-    // land mid-chapter so the copy is fully on. Scroll THROUGH Lenis —
-    // a raw window.scrollTo would fight its internal target.
-    const target = top + usable * ((i + 0.5) / n);
-    if (lenis) lenis.scrollTo(target, { duration: 1.2 });
-    else window.scrollTo({ top: target, behavior: "smooth" });
-  };
+  const scrollToChapter = useCallback(
+    (i: number) => {
+      const el = trackRef.current;
+      if (!el) return;
+      const top = el.offsetTop;
+      const usable = el.offsetHeight - window.innerHeight;
+      const target = top + usable * ((i + 0.5) / n);
+      if (lenis) lenis.scrollTo(target, { duration: 1.2 });
+      else window.scrollTo({ top: target, behavior: "smooth" });
+    },
+    [lenis, n],
+  );
 
   return (
     <section
@@ -139,21 +101,17 @@ function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
       aria-label={t("filmLabel")}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-ink-900">
-        <video
-          ref={videoRef}
-          src={isMobile ? homeFilm.srcMobile : homeFilm.src}
-          poster={homeFilm.poster}
-          muted
-          playsInline
-          preload="metadata"
+        {/* ── Video / Canvas layer (adapts to backend) ── */}
+        <VideoLayer
+          backend={backend}
           onError={onVideoError}
-          className="absolute inset-0 h-full w-full object-cover"
+          scrollProgress={scrollYProgress}
         />
 
         {/* cinematic letterbox + legibility scrim */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0"
+          className="pointer-events-none absolute inset-0 z-[1]"
           style={{
             background:
               "linear-gradient(to bottom, rgba(10,10,11,0.72), transparent 18%, transparent 55%, rgba(10,10,11,0.78))",
@@ -163,7 +121,7 @@ function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
         {/* mobile-only extra darkening — video is too bright for small screens */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-black/30 sm:hidden"
+          className="pointer-events-none absolute inset-0 z-[1] bg-black/30 sm:hidden"
         />
 
         {homeFilm.chapters.map((ch, i) => (
@@ -177,7 +135,11 @@ function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
           />
         ))}
 
-        <ChapterRail active={active} progress={scrollYProgress} onSelect={scrollToChapter} />
+        <ChapterRail
+          active={active}
+          progress={scrollYProgress}
+          onSelect={scrollToChapter}
+        />
 
         {/* film progress hairline (mobile + desktop) */}
         <m.div
@@ -195,9 +157,68 @@ function ScrubbedFilm({ onVideoError }: { onVideoError: () => void }) {
 
 /* ------------------------------------------------------------------ */
 
-/** Piecewise-linear interpolation (clamped) — the tiny core of useTransform,
- *  applied imperatively so re-renders (active-chapter state) can never detach
- *  the scroll subscription from the element. */
+/**
+ * Video layer — selects the appropriate backend and bridges scroll progress
+ * to the video component via a ref-based seek() method.
+ */
+function VideoLayer({
+  backend,
+  onError,
+  scrollProgress,
+}: {
+  backend: VideoBackend;
+  onError: () => void;
+  scrollProgress: MotionValue<number>;
+}) {
+  const seekRef = useRef<{ seek: (progress: number) => void } | null>(null);
+
+  // Bridge framer-motion scroll progress → video seek
+  useMotionValueEvent(scrollProgress, "change", (v) => {
+    seekRef.current?.seek(v);
+  });
+
+  // Lazy-load the appropriate backend component
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [VideoComponent, setVideoComponent] = useState<React.ComponentType<any> | null>(null);
+
+  useEffect(() => {
+    switch (backend) {
+      case "webcodecs":
+        import("@/components/film/FrameScrubbedVideo").then((m) =>
+          setVideoComponent(() => m.FrameScrubbedVideo),
+        );
+        break;
+      case "video-callback":
+        import("@/components/film/VideoCallbackScrub").then((m) =>
+          setVideoComponent(() => m.VideoCallbackScrub),
+        );
+        break;
+      case "video-seeking":
+      default:
+        import("@/components/film/VideoSeekScrub").then((m) =>
+          setVideoComponent(() => m.VideoSeekScrub),
+        );
+        break;
+    }
+  }, [backend]);
+
+  if (!VideoComponent) return null;
+
+  return (
+    <VideoComponent
+      ref={seekRef}
+      desktopSrc={homeFilm.src}
+      mobileSrc={homeFilm.srcMobile}
+      poster={homeFilm.poster}
+      onReady={() => {}}
+      onError={onError}
+    />
+  );
+}
+
+/* ------------------------------------------------------------------ */
+
+/** Piecewise-linear interpolation (clamped). */
 function ramp(v: number, inputs: number[], outputs: number[]): number {
   if (v <= inputs[0]) return outputs[0];
   for (let i = 1; i < inputs.length; i++) {
@@ -223,10 +244,7 @@ function ChapterOverlay({
   isActive: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const beats = chapter.subBeats;
-  const beatCount = beats?.length ?? 0;
 
-  // Proportional scroll range for this chapter
   const chapterStart = chapterStarts[index] / totalVh;
   const chapterEnd = (chapterStarts[index] + chapter.vh) / totalVh;
   const w = chapterEnd - chapterStart;
@@ -262,13 +280,11 @@ function ChapterOverlay({
 
   const hasSubBeats = (chapter.subBeats?.length ?? 0) > 0;
 
-  // Sub-beat chapters: mobile = compact header + full-height beat cards,
-  // desktop = two-column cinematic layout
   if (hasSubBeats) {
     return (
       <div
         ref={ref}
-        className="pointer-events-none absolute inset-0 z-10 flex flex-col sm:flex-col sm:items-center sm:justify-center sm:px-10 lg:px-16"
+        className="pointer-events-none absolute inset-0 z-10 flex flex-col sm:items-center sm:justify-center sm:px-10 lg:px-16"
       >
         <div
           className="pointer-events-auto relative flex flex-col w-full h-full sm:h-auto sm:max-w-6xl sm:self-center"
@@ -276,7 +292,6 @@ function ChapterOverlay({
         >
           <SubBeatChapter
             chapter={chapter}
-            index={index}
             progress={progress}
             chapterStart={chapterStart}
             chapterEnd={chapterEnd}
@@ -286,7 +301,6 @@ function ChapterOverlay({
     );
   }
 
-  // Non-sub-beat chapters: zone-based positioning using the video's negative space
   const zoneClass =
     chapter.zone === "center"
       ? "items-center justify-center text-center"
@@ -327,23 +341,18 @@ function ChapterOverlay({
 
 /**
  * Offering chapters with sub-beats.
- *
- * DESKTOP (sm+): two-column cinematic layout — persistent header left,
- * sub-beats cycling right. Clip-path wipe transitions.
- *
- * MOBILE: completely different layout — ultra-compact single-line header
- * at the top, beat cards fill the remaining height, opacity-only
- * transitions, no images, fully readable.
+ * Mobile: compact header + beat cards (opacity-only transitions).
+ * Desktop: two-column cinematic layout (clip-path wipe transitions).
+ * Both layouts render; CSS media queries control visibility.
+ * This is intentional — the layouts are structurally different.
  */
 function SubBeatChapter({
   chapter,
-  index,
   progress,
   chapterStart,
   chapterEnd,
 }: {
   chapter: FilmChapterDef;
-  index: number;
   progress: MotionValue<number>;
   chapterStart: number;
   chapterEnd: number;
@@ -352,16 +361,21 @@ function SubBeatChapter({
   const beatCount = beats.length;
   const w = chapterEnd - chapterStart;
 
-  const subBeatStart = chapterStart + 0.10 * w;
+  const subBeatStart = chapterStart + 0.1 * w;
   const beatRange = (chapterEnd - subBeatStart) / beatCount;
 
-  // Separate refs for mobile and desktop (both render, CSS hides one)
   const mobileOverviewRef = useRef<HTMLDivElement>(null);
   const desktopOverviewRef = useRef<HTMLDivElement>(null);
   const mobileBeatRefs = useRef<(HTMLDivElement | null)[]>([]);
   const desktopBeatRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const applyBeat = (el: HTMLDivElement, v: number, bStart: number, bEnd: number, isMobile: boolean) => {
+  const applyBeat = (
+    el: HTMLDivElement,
+    v: number,
+    bStart: number,
+    bEnd: number,
+    isMobile: boolean,
+  ) => {
     const beatW = bEnd - bStart;
     const enterEnd = bStart + 0.22 * beatW;
     const exitStart = bEnd - 0.35 * beatW;
@@ -375,11 +389,9 @@ function SubBeatChapter({
     el.style.visibility = opacity < 0.02 ? "hidden" : "visible";
 
     if (isMobile) {
-      // Mobile: opacity only — clean fade, no clip/scale
       el.style.clipPath = "none";
       el.style.transform = "none";
     } else {
-      // Desktop: cinematic clip-path wipe + scale + Y drift
       const clipEnter = ramp(v, [bStart, enterEnd], [100, 0]);
       const clipExit = ramp(v, [exitStart, bEnd], [0, 100]);
       const clipLeft = clipEnter > clipExit ? clipEnter : clipExit;
@@ -393,12 +405,11 @@ function SubBeatChapter({
   };
 
   const applyAll = (v: number) => {
-    // Animate overview headers (mobile + desktop — only visible one shows)
     for (const ovEl of [mobileOverviewRef.current, desktopOverviewRef.current]) {
       if (ovEl) {
         const ovOpacity = ramp(
           v,
-          [chapterStart, chapterStart + 0.05 * w, chapterStart + 0.10 * w],
+          [chapterStart, chapterStart + 0.05 * w, chapterStart + 0.1 * w],
           [0, 1, 1],
         );
         ovEl.style.opacity = String(ovOpacity);
@@ -406,7 +417,6 @@ function SubBeatChapter({
       }
     }
 
-    // Animate mobile beats
     for (let i = 0; i < beatCount; i++) {
       const el = mobileBeatRefs.current[i];
       if (!el) continue;
@@ -414,7 +424,6 @@ function SubBeatChapter({
       applyBeat(el, v, bStart, bStart + beatRange, true);
     }
 
-    // Animate desktop beats
     for (let i = 0; i < beatCount; i++) {
       const el = desktopBeatRefs.current[i];
       if (!el) continue;
@@ -449,16 +458,17 @@ function SubBeatChapter({
         {beats.map((beat, i) => (
           <MobileBeatCard
             key={beat.tKey}
-            ref={(el) => { mobileBeatRefs.current[i] = el; }}
+            ref={(el) => {
+              mobileBeatRefs.current[i] = el;
+            }}
             chapter={chapter}
             beatIndex={i}
           />
         ))}
       </div>
 
-      {/* ── DESKTOP: two-column layout (unchanged) ── */}
+      {/* ── DESKTOP: two-column layout ── */}
       <div className="hidden sm:flex sm:h-[78vh] sm:flex-row sm:items-stretch sm:gap-0 rtl:sm:flex-row-reverse">
-        {/* Persistent header — fades in and NEVER hides */}
         <div className="relative flex-none flex flex-col justify-center sm:w-[42%] sm:pe-8 lg:pe-12">
           <div
             className="relative rounded-2xl border px-8 py-6"
@@ -470,18 +480,15 @@ function SubBeatChapter({
           </div>
         </div>
 
-        {/* Thin vertical divider */}
-        <div
-          aria-hidden
-          className="w-px self-stretch my-8 bg-brass/15"
-        />
+        <div aria-hidden className="w-px self-stretch my-8 bg-brass/15" />
 
-        {/* Sub-beats animate here */}
         <div className="relative min-h-0 flex-1 sm:w-[58%]">
           {beats.map((beat, i) => (
             <SubBeatSlide
               key={beat.tKey}
-              ref={(el) => { desktopBeatRefs.current[i] = el; }}
+              ref={(el) => {
+                desktopBeatRefs.current[i] = el;
+              }}
               chapter={chapter}
               beatIndex={i}
             />
@@ -494,13 +501,14 @@ function SubBeatChapter({
 
 /* ------------------------------------------------------------------ */
 
-/** Image with always-visible file name label ON TOP. */
 function ScreenshotPlaceholder({ src }: { src: string }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <div className="sm:w-[180px] sm:flex-none lg:w-[220px] relative overflow-hidden rounded-lg" style={{ aspectRatio: "4/3" }}>
-      {/* image — loads behind the label */}
+    <div
+      className="sm:w-[180px] sm:flex-none lg:w-[220px] relative overflow-hidden rounded-lg"
+      style={{ aspectRatio: "4/3" }}
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
@@ -512,12 +520,14 @@ function ScreenshotPlaceholder({ src }: { src: string }) {
           loaded ? "opacity-100" : "opacity-0",
         )}
       />
-      {/* label — ALWAYS on top */}
       <div className="absolute inset-0 z-10 flex items-center justify-center rounded-lg border border-dashed border-brass/25 bg-ink-900/70 p-3 text-center backdrop-blur-sm">
         <span className="mb-1 inline-block rounded-full bg-brass/15 px-2 py-0.5 text-[0.5rem] font-semibold tracking-widest text-brass">
           لقطة · SHOT
         </span>
-        <p dir="ltr" className="text-[0.55rem] leading-tight text-bone-muted/70">
+        <p
+          dir="ltr"
+          className="text-[0.55rem] leading-tight text-bone-muted/70"
+        >
           {src}
         </p>
       </div>
@@ -526,6 +536,7 @@ function ScreenshotPlaceholder({ src }: { src: string }) {
 }
 
 /* ------------------------------------------------------------------ */
+
 const SubBeatSlide = forwardRef<
   HTMLDivElement,
   { chapter: FilmChapterDef; beatIndex: number }
@@ -534,7 +545,9 @@ const SubBeatSlide = forwardRef<
   const key = chapter.id;
   const beatNum = beatIndex + 1;
   const totalBeats = chapter.subBeats?.length ?? 4;
-  const features = tOff.raw(`${key}.beat${beatNum}.features`) as string[] | undefined;
+  const features = tOff.raw(`${key}.beat${beatNum}.features`) as
+    | string[]
+    | undefined;
   const href = chapter.href ?? "/start";
   const img = chapter.subBeats?.[beatIndex]?.img;
 
@@ -550,9 +563,7 @@ const SubBeatSlide = forwardRef<
           borderColor: "rgba(201,168,106,0.08)",
         }}
       >
-        {/* Text content */}
         <div className="flex-1 min-w-0">
-          {/* Step progress dots */}
           <div className="flex items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
             {Array.from({ length: totalBeats }).map((_, i) => (
               <span
@@ -593,7 +604,10 @@ const SubBeatSlide = forwardRef<
             <ul className="mt-1.5 sm:mt-2 flex flex-col gap-0.5 text-[0.65rem] text-white/60 sm:text-xs lg:text-sm">
               {features.map((f: string) => (
                 <li key={f} className="flex items-center gap-1.5 sm:gap-2">
-                  <span aria-hidden className="h-0.5 w-0.5 sm:h-1 sm:w-1 rounded-full bg-brass" />
+                  <span
+                    aria-hidden
+                    className="h-0.5 w-0.5 sm:h-1 sm:w-1 rounded-full bg-brass"
+                  />
                   {f}
                 </li>
               ))}
@@ -606,15 +620,14 @@ const SubBeatSlide = forwardRef<
               className="inline-flex items-center gap-1.5 rounded-full bg-brass px-4 py-1.5 text-[0.65rem] font-semibold text-ink-900 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brass-hi sm:px-5 sm:py-2 sm:text-xs lg:px-6 lg:text-sm"
             >
               {tOff(`${key}.beat${beatNum}.cta`)}
-              <span aria-hidden className="text-[0.8em]">→</span>
+              <span aria-hidden className="text-[0.8em]">
+                →
+              </span>
             </Link>
           </div>
         </div>
 
-        {/* Screenshot — shown when img is set */}
-        {img && (
-          <ScreenshotPlaceholder src={img} />
-        )}
+        {img && <ScreenshotPlaceholder src={img} />}
       </div>
     </div>
   );
@@ -622,7 +635,6 @@ const SubBeatSlide = forwardRef<
 
 /* ------------------------------------------------------------------ */
 
-/** Ultra-compact mobile header — single line: "01 ── Title ── 3.8x" */
 function MobileChapterHeader({ chapter }: { chapter: FilmChapterDef }) {
   const tOff = useTranslations("Offerings");
   const key = chapter.id;
@@ -648,11 +660,6 @@ function MobileChapterHeader({ chapter }: { chapter: FilmChapterDef }) {
 
 /* ------------------------------------------------------------------ */
 
-/**
- * Mobile beat card — fills the remaining viewport height below the header.
- * No images, no clip-path, clean centered layout, opacity-only transitions.
- * Large touch targets for CTA.
- */
 const MobileBeatCard = forwardRef<
   HTMLDivElement,
   { chapter: FilmChapterDef; beatIndex: number }
@@ -661,23 +668,24 @@ const MobileBeatCard = forwardRef<
   const key = chapter.id;
   const beatNum = beatIndex + 1;
   const totalBeats = chapter.subBeats?.length ?? 4;
-  const features = tOff.raw(`${key}.beat${beatNum}.features`) as string[] | undefined;
+  const features = tOff.raw(`${key}.beat${beatNum}.features`) as
+    | string[]
+    | undefined;
   const href = chapter.href ?? "/start";
   const img = chapter.subBeats?.[beatIndex]?.img;
 
   return (
+    <div
+      ref={ref}
+      className="absolute inset-0 flex items-center justify-center px-6"
+    >
       <div
-        ref={ref}
-        className="absolute inset-0 flex items-center justify-center px-6"
+        className="flex w-full flex-col items-center text-center max-w-sm rounded-2xl px-5 py-6"
+        style={{
+          backgroundColor: "rgba(10,10,11,0.65)",
+          boxShadow: "0 0 60px 20px rgba(10,10,11,0.4)",
+        }}
       >
-        <div
-          className="flex w-full flex-col items-center text-center max-w-sm rounded-2xl px-5 py-6"
-          style={{
-            backgroundColor: "rgba(10,10,11,0.65)",
-            boxShadow: "0 0 60px 20px rgba(10,10,11,0.4)",
-          }}
-        >
-        {/* Step dots — prominent on mobile */}
         <div className="flex items-center gap-2.5 mb-2">
           {Array.from({ length: totalBeats }).map((_, i) => (
             <span
@@ -719,23 +727,26 @@ const MobileBeatCard = forwardRef<
           <ul className="mt-3 flex flex-col items-center gap-1 text-[0.7rem] text-white/45">
             {features.slice(0, 3).map((f: string) => (
               <li key={f} className="flex items-center gap-1.5">
-                <span aria-hidden className="h-0.5 w-0.5 rounded-full bg-brass/60" />
+                <span
+                  aria-hidden
+                  className="h-0.5 w-0.5 rounded-full bg-brass/60"
+                />
                 {f}
               </li>
             ))}
           </ul>
         )}
 
-        {/* CTA — large touch target */}
         <Link
           href={href}
           className="mt-5 inline-flex items-center gap-2 rounded-full bg-brass px-8 py-3 text-sm font-semibold text-ink-900 min-h-[48px]"
         >
           {tOff(`${key}.beat${beatNum}.cta`)}
-          <span aria-hidden className="text-[0.8em]">→</span>
+          <span aria-hidden className="text-[0.8em]">
+            →
+          </span>
         </Link>
 
-        {/* Screenshot preview (small) */}
         {img && (
           <div className="mt-4 w-full max-w-[200px]">
             <ScreenshotPlaceholder src={img} />
@@ -748,7 +759,6 @@ const MobileBeatCard = forwardRef<
 
 /* ------------------------------------------------------------------ */
 
-/** Compact persistent header for offering chapters — always visible, never hides. */
 function ChapterHeader({ chapter }: { chapter: FilmChapterDef }) {
   const locale = useLocale();
   const display = locale === "ar" ? "font-display-ar" : "font-display-en";
@@ -773,7 +783,9 @@ function ChapterHeader({ chapter }: { chapter: FilmChapterDef }) {
         </span>
       </p>
 
-      <h2 className={`${display} text-xl font-medium leading-[1.1] text-bone sm:text-4xl`}>
+      <h2
+        className={`${display} text-xl font-medium leading-[1.1] text-bone sm:text-4xl`}
+      >
         {tOff(`${key}.title`)}
       </h2>
 
@@ -794,7 +806,10 @@ function ChapterHeader({ chapter }: { chapter: FilmChapterDef }) {
         <ul className="hidden sm:flex flex-col gap-1 text-sm text-bone-muted/80">
           {bullets.map((b: string) => (
             <li key={b} className="flex items-center gap-2">
-              <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
+              <span
+                aria-hidden
+                className="h-1 w-1 rounded-full bg-brass/60"
+              />
               {b}
             </li>
           ))}
@@ -808,7 +823,9 @@ function ChapterHeader({ chapter }: { chapter: FilmChapterDef }) {
             className="inline-flex items-center gap-1.5 rounded-full bg-brass px-4 py-2 text-xs font-semibold text-ink-900 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brass-hi sm:px-6 sm:text-sm"
           >
             {tOff("details")}
-            <span aria-hidden className="text-[0.8em]">→</span>
+            <span aria-hidden className="text-[0.8em]">
+              →
+            </span>
           </Link>
         )}
         {key === "pos" && (
@@ -827,7 +844,9 @@ function ChapterHeader({ chapter }: { chapter: FilmChapterDef }) {
             className="inline-flex items-center gap-1.5 rounded-full border border-brass/40 px-4 py-2 text-xs font-semibold text-bone transition-colors duration-300 hover:border-brass hover:text-brass sm:px-6 sm:text-sm"
           >
             {tFilm("visitStore")}
-            <span aria-hidden className="text-[0.8em]">↗</span>
+            <span aria-hidden className="text-[0.8em]">
+              ↗
+            </span>
           </a>
         )}
       </div>
@@ -837,7 +856,6 @@ function ChapterHeader({ chapter }: { chapter: FilmChapterDef }) {
 
 /* ------------------------------------------------------------------ */
 
-/** Staggered title-sequence reveal for one element. */
 function Stag({
   on,
   step,
@@ -913,7 +931,12 @@ function ChapterCopy({
               </Link>
             </Magnetic>
             <Magnetic className="inline-block">
-              <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className={btnGhost}>
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={btnGhost}
+              >
                 {tHome("ctaWhatsapp")}
               </a>
             </Magnetic>
@@ -930,7 +953,9 @@ function ChapterCopy({
           <span aria-hidden className="block h-px w-14 bg-brass/70" />
         </Stag>
         <Stag on={isActive} step={1}>
-          <h2 className={`${display} mt-5 text-3xl font-medium leading-tight text-bone sm:text-5xl`}>
+          <h2
+            className={`${display} mt-5 text-3xl font-medium leading-tight text-bone sm:text-5xl`}
+          >
             {tCta("title")}
           </h2>
         </Stag>
@@ -944,7 +969,12 @@ function ChapterCopy({
             <Link href="/start" className={btnPrimary}>
               {tCta("primary")}
             </Link>
-            <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className={btnGhost}>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={btnGhost}
+            >
               {tCta("whatsapp")}
             </a>
           </div>
@@ -953,7 +983,6 @@ function ChapterCopy({
     );
   }
 
-  // offering chapters: 01 marketing / 02 pos / 03 ecommerce
   const key = chapter.id;
   const bullets = tOff.raw(`${key}.bullets`) as string[] | undefined;
   return (
@@ -997,7 +1026,10 @@ function ChapterCopy({
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-bone-muted/80 sm:text-base">
             {bullets.map((b: string) => (
               <li key={b} className="flex items-center gap-2">
-                <span aria-hidden className="h-1 w-1 rounded-full bg-brass/60" />
+                <span
+                  aria-hidden
+                  className="h-1 w-1 rounded-full bg-brass/60"
+                />
                 {b}
               </li>
             ))}
@@ -1061,12 +1093,10 @@ function ChapterRail({
       aria-label={t("railLabel")}
       className="absolute top-1/2 z-20 hidden -translate-y-1/2 md:block ltr:right-8 rtl:left-8"
     >
-      {/* track */}
       <span
         aria-hidden
         className="absolute top-2 bottom-2 w-px bg-brass/10 ltr:right-[5px] rtl:left-[5px]"
       >
-        {/* fill — scaleY driven by scroll */}
         <span
           ref={fillRef}
           className="absolute inset-x-0 top-0 h-full origin-top bg-brass/50"
@@ -1116,7 +1146,6 @@ function ChapterRail({
   );
 }
 
-/** Intro scroll cue, faded out imperatively for the same re-render immunity. */
 function ScrollCue({
   progress,
   label,
@@ -1141,7 +1170,9 @@ function ScrollCue({
       ref={ref}
       className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 text-bone-muted"
     >
-      <span className="text-[0.6rem] uppercase tracking-[0.4em]">{label}</span>
+      <span className="text-[0.6rem] uppercase tracking-[0.4em]">
+        {label}
+      </span>
       <m.span
         aria-hidden
         className="block h-8 w-px bg-brass/60"
@@ -1154,13 +1185,11 @@ function ScrollCue({
 
 /* ------------------------------------------------------------------ */
 
-/** Poster image with always-visible file name label ON TOP. */
 function PosterImage({ src }: { src: string }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
     <>
-      {/* image — loads behind the label */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
@@ -1172,13 +1201,15 @@ function PosterImage({ src }: { src: string }) {
           loaded ? "opacity-60" : "opacity-0",
         )}
       />
-      {/* label — ALWAYS on top */}
       <div className="absolute inset-0 z-10 flex items-center justify-center">
         <div className="text-center rounded-xl border border-dashed border-brass/25 bg-ink-900/70 px-5 py-3 backdrop-blur-sm">
           <span className="mb-1 inline-block rounded-full bg-brass/15 px-2 py-0.5 text-[0.55rem] font-semibold tracking-widest text-brass">
             صورة · POSTER
           </span>
-          <p dir="ltr" className="text-[0.6rem] text-bone-muted/60">
+          <p
+            dir="ltr"
+            className="text-[0.6rem] text-bone-muted/60"
+          >
             {src}
           </p>
         </div>
@@ -1187,8 +1218,7 @@ function PosterImage({ src }: { src: string }) {
   );
 }
 
-/** Reduced-motion / video-failure fallback: the same five chapters as calm
- *  stacked poster sections. */
+/** Reduced-motion / video-failure / slow-connection fallback. */
 function StackedFallback() {
   return (
     <div>

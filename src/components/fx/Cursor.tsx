@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const TRAIL = 10;
 
@@ -8,18 +8,22 @@ const TRAIL = 10;
 export function Cursor() {
   const ring = useRef<HTMLDivElement>(null);
   const dots = useRef<(HTMLDivElement | null)[]>([]);
-  const [on, setOn] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!window.matchMedia("(pointer:fine)").matches) return;
-    setOn(true);
+    if (containerRef.current) containerRef.current.style.display = "";
     let x = innerWidth / 2;
     let y = innerHeight / 2;
     let scale = 1;
     let target = 1;
     let raf = 0;
     let last = 0;
-    const FRAME_MS = 33; // ~30fps cap
+    let idleFrames = 0;
+    const FRAME_MS = 33;
+    const IDLE_THRESHOLD = 0.1;
+    const IDLE_LIMIT = 4;
+    let running = false;
     const pts = Array.from({ length: TRAIL }, () => ({ x, y }));
 
     const move = (e: MouseEvent) => {
@@ -29,11 +33,19 @@ export function Cursor() {
         "a,button,input,textarea,select,[data-cursor]",
       );
       target = el ? 2.4 : 1;
+      if (!running) startLoop();
     };
+
     const loop = (now: number) => {
-      raf = requestAnimationFrame(loop);
-      if (now - last < FRAME_MS) return;
+      if (now - last < FRAME_MS) {
+        raf = requestAnimationFrame(loop);
+        return;
+      }
       last = now;
+
+      const prevX = pts[0]?.x ?? x;
+      const prevY = pts[0]?.y ?? y;
+
       let px = x;
       let py = y;
       pts.forEach((p, i) => {
@@ -52,18 +64,38 @@ export function Cursor() {
       if (ring.current) {
         ring.current.style.transform = `translate(${x}px,${y}px) translate(-50%,-50%) scale(${scale})`;
       }
+
+      const dx = Math.abs(pts[0].x - prevX);
+      const dy = Math.abs(pts[0].y - prevY);
+      if (dx < IDLE_THRESHOLD && dy < IDLE_THRESHOLD) {
+        idleFrames++;
+        if (idleFrames >= IDLE_LIMIT) {
+          running = false;
+          return;
+        }
+      } else {
+        idleFrames = 0;
+      }
+      raf = requestAnimationFrame(loop);
     };
+
+    function startLoop() {
+      running = true;
+      idleFrames = 0;
+      last = 0;
+      raf = requestAnimationFrame(loop);
+    }
+
     window.addEventListener("mousemove", move, { passive: true });
-    raf = requestAnimationFrame(loop);
+    startLoop();
     return () => {
       window.removeEventListener("mousemove", move);
       cancelAnimationFrame(raf);
     };
   }, []);
 
-  if (!on) return null;
   return (
-    <>
+    <div ref={containerRef} style={{ display: "none" }}>
       {Array.from({ length: TRAIL }).map((_, i) => (
         <div
           key={i}
@@ -81,6 +113,6 @@ export function Cursor() {
         className="pointer-events-none fixed left-0 top-0 z-[120] h-7 w-7 rounded-full border border-brass mix-blend-difference"
         style={{ willChange: "transform" }}
       />
-    </>
+    </div>
   );
 }
