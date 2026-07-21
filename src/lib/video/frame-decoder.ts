@@ -62,8 +62,9 @@ export class FrameDecoderManager {
       this.callbacks.onError?.(`Worker error: ${e.message}`);
     };
 
-    // Tell worker to load and parse the video
-    this.worker.postMessage({ type: "init", url } satisfies DecoderMessage);
+    // Resolve relative URL to absolute — Blob workers have no base
+    const absUrl = new URL(url, window.location.origin).href;
+    this.worker.postMessage({ type: "init", url: absUrl } satisfies DecoderMessage);
   }
 
   private handleMessage(msg: DecoderResponse): void {
