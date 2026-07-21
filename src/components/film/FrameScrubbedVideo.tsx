@@ -101,8 +101,7 @@ export function FrameScrubbedVideo({
         // Evict frames far from current position
         buffer.evictBeyond(controller.frameIndex, isMobile.current ? 15 : 30);
       },
-      onError: (msg) => {
-        console.error("Frame decoder error:", msg);
+      onError: () => {
         onError?.();
       },
     });

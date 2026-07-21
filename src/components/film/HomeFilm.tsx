@@ -20,11 +20,8 @@ import {
   type FilmChapterDef,
 } from "@/config/film";
 import { Magnetic } from "@/components/fx/Magnetic";
-import {
-  detectBackend,
-  shouldLoadVideo,
-  type VideoBackend,
-} from "@/lib/video/capabilities";
+import { shouldLoadVideo } from "@/lib/video/capabilities";
+import { VideoSeekScrub } from "@/components/film/VideoSeekScrub";
 
 /**
  * The home page IS a film: one pinned full-screen video scrubbed by scroll,
@@ -40,28 +37,19 @@ import {
  */
 export function HomeFilm() {
   const reduced = useReducedMotion();
-  const [backend, setBackend] = useState<VideoBackend | null>(null);
   const [videoFailed, setVideoFailed] = useState(false);
 
-  useEffect(() => {
-    detectBackend().then(setBackend);
-  }, []);
-
   // Decision tree
-  if (reduced || videoFailed || backend === "none") return <StackedFallback />;
-  if (!shouldLoadVideo()) return <StackedFallback />;
-  if (backend === null) return <StackedFallback />; // loading state — show posters
+  if (reduced || videoFailed || !shouldLoadVideo()) return <StackedFallback />;
 
-  return <ScrubbedFilm backend={backend} onVideoError={() => setVideoFailed(true)} />;
+  return <ScrubbedFilm onVideoError={() => setVideoFailed(true)} />;
 }
 
 /* ------------------------------------------------------------------ */
 
 function ScrubbedFilm({
-  backend,
   onVideoError,
 }: {
-  backend: VideoBackend;
   onVideoError: () => void;
 }) {
   const trackRef = useRef<HTMLElement>(null);
@@ -101,9 +89,8 @@ function ScrubbedFilm({
       aria-label={t("filmLabel")}
     >
       <div className="sticky top-0 h-screen overflow-hidden bg-ink-900">
-        {/* ── Video / Canvas layer (adapts to backend) ── */}
+        {/* ── Video layer (scroll-scrubbed <video>) ── */}
         <VideoLayer
-          backend={backend}
           onError={onVideoError}
           scrollProgress={scrollYProgress}
         />
@@ -158,15 +145,13 @@ function ScrubbedFilm({
 /* ------------------------------------------------------------------ */
 
 /**
- * Video layer — selects the appropriate backend and bridges scroll progress
- * to the video component via a ref-based seek() method.
+ * Video layer — bridges scroll progress to the video component
+ * via a ref-based seek() method.
  */
 function VideoLayer({
-  backend,
   onError,
   scrollProgress,
 }: {
-  backend: VideoBackend;
   onError: () => void;
   scrollProgress: MotionValue<number>;
 }) {
@@ -177,35 +162,8 @@ function VideoLayer({
     seekRef.current?.seek(v);
   });
 
-  // Lazy-load the appropriate backend component
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [VideoComponent, setVideoComponent] = useState<React.ComponentType<any> | null>(null);
-
-  useEffect(() => {
-    switch (backend) {
-      case "webcodecs":
-        import("@/components/film/FrameScrubbedVideo").then((m) =>
-          setVideoComponent(() => m.FrameScrubbedVideo),
-        );
-        break;
-      case "video-callback":
-        import("@/components/film/VideoCallbackScrub").then((m) =>
-          setVideoComponent(() => m.VideoCallbackScrub),
-        );
-        break;
-      case "video-seeking":
-      default:
-        import("@/components/film/VideoSeekScrub").then((m) =>
-          setVideoComponent(() => m.VideoSeekScrub),
-        );
-        break;
-    }
-  }, [backend]);
-
-  if (!VideoComponent) return null;
-
   return (
-    <VideoComponent
+    <VideoSeekScrub
       ref={seekRef}
       desktopSrc={homeFilm.src}
       mobileSrc={homeFilm.srcMobile}
@@ -1189,32 +1147,17 @@ function PosterImage({ src }: { src: string }) {
   const [loaded, setLoaded] = useState(false);
 
   return (
-    <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={src}
-        alt=""
-        aria-hidden
-        onLoad={() => setLoaded(true)}
-        className={cn(
-          "absolute inset-0 h-full w-full object-cover transition-opacity duration-500",
-          loaded ? "opacity-60" : "opacity-0",
-        )}
-      />
-      <div className="absolute inset-0 z-10 flex items-center justify-center">
-        <div className="text-center rounded-xl border border-dashed border-brass/25 bg-ink-900/70 px-5 py-3 backdrop-blur-sm">
-          <span className="mb-1 inline-block rounded-full bg-brass/15 px-2 py-0.5 text-[0.55rem] font-semibold tracking-widest text-brass">
-            صورة · POSTER
-          </span>
-          <p
-            dir="ltr"
-            className="text-[0.6rem] text-bone-muted/60"
-          >
-            {src}
-          </p>
-        </div>
-      </div>
-    </>
+    /* eslint-disable-next-line @next/next/no-img-element */
+    <img
+      src={src}
+      alt=""
+      aria-hidden
+      onLoad={() => setLoaded(true)}
+      className={cn(
+        "absolute inset-0 h-full w-full object-cover transition-opacity duration-500",
+        loaded ? "opacity-60" : "opacity-0",
+      )}
+    />
   );
 }
 
