@@ -22,12 +22,12 @@ import { m } from "framer-motion";
 const ease = [0.76, 0, 0.24, 1] as const;
 
 const MIN_DURATIONS: Record<string, number> = {
-  curtain: 1200,
-  scan: 900,
-  blinds: 900,
-  inkdrop: 900,
-  filmstrip: 900,
-  titlecard: 800,
+  curtain: 700,
+  scan: 500,
+  blinds: 500,
+  inkdrop: 500,
+  filmstrip: 500,
+  titlecard: 500,
 };
 
 function getPageKind(pathname: string): string {

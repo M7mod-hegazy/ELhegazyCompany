@@ -33,11 +33,8 @@ export async function detectBackend(): Promise<VideoBackend> {
 
 /** Should we load video at all (connection + motion check)? */
 export function shouldLoadVideo(): boolean {
-  const reduced = prefersReducedMotion();
-  const goodConn = hasGoodConnection();
-  console.log("[cap] reduced:", reduced, "goodConn:", goodConn);
-  if (reduced) return false;
-  if (!goodConn) return false;
+  if (prefersReducedMotion()) return false;
+  if (!hasGoodConnection()) return false;
   return true;
 }
 

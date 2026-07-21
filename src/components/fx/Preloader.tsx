@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence } from "framer-motion";
 
-const MIN_MS = 1500;
+const MIN_MS = 800;
 const MAX_MS = 12000;
 const HOLD_AT_ZERO_MS = 200;
 

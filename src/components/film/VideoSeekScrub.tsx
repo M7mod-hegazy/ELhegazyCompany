@@ -13,12 +13,13 @@ interface Props {
 }
 
 /**
- * Last-resort fallback using <video> currentTime seeking.
- * Cleaned-up version of the original approach with proper idle detection.
+ * Scroll-scrubbed <video> — sets currentTime directly from scroll progress.
+ * No easing (scroll from framer-motion is already smooth).
+ * RAF loop idles when scroll settles — zero CPU when static.
  */
 export const VideoSeekScrub = forwardRef<VideoScrubHandle, Props>(
   function VideoSeekScrub(
-    { desktopSrc, mobileSrc, poster, onReady, onError },
+    { desktopSrc, mobileSrc, onReady, onError },
     ref,
   ) {
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -26,8 +27,13 @@ export const VideoSeekScrub = forwardRef<VideoScrubHandle, Props>(
     const inViewRef = useRef(true);
     const visibleRef = useRef(true);
     const rafRef = useRef(0);
-    const curRef = useRef(0);
     const isMobile = isMobileDevice();
+
+    // Store callbacks in refs so they never trigger useEffect re-run
+    const onReadyRef = useRef(onReady);
+    onReadyRef.current = onReady;
+    const onErrorRef = useRef(onError);
+    onErrorRef.current = onError;
 
     useImperativeHandle(ref, () => ({
       seek: (progress: number) => {
@@ -37,60 +43,37 @@ export const VideoSeekScrub = forwardRef<VideoScrubHandle, Props>(
 
     useEffect(() => {
       const video = videoRef.current;
-      if (!video) { console.log("[VS] no video ref!"); return; }
+      if (!video) return;
 
       const src = isMobile ? mobileSrc : desktopSrc;
-      console.log("[VS] mounting, isMobile:", isMobile, "src:", src);
       video.src = src;
       video.load();
 
-      video.addEventListener("loadedmetadata", () => {
-        console.log("[VS] loadedmetadata, duration:", video.duration, "readyState:", video.readyState);
-        onReady?.({ duration: video.duration });
-      });
-      video.addEventListener("canplay", () => {
-        console.log("[VS] canplay, readyState:", video.readyState);
-      });
-      video.addEventListener("error", () => {
-        console.log("[VS] error!", video.error?.code, video.error?.message);
-        onError?.();
-      });
+      const onMeta = () => onReadyRef.current?.({ duration: video.duration });
+      const onErr = () => onErrorRef.current?.();
+      video.addEventListener("loadedmetadata", onMeta);
+      video.addEventListener("error", onErr);
 
-      // Scrub loop with easing — same logic as original but with idle detection
       let settledCount = 0;
-      let lastTime = -1;
-      let frameCount = 0;
 
       const tick = () => {
-        if (inViewRef.current && visibleRef.current) {
-          if (video.readyState >= 1 && Number.isFinite(video.duration)) {
-            const target =
-              targetProgressRef.current * Math.max(0, video.duration - 0.05);
-            curRef.current += (target - curRef.current) * 0.16;
+        if (inViewRef.current && visibleRef.current && video.readyState >= 2 && Number.isFinite(video.duration)) {
+          const target = targetProgressRef.current * Math.max(0, video.duration - 0.05);
 
-            if (Math.abs(video.currentTime - curRef.current) > 0.002) {
-              try {
-                video.currentTime = curRef.current;
-              } catch {
-                /* seek can throw mid-load */
-              }
-              settledCount = 0;
-            } else if (Math.abs(video.currentTime - lastTime) < 0.001) {
-              settledCount++;
-            }
-            lastTime = video.currentTime;
-
-            if (frameCount++ % 60 === 0) {
-              console.log("[VS] tick frame:", frameCount, "cur:", video.currentTime.toFixed(3), "target:", target.toFixed(3), "readyState:", video.readyState, "settled:", settledCount);
-            }
+          // Only seek if the difference is meaningful (> 30ms)
+          if (Math.abs(video.currentTime - target) > 0.03) {
+            try {
+              video.currentTime = target;
+            } catch { /* seek can throw mid-load */ }
+            settledCount = 0;
+          } else {
+            settledCount++;
           }
         }
 
-        // Idle after 3 settled frames
         if (settledCount < 3) {
           rafRef.current = requestAnimationFrame(tick);
         } else {
-          // Restart on next scroll event
           const restart = () => {
             settledCount = 0;
             rafRef.current = requestAnimationFrame(tick);
@@ -101,7 +84,6 @@ export const VideoSeekScrub = forwardRef<VideoScrubHandle, Props>(
       };
       rafRef.current = requestAnimationFrame(tick);
 
-      // IntersectionObserver
       const section = video.closest("section");
       const observer = section
         ? new IntersectionObserver(
@@ -119,7 +101,7 @@ export const VideoSeekScrub = forwardRef<VideoScrubHandle, Props>(
         document.removeEventListener("visibilitychange", onVis);
         cancelAnimationFrame(rafRef.current);
       };
-    }, [desktopSrc, mobileSrc, poster, onReady, onError, isMobile]);
+    }, [desktopSrc, mobileSrc, isMobile]);
 
     return (
       <video
