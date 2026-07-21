@@ -39,10 +39,17 @@ export function HomeFilm() {
   const reduced = useReducedMotion();
   const [videoFailed, setVideoFailed] = useState(false);
 
-  // Decision tree
-  if (reduced || videoFailed || !shouldLoadVideo()) return <StackedFallback />;
+  const loadVideo = shouldLoadVideo();
+  console.log("[HF] reduced:", reduced, "videoFailed:", videoFailed, "loadVideo:", loadVideo);
 
-  return <ScrubbedFilm onVideoError={() => setVideoFailed(true)} />;
+  // Decision tree
+  if (reduced || videoFailed || !loadVideo) {
+    console.log("[HF] → StackedFallback (reduced=" + reduced + " failed=" + videoFailed + " loadVideo=" + loadVideo + ")");
+    return <StackedFallback />;
+  }
+
+  console.log("[HF] → ScrubbedFilm (video enabled)");
+  return <ScrubbedFilm onVideoError={() => { console.log("[HF] video error!"); setVideoFailed(true); }} />;
 }
 
 /* ------------------------------------------------------------------ */
@@ -159,6 +166,7 @@ function VideoLayer({
 
   // Bridge framer-motion scroll progress → video seek
   useMotionValueEvent(scrollProgress, "change", (v) => {
+    console.log("[VL] scroll:", v.toFixed(3), "seekRef:", seekRef.current ? "ready" : "null");
     seekRef.current?.seek(v);
   });
 
@@ -168,7 +176,7 @@ function VideoLayer({
       desktopSrc={homeFilm.src}
       mobileSrc={homeFilm.srcMobile}
       poster={homeFilm.poster}
-      onReady={() => {}}
+      onReady={(info) => console.log("[VL] onReady:", info)}
       onError={onError}
     />
   );

@@ -37,19 +37,29 @@ export const VideoSeekScrub = forwardRef<VideoScrubHandle, Props>(
 
     useEffect(() => {
       const video = videoRef.current;
-      if (!video) return;
+      if (!video) { console.log("[VS] no video ref!"); return; }
 
-      video.src = isMobile ? mobileSrc : desktopSrc;
+      const src = isMobile ? mobileSrc : desktopSrc;
+      console.log("[VS] mounting, isMobile:", isMobile, "src:", src);
+      video.src = src;
       video.load();
 
       video.addEventListener("loadedmetadata", () => {
+        console.log("[VS] loadedmetadata, duration:", video.duration, "readyState:", video.readyState);
         onReady?.({ duration: video.duration });
       });
-      video.addEventListener("error", () => onError?.());
+      video.addEventListener("canplay", () => {
+        console.log("[VS] canplay, readyState:", video.readyState);
+      });
+      video.addEventListener("error", () => {
+        console.log("[VS] error!", video.error?.code, video.error?.message);
+        onError?.();
+      });
 
       // Scrub loop with easing — same logic as original but with idle detection
       let settledCount = 0;
       let lastTime = -1;
+      let frameCount = 0;
 
       const tick = () => {
         if (inViewRef.current && visibleRef.current) {
@@ -69,6 +79,10 @@ export const VideoSeekScrub = forwardRef<VideoScrubHandle, Props>(
               settledCount++;
             }
             lastTime = video.currentTime;
+
+            if (frameCount++ % 60 === 0) {
+              console.log("[VS] tick frame:", frameCount, "cur:", video.currentTime.toFixed(3), "target:", target.toFixed(3), "readyState:", video.readyState, "settled:", settledCount);
+            }
           }
         }
 
