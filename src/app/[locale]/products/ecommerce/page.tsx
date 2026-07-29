@@ -1,12 +1,13 @@
-import { Fragment, use } from "react";
+import { Fragment } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { PageHero } from "@/components/site/PageHero";
 import { getWorld } from "@/config/worlds";
 import { EcommerceShell } from "@/components/world/EcommerceShell";
 import { WorldHero } from "@/components/world/WorldHero";
 import { KineticStatement } from "@/components/world/KineticStatement";
-import { VideoTheater } from "@/components/world/VideoTheater";
+import { ProofBand } from "@/components/world/ProofBand";
 import { EcommerceAbilitiesBento } from "@/components/world/EcommerceAbilitiesBento";
 import { StoryChapter } from "@/components/world/StoryChapter";
 import { ModuleGallery } from "@/components/world/ModuleGallery";
@@ -35,18 +36,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: t("hero"), description: t("promise") };
 }
 
-export default function EcommerceWorldPage({ params }: Props) {
-  const { locale } = use(params);
+export default async function EcommerceWorldPage({ params }: Props) {
+  const { locale } = await params;
   setRequestLocale(locale);
   const world = getWorld(KEY);
   if (!world) notFound();
+  const t = await getTranslations({ locale, namespace: `Worlds.${KEY}` });
 
   return (
     <EcommerceShell accent={world.accent} worldKey={world.key}>
+      <PageHero
+        videoKey="ecommerce"
+        kicker={t("hero")}
+        title={t("promise")}
+        zone="bottom-left"
+      />
       <WorldHero worldKey={world.key} num={world.num} accent={world.accent} />
       <KineticStatement worldKey={world.key} />
       <LiveStoreBand worldKey={world.key} href={world.externalHref} />
-      <VideoTheater worldKey={world.key} video={world.video} />
+      <ProofBand world={world} plate="page-ecommerce" />
       <TrustStrip worldKey={world.key} />
       <EcommerceAbilitiesBento worldKey={world.key} />
       <BigNumbers worldKey={world.key} />

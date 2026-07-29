@@ -15,7 +15,7 @@ export function Pricing({ worldKey }: { worldKey: string }) {
   const t = useTranslations(`Worlds.${worldKey}.pricing`);
   const locale = useLocale();
   const startHref = `/${locale}${getWorld(worldKey)?.href ?? ""}/download`;
-  const orderHref = `/${locale}/order?product=${worldKey}&plan=full`;
+  const orderHref = `/${locale}/contact?product=${worldKey}&plan=full`;
 
   const freeFeatures = t.raw("free.features") as string[];
   const fullFeatures = t.raw("full.features") as string[];

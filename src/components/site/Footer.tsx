@@ -30,7 +30,7 @@ export function Footer() {
               { href: "/services/marketing", label: t("marketing") },
               { href: "/products/pos", label: t("pos") },
               { href: "/products/ecommerce", label: t("ecommerce") },
-              { href: "/work", label: t("work") },
+              { href: "/projects", label: t("projects") },
               { href: "/faq", label: t("faq") },
               { href: "/contact", label: t("contact") },
             ].map((l) => (
@@ -72,7 +72,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-brass/10">
+      {/* pb clears the mobile action bar, which is fixed to the bottom edge. */}
+      <div className="border-t border-brass/10 pb-14 sm:pb-0">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-6 py-6 text-xs text-bone-muted/70">
           <span>
             © {new Date().getFullYear()} {siteConfig.shortName[locale]}

@@ -1,0 +1,268 @@
+- generic [active] [ref=f65e1]:
+  - banner [ref=f65e2]:
+    - navigation [ref=f65e3]:
+      - link "الحجازي" [ref=f65e4] [cursor=pointer]:
+        - /url: /ar
+        - generic "شركة الحجازي · ElHegazi" [ref=f65e5]:
+          - generic [ref=f65e6]: الحجازي
+          - generic [ref=f65e7]: ElHegazi
+      - generic [ref=f65e8]:
+        - link "التسويق الرقمي" [ref=f65e9] [cursor=pointer]:
+          - /url: /ar/services/marketing
+        - link "نظام نقاط البيع" [ref=f65e10] [cursor=pointer]:
+          - /url: /ar/products/pos
+        - link "المتجر الإلكتروني" [ref=f65e11] [cursor=pointer]:
+          - /url: /ar/products/ecommerce
+        - link "مشاريعنا" [ref=f65e12] [cursor=pointer]:
+          - /url: /ar/projects
+        - link "تواصل" [ref=f65e13] [cursor=pointer]:
+          - /url: /ar/contact
+      - generic [ref=f65e14]:
+        - button "Switch language" [ref=f65e15]: English
+        - link "ابدأ مشروعك" [ref=f65e16] [cursor=pointer]:
+          - /url: /ar/start
+  - main [ref=f65e17]:
+    - region [ref=f65e18]:
+      - generic [ref=f65e26]:
+        - heading "بنصنع البراندات اللي الناس تشوفها" [level=1] [ref=f65e27]: بنصنع البرانداتاللي الناس تشوفها
+        - paragraph [ref=f65e28]: إعلانات ممولة، تصوير وفيديو، وهوية كاملة — من فريق بيبني ويدير تجارته بنفسه.
+        - generic [ref=f65e29]:
+          - link "يلا نبدأ" [ref=f65e30] [cursor=pointer]:
+            - /url: /ar/contact
+          - link "كلّمنا على واتساب" [ref=f65e31] [cursor=pointer]:
+            - /url: https://wa.me/201000000000
+      - generic [ref=f65e33]: اسحب
+    - region [ref=f65e36]:
+      - paragraph [ref=f65e37]: اكتشف احتياجك
+      - heading "عايز تعرف إيه محتاجك جبشتك؟" [level=2] [ref=f65e38]
+      - paragraph [ref=f65e39]: جاوب على ثلاث أسئلة وهنشوفك إيه محتاجه
+      - generic [ref=f65e42]:
+        - paragraph [ref=f65e43]: 1 من 3
+        - paragraph [ref=f65e44]: عندك محل دلوقتي؟
+        - generic [ref=f65e45]:
+          - button "فرع واحد" [ref=f65e46]
+          - button "أكتر من فرع" [ref=f65e47]
+          - button "أونلاين بس" [ref=f65e48]
+          - button "لسه لحد دلوقتي" [ref=f65e49]
+    - region [ref=f65e50]:
+      - generic [ref=f65e53]:
+        - button "شاشة النظام" [ref=f65e55]
+        - button "طابعة الإيصالات" [ref=f65e60]
+        - button "دفتر الحسابات" [ref=f65e65]
+        - button "كاونتر البلوط" [ref=f65e70]
+      - generic [ref=f65e74]:
+        - paragraph [ref=f65e75]: خلف الكاونتر
+        - heading "كل حاجة بنبنيها بنفسنا أولاً" [level=2] [ref=f65e76]
+        - paragraph [ref=f65e77]: Counter.body
+        - paragraph [ref=f65e78]: Counter.hint
+    - generic "اللي بنعمله" [ref=f65e79]:
+      - generic [ref=f65e80]:
+        - generic [ref=f65e81]:
+          - generic [ref=f65e84]:
+            - paragraph [ref=f65e85]: نظام نقاط البيع
+            - generic [ref=f65e87]:
+              - generic [ref=f65e88]: عربي بالكامل RTL
+              - generic [ref=f65e89]: ···
+              - generic [ref=f65e90]: ✓
+            - generic [ref=f65e91]:
+              - generic [ref=f65e92]: شغّال أوفلاين
+              - generic [ref=f65e93]: ···
+              - generic [ref=f65e94]: ✓
+            - generic [ref=f65e95]:
+              - generic [ref=f65e96]: 100+ تقرير جاهز
+              - generic [ref=f65e97]: ···
+              - generic [ref=f65e98]: ✓
+            - generic [ref=f65e99]:
+              - generic [ref=f65e100]: 10 أنواع محلات
+              - generic [ref=f65e101]: ···
+              - generic [ref=f65e102]: ✓
+            - generic [ref=f65e103]:
+              - generic [ref=f65e104]: 60+
+              - generic [ref=f65e105]: أداة متكاملة
+          - generic [ref=f65e107]:
+            - generic [ref=f65e108]: ٠١
+            - generic [ref=f65e109]: نظام نقاط البيع
+            - paragraph [ref=f65e110]: نظام كاشير ومخزون ومحاسبة عربي كامل — بنبنيه ونشغّله في محلاتنا قبل ما نبيعهولك
+            - paragraph [ref=f65e111]: شغّال أوفلاين وآمن على جهازك.
+            - list [ref=f65e112]:
+              - listitem [ref=f65e113]:
+                - generic [ref=f65e115]: عربي بالكامل RTL
+              - listitem [ref=f65e116]:
+                - generic [ref=f65e118]: شغّال أوفلاين
+              - listitem [ref=f65e119]:
+                - generic [ref=f65e121]: 100+ تقرير جاهز
+              - listitem [ref=f65e122]:
+                - generic [ref=f65e124]: 10 أنواع محلات
+            - link "التفاصيل →" [ref=f65e125] [cursor=pointer]:
+              - /url: /ar/products/pos
+        - generic [ref=f65e126]:
+          - generic [ref=f65e129]:
+            - generic [ref=f65e130]: عربي بالكامل RTL
+            - generic [ref=f65e132]:
+              - paragraph [ref=f65e133]: المتجر الإلكتروني
+              - paragraph [ref=f65e134]: 50+
+              - generic [ref=f65e135]:
+                - generic [ref=f65e136]: S
+                - generic [ref=f65e137]: M
+                - generic [ref=f65e138]: L
+              - generic [ref=f65e139]: تحليلات مدمجة
+          - generic [ref=f65e141]:
+            - generic [ref=f65e142]: ٠٢
+            - generic [ref=f65e143]: المتجر الإلكتروني
+            - paragraph [ref=f65e144]: متاجر إلكترونية عربية سريعة بتجربة ثري دي حقيقية ومخطط غرف تفاعلي
+            - paragraph [ref=f65e145]: من المنتج للدفع للتحليلات، كل حاجة تحت إيدك.
+            - list [ref=f65e146]:
+              - listitem [ref=f65e147]:
+                - generic [ref=f65e149]: عربي بالكامل RTL
+              - listitem [ref=f65e150]:
+                - generic [ref=f65e152]: مخطط غرف ثري دي
+              - listitem [ref=f65e153]:
+                - generic [ref=f65e155]: متوافق مع الجوال
+              - listitem [ref=f65e156]:
+                - generic [ref=f65e158]: تحليلات مدمجة
+            - link "التفاصيل →" [ref=f65e159] [cursor=pointer]:
+              - /url: /ar/products/ecommerce
+        - generic [ref=f65e160]:
+          - generic [ref=f65e166]:
+            - paragraph [ref=f65e167]: متوسط العائد على الإعلان
+            - paragraph [ref=f65e168]: 3.8x
+          - generic [ref=f65e170]:
+            - generic [ref=f65e171]: ٠٣
+            - generic [ref=f65e172]: التسويق الرقمي
+            - paragraph [ref=f65e173]: بنخطط ونطلّق حملاتك على فيسبوك وإنستجرام وننتج صور وفيديوهات توقّف السكرول
+            - paragraph [ref=f65e174]: بنقيس كل جنيه بتصرفه وبنحسّن النتايج.
+            - list [ref=f65e175]:
+              - listitem [ref=f65e176]:
+                - generic [ref=f65e178]: حملات مدفوعة على ميتا
+              - listitem [ref=f65e179]:
+                - generic [ref=f65e181]: تصميم وإبداع بصري
+              - listitem [ref=f65e182]:
+                - generic [ref=f65e184]: فيديو وريلز
+              - listitem [ref=f65e185]:
+                - generic [ref=f65e187]: هوية بصرية
+            - link "التفاصيل →" [ref=f65e188] [cursor=pointer]:
+              - /url: /ar/services/marketing
+    - region [ref=f65e189]:
+      - generic [ref=f65e190]:
+        - generic [ref=f65e191]:
+          - paragraph [ref=f65e192]: منظومة واحدة
+          - heading "كل حاجة بتتوصّل" [level=2] [ref=f65e193]
+          - paragraph [ref=f65e194]: Grid.body
+          - paragraph [ref=f65e195]: Grid.hint
+        - generic [ref=f65e196]:
+          - img "كل حاجة بتتوصّل" [ref=f65e198]
+          - button "إيصال حراري" [ref=f65e199]
+          - button "ملصق باركود" [ref=f65e202]
+          - button "شريط قياس" [ref=f65e205]
+          - button "ريلز إعلاني" [ref=f65e208]
+          - button "كارد إعلاني" [ref=f65e211]
+          - button "خاتم الحجازي" [ref=f65e214]
+          - button "رجل كرسي" [ref=f65e217]
+          - button "عينة خامة" [ref=f65e220]
+          - generic: نقاط البيع
+          - generic: المتجر
+          - generic: التسويق
+    - region [ref=f65e223]:
+      - paragraph [ref=f65e224]: عمليةنا
+      - heading "الخطوات" [level=2] [ref=f65e225]
+      - generic [ref=f65e228]:
+        - generic [ref=f65e232]:
+          - paragraph [ref=f65e233]: اكتشاف
+          - paragraph [ref=f65e234]: أول ٣ أيام
+          - paragraph [ref=f65e235]: بنفهم محلك وهدفك وبنحدد الخطة
+        - generic [ref=f65e239]:
+          - paragraph [ref=f65e240]: إبداع
+          - paragraph [ref=f65e241]: الأسبوع ١–٢
+          - paragraph [ref=f65e242]: بنبني الخدمة أو المحتوى وبنراجع معاك
+        - generic [ref=f65e246]:
+          - paragraph [ref=f65e247]: إطلاق
+          - paragraph [ref=f65e248]: الأسبوع ٣
+          - paragraph [ref=f65e249]: بنطلق للجمهور وبنتابع النتايج
+        - generic [ref=f65e253]:
+          - paragraph [ref=f65e254]: نمو
+          - paragraph [ref=f65e255]: مستمر
+          - paragraph [ref=f65e256]: بنحسّن وبنكبّر بناءً على البيانات
+    - region [ref=f65e257]:
+      - generic [ref=f65e258]:
+        - paragraph [ref=f65e259]: مشاريع مختارة
+        - heading "شغلنا يتكلم" [level=2] [ref=f65e260]
+      - list "شغلنا يتكلم" [ref=f65e262]:
+        - listitem [ref=f65e263]:
+          - button "أثاث النور" [ref=f65e264]:
+            - img "أثاث النور" [ref=f65e265]
+            - generic [ref=f65e267]: №01 · محل أثاث النور
+        - listitem [ref=f65e269]:
+          - button "مصر ريتيل" [ref=f65e270]:
+            - img "مصر ريتيل" [ref=f65e271]
+            - generic [ref=f65e273]: №02 · سلسلة محلات مصر ريتيل
+      - link "شوف كل المشاريع →" [ref=f65e277] [cursor=pointer]:
+        - /url: /ar/projects
+    - region [ref=f65e278]:
+      - generic [ref=f65e282]:
+        - heading "إحنا مش بنعمل إعلانات وبس — بنبني براندات الناس تفتكرها." [level=2] [ref=f65e283]: إحنا مش بنعمل إعلانات وبس —بنبني براندات الناس تفتكرها.
+        - paragraph [ref=f65e284]: إعلانات ممولة، تصوير وفيديو، وهوية كاملة — من فريق بيبني ويدير تجارته بنفسه.
+        - generic [ref=f65e286]:
+          - link "يلا نبدأ" [ref=f65e287] [cursor=pointer]:
+            - /url: /ar/contact
+          - link "كلّمنا على واتساب" [ref=f65e288] [cursor=pointer]:
+            - /url: https://wa.me/201000000000
+  - generic: الحجازي
+  - contentinfo [ref=f65e289]:
+    - generic [ref=f65e290]:
+      - generic [ref=f65e291]:
+        - generic "شركة الحجازي · ElHegazi" [ref=f65e292]:
+          - generic [ref=f65e293]: الحجازي
+          - generic [ref=f65e294]: ElHegazi
+        - paragraph [ref=f65e295]: وكالة إبداعية ورقمية من قلب التجارة الحقيقية — نصنع العلامات، ونطلق الحملات، ونبني المتاجر.
+      - generic [ref=f65e296]:
+        - heading "استكشف" [level=4] [ref=f65e297]
+        - list [ref=f65e298]:
+          - listitem [ref=f65e299]:
+            - link "التسويق الرقمي" [ref=f65e300] [cursor=pointer]:
+              - /url: /ar/services/marketing
+          - listitem [ref=f65e301]:
+            - link "نظام نقاط البيع" [ref=f65e302] [cursor=pointer]:
+              - /url: /ar/products/pos
+          - listitem [ref=f65e303]:
+            - link "المتجر الإلكتروني" [ref=f65e304] [cursor=pointer]:
+              - /url: /ar/products/ecommerce
+          - listitem [ref=f65e305]:
+            - link "مشاريعنا" [ref=f65e306] [cursor=pointer]:
+              - /url: /ar/projects
+          - listitem [ref=f65e307]:
+            - link "أسئلة شائعة" [ref=f65e308] [cursor=pointer]:
+              - /url: /ar/faq
+          - listitem [ref=f65e309]:
+            - link "تواصل" [ref=f65e310] [cursor=pointer]:
+              - /url: /ar/contact
+      - generic [ref=f65e311]:
+        - heading "تواصل" [level=4] [ref=f65e312]
+        - list [ref=f65e313]:
+          - listitem [ref=f65e314]:
+            - link "WhatsApp" [ref=f65e315] [cursor=pointer]:
+              - /url: https://wa.me/201000000000
+          - listitem [ref=f65e316]:
+            - link "hello@elhegazi.com" [ref=f65e317] [cursor=pointer]:
+              - /url: mailto:hello@elhegazi.com
+          - listitem [ref=f65e318]:
+            - link "Instagram" [ref=f65e319] [cursor=pointer]:
+              - /url: https://instagram.com/elhegazi
+          - listitem [ref=f65e320]:
+            - link "Facebook" [ref=f65e321] [cursor=pointer]:
+              - /url: https://facebook.com/elhegazi
+    - generic [ref=f65e323]:
+      - generic [ref=f65e324]: © 2026 الحجازي
+      - generic [ref=f65e325]:
+        - link "الخصوصية" [ref=f65e326] [cursor=pointer]:
+          - /url: /ar/privacy
+        - link "الشروط" [ref=f65e327] [cursor=pointer]:
+          - /url: /ar/terms
+        - generic [ref=f65e328]: صُنع بعناية في مصر
+  - generic [ref=f65e329]:
+    - generic [ref=f65e330]:
+      - text: الحجازي
+      - generic [ref=f65e331]: الحجازي
+    - generic [ref=f65e332]:
+      - text: "0"
+      - generic [ref=f65e333]: "%"
+    - generic [ref=f65e334]: ELHEGAZI

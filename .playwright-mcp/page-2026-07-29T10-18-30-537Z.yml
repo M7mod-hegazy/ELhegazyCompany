@@ -1,0 +1,238 @@
+- generic [active] [ref=f9e1]:
+  - banner [ref=f9e2]:
+    - navigation [ref=f9e3]:
+      - link "الحجازي" [ref=f9e4] [cursor=pointer]:
+        - /url: /ar
+        - generic "شركة الحجازي · ElHegazi" [ref=f9e5]:
+          - generic [ref=f9e6]: الحجازي
+          - generic [ref=f9e7]: ElHegazi
+      - generic [ref=f9e8]:
+        - link "التسويق الرقمي" [ref=f9e9] [cursor=pointer]:
+          - /url: /ar/services/marketing
+        - link "نظام نقاط البيع" [ref=f9e10] [cursor=pointer]:
+          - /url: /ar/products/pos
+        - link "المتجر الإلكتروني" [ref=f9e11] [cursor=pointer]:
+          - /url: /ar/products/ecommerce
+        - link "مشاريعنا" [ref=f9e12] [cursor=pointer]:
+          - /url: /ar/projects
+        - link "تواصل" [ref=f9e13] [cursor=pointer]:
+          - /url: /ar/contact
+      - generic [ref=f9e14]:
+        - button "Switch language" [ref=f9e15]: English
+        - link "ابدأ مشروعك" [ref=f9e16] [cursor=pointer]:
+          - /url: /ar/start
+  - main [ref=f9e17]:
+    - region "بنخطط ونطلق حملاتك على فيسبوك وإنستجرام، وبننتج الصور والفيديوهات اللي توقّف السكرول — وبنقيس كل جنيه صرفته." [ref=f9e18]:
+      - generic [ref=f9e22]:
+        - paragraph [ref=f9e23]: إعلانات توصل، ومحتوى يبيع
+        - heading "بنخطط ونطلق حملاتك على فيسبوك وإنستجرام، وبننتج الصور والفيديوهات اللي توقّف السكرول — وبنقيس كل جنيه صرفته." [level=1] [ref=f9e24]
+    - generic [ref=f9e26]:
+      - paragraph [ref=f9e27]: ٠١ · التسويق الرقمي
+      - heading "إعلانات توصل، ومحتوى يبيع" [level=1] [ref=f9e28]
+      - paragraph [ref=f9e29]: بنخطط ونطلق حملاتك على فيسبوك وإنستجرام، وبننتج الصور والفيديوهات اللي توقّف السكرول — وبنقيس كل جنيه صرفته.
+      - generic [ref=f9e30]:
+        - generic [ref=f9e31]: حملات مدفوعة على ميتا
+        - generic [ref=f9e32]: تصميم وإبداع بصري
+        - generic [ref=f9e33]: فيديو وريلز
+        - generic [ref=f9e34]: هوية بصرية
+      - generic [ref=f9e35]:
+        - link "شوف الباقات" [ref=f9e36] [cursor=pointer]:
+          - /url: "#packages"
+        - link "كلّمنا على واتساب" [ref=f9e37] [cursor=pointer]:
+          - /url: https://wa.me/201000000000?text=%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%B9%D8%B1%D9%81%20%D8%AA%D9%81%D8%A7%D8%B5%D9%8A%D9%84%20%D8%A8%D8%A7%D9%82%D8%A7%D8%AA%20%D8%A7%D9%84%D8%AA%D8%B3%D9%88%D9%8A%D9%82
+    - generic [ref=f9e38]:
+      - generic [ref=f9e39]:
+        - generic [ref=f9e40]:
+          - generic [ref=f9e41]: ×٣٫٨
+          - generic [ref=f9e42]: متوسط العائد على الإعلان
+        - generic [ref=f9e43]:
+          - generic [ref=f9e44]: +٢م
+          - generic [ref=f9e45]: مرّة ظهور
+        - generic [ref=f9e46]:
+          - generic [ref=f9e47]: +٤٠
+          - generic [ref=f9e48]: علامة تجارية
+        - generic [ref=f9e49]:
+          - generic [ref=f9e50]: ٩٥٪
+          - generic [ref=f9e51]: عملاء بيكمّلوا معانا
+      - paragraph [ref=f9e52]: إحنا مش وكالة بتجرّب بفلوسك — بنعلن لتجارتنا كل يوم بنفس الأدوات اللي بنشغّلها ليك.
+    - generic [ref=f9e53]:
+      - generic [ref=f9e56]:
+        - paragraph [ref=f9e57]:
+          - generic [ref=f9e58]: "01"
+          - generic [ref=f9e59]: ركيزة
+        - heading "حملات مدفوعة على ميتا" [level=2] [ref=f9e60]
+        - paragraph [ref=f9e61]: إدارة حملات فيسبوك وإنستجرام باستهداف دقيق وتحسين مستمر للعائد.
+        - list [ref=f9e62]:
+          - listitem [ref=f9e63]: استهداف دقيق بالاهتمامات والسلوك
+          - listitem [ref=f9e65]: اختبار A/B للإعلانات
+          - listitem [ref=f9e67]: تحسين مستمر للعائد ROAS
+          - listitem [ref=f9e69]: تقارير أسبوعية واضحة
+      - generic [ref=f9e76]:
+        - paragraph [ref=f9e77]:
+          - generic [ref=f9e78]: "02"
+          - generic [ref=f9e79]: ركيزة
+        - heading "تصميم وإبداع بصري" [level=2] [ref=f9e80]
+        - paragraph [ref=f9e81]: تصاميم إعلانية توقّف السكرول — صور ومحتوى بصري بهوية قوية.
+        - list [ref=f9e82]:
+          - listitem [ref=f9e83]: تصاميم بهوية براندك
+          - listitem [ref=f9e85]: صور منتجات احترافية
+          - listitem [ref=f9e87]: كاروسيل وستوريز جاهزة
+          - listitem [ref=f9e89]: نصوص إعلانية تبيع
+      - generic [ref=f9e103]:
+        - generic [ref=f9e104]:
+          - paragraph [ref=f9e105]:
+            - generic [ref=f9e106]: "03"
+            - generic [ref=f9e107]: ركيزة
+          - heading "فيديو وريلز" [level=2] [ref=f9e108]
+          - paragraph [ref=f9e109]: إنتاج فيديوهات وريلز قصيرة تجذب وتبيع.
+          - list [ref=f9e110]:
+            - listitem [ref=f9e111]: ريلز قصيرة توقّف السكرول
+            - listitem [ref=f9e113]: مونتاج وموشن جرافيك
+            - listitem [ref=f9e115]: تصوير داخل محلّك
+            - listitem [ref=f9e117]: صيغ جاهزة لكل منصة
+        - generic [ref=f9e120]:
+          - generic [ref=f9e121]: ▶
+          - generic [ref=f9e124]: ▶
+          - generic [ref=f9e127]: ▶
+      - generic [ref=f9e131]:
+        - generic [ref=f9e132]:
+          - paragraph [ref=f9e133]:
+            - generic [ref=f9e134]: "04"
+            - generic [ref=f9e135]: ركيزة
+          - heading "هوية بصرية" [level=2] [ref=f9e136]
+          - paragraph [ref=f9e137]: "بناء هوية بصرية متكاملة: لوجو، ألوان، وخطوط."
+          - list [ref=f9e138]:
+            - listitem [ref=f9e139]: لوجو وهوية كاملة
+            - listitem [ref=f9e141]: ألوان وخطوط ونبرة صوت
+            - listitem [ref=f9e143]: قوالب سوشيال جاهزة
+            - listitem [ref=f9e145]: دليل استخدام الهوية
+        - generic [ref=f9e147]: الحجازي
+    - generic [ref=f9e150]:
+      - paragraph [ref=f9e151]: طريقتنا
+      - heading "من الفكرة للنمو" [level=2] [ref=f9e152]
+      - generic [ref=f9e153]:
+        - generic [ref=f9e154]:
+          - text: "01"
+          - heading "اكتشاف" [level=3] [ref=f9e155]
+          - paragraph [ref=f9e156]: بنفهم بيزنسك وجمهورك ومنافسينك قبل أي جنيه إعلانات.
+        - generic [ref=f9e157]:
+          - text: "02"
+          - heading "إبداع" [level=3] [ref=f9e158]
+          - paragraph [ref=f9e159]: تصاميم وفيديوهات بهوية براندك — مش قوالب جاهزة.
+        - generic [ref=f9e160]:
+          - text: "03"
+          - heading "إطلاق" [level=3] [ref=f9e161]
+          - paragraph [ref=f9e162]: حملات مستهدفة صح على فيسبوك وإنستجرام.
+        - generic [ref=f9e163]:
+          - text: "04"
+          - heading "نمو" [level=3] [ref=f9e164]
+          - paragraph [ref=f9e165]: قياس وتحسين مستمر — وتقارير تفهمها من غير مصطلحات.
+    - generic [ref=f9e166]:
+      - paragraph [ref=f9e167]: الباقات
+      - heading "اختار الباقة اللي تناسب مرحلتك" [level=2] [ref=f9e168]
+      - paragraph [ref=f9e169]: أسعار شهرية واضحة، من غير عقود طويلة — تقدر تغيّر الباقة في أي وقت.
+      - generic [ref=f9e170]:
+        - generic [ref=f9e171]:
+          - heading "باقة انطلاق" [level=3] [ref=f9e172]
+          - generic [ref=f9e173]: ٣٬٥٠٠ ج.م/شهر
+          - paragraph [ref=f9e174]: إدارة حملات ميتا + تصميمات أساسية
+          - list [ref=f9e175]:
+            - listitem [ref=f9e176]: إدارة حملات ميتا (فيسبوك + إنستجرام)
+            - listitem [ref=f9e178]: ٨ تصميمات شهريًا
+            - listitem [ref=f9e180]: إعداد البكسل والاستهداف
+            - listitem [ref=f9e182]: تقرير شهري
+          - link "اطلب الباقة" [ref=f9e184] [cursor=pointer]:
+            - /url: /ar/order?product=marketing&plan=starter
+        - generic [ref=f9e185]:
+          - generic [ref=f9e186]: الأكثر طلبًا
+          - heading "باقة نمو" [level=3] [ref=f9e187]
+          - generic [ref=f9e188]: ٧٬٥٠٠ ج.م/شهر
+          - paragraph [ref=f9e189]: حملات + إبداع كامل + ريلز شهرية + تقارير
+          - list [ref=f9e190]:
+            - listitem [ref=f9e191]: كل مميزات باقة الانطلاق
+            - listitem [ref=f9e193]: ١٦ تصميم + ٤ ريلز شهريًا
+            - listitem [ref=f9e195]: اختبارات A/B مستمرة
+            - listitem [ref=f9e197]: إدارة الردود والرسائل
+            - listitem [ref=f9e199]: تقرير أسبوعي
+          - link "اطلب الباقة" [ref=f9e201] [cursor=pointer]:
+            - /url: /ar/order?product=marketing&plan=growth
+        - generic [ref=f9e202]:
+          - heading "باقة احتراف" [level=3] [ref=f9e203]
+          - generic [ref=f9e204]: ١٥٬٠٠٠ ج.م/شهر
+          - paragraph [ref=f9e205]: "فريق متكامل: حملات، إنتاج، هوية، ومتابعة يومية"
+          - list [ref=f9e206]:
+            - listitem [ref=f9e207]: كل مميزات باقة النمو
+            - listitem [ref=f9e209]: تصوير شهري داخل محلّك
+            - listitem [ref=f9e211]: هوية بصرية كاملة
+            - listitem [ref=f9e213]: مدير حساب مخصص
+            - listitem [ref=f9e215]: متابعة يومية وخطة ربع سنوية
+          - link "اطلب الباقة" [ref=f9e217] [cursor=pointer]:
+            - /url: /ar/order?product=marketing&plan=pro
+    - generic [ref=f9e219]:
+      - heading "جاهز تبدأ؟" [level=2] [ref=f9e221]
+      - paragraph [ref=f9e222]: احكيلنا عن محلك، ونرجعلك بخطة واضحة وسعر واضح — من غير لف ودوران.
+      - generic [ref=f9e223]:
+        - link "ابدأ مشروعك" [ref=f9e224] [cursor=pointer]:
+          - /url: /ar/start
+        - link "كلّمنا واتساب" [ref=f9e225] [cursor=pointer]:
+          - /url: https://wa.me/201000000000
+  - generic: التسويق الرقمي
+  - contentinfo [ref=f9e226]:
+    - generic [ref=f9e227]:
+      - generic [ref=f9e228]:
+        - generic "شركة الحجازي · ElHegazi" [ref=f9e229]:
+          - generic [ref=f9e230]: الحجازي
+          - generic [ref=f9e231]: ElHegazi
+        - paragraph [ref=f9e232]: وكالة إبداعية ورقمية من قلب التجارة الحقيقية — نصنع العلامات، ونطلق الحملات، ونبني المتاجر.
+      - generic [ref=f9e233]:
+        - heading "استكشف" [level=4] [ref=f9e234]
+        - list [ref=f9e235]:
+          - listitem [ref=f9e236]:
+            - link "التسويق الرقمي" [ref=f9e237] [cursor=pointer]:
+              - /url: /ar/services/marketing
+          - listitem [ref=f9e238]:
+            - link "نظام نقاط البيع" [ref=f9e239] [cursor=pointer]:
+              - /url: /ar/products/pos
+          - listitem [ref=f9e240]:
+            - link "المتجر الإلكتروني" [ref=f9e241] [cursor=pointer]:
+              - /url: /ar/products/ecommerce
+          - listitem [ref=f9e242]:
+            - link "مشاريعنا" [ref=f9e243] [cursor=pointer]:
+              - /url: /ar/projects
+          - listitem [ref=f9e244]:
+            - link "أسئلة شائعة" [ref=f9e245] [cursor=pointer]:
+              - /url: /ar/faq
+          - listitem [ref=f9e246]:
+            - link "تواصل" [ref=f9e247] [cursor=pointer]:
+              - /url: /ar/contact
+      - generic [ref=f9e248]:
+        - heading "تواصل" [level=4] [ref=f9e249]
+        - list [ref=f9e250]:
+          - listitem [ref=f9e251]:
+            - link "WhatsApp" [ref=f9e252] [cursor=pointer]:
+              - /url: https://wa.me/201000000000
+          - listitem [ref=f9e253]:
+            - link "hello@elhegazi.com" [ref=f9e254] [cursor=pointer]:
+              - /url: mailto:hello@elhegazi.com
+          - listitem [ref=f9e255]:
+            - link "Instagram" [ref=f9e256] [cursor=pointer]:
+              - /url: https://instagram.com/elhegazi
+          - listitem [ref=f9e257]:
+            - link "Facebook" [ref=f9e258] [cursor=pointer]:
+              - /url: https://facebook.com/elhegazi
+    - generic [ref=f9e260]:
+      - generic [ref=f9e261]: © 2026 الحجازي
+      - generic [ref=f9e262]:
+        - link "الخصوصية" [ref=f9e263] [cursor=pointer]:
+          - /url: /ar/privacy
+        - link "الشروط" [ref=f9e264] [cursor=pointer]:
+          - /url: /ar/terms
+        - generic [ref=f9e265]: صُنع بعناية في مصر
+  - generic [ref=f9e266]:
+    - generic [ref=f9e267]:
+      - text: الحجازي
+      - generic [ref=f9e268]: الحجازي
+    - generic [ref=f9e269]:
+      - text: "0"
+      - generic [ref=f9e270]: "%"
+    - generic [ref=f9e271]: ELHEGAZI

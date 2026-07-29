@@ -1,0 +1,20 @@
+[  480811ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3200/ar/services/marketing?_rsc=Udx_oDP3T86Q4Qkv:0
+[  480811ms] [ERROR] Failed to fetch RSC payload for http://localhost:3200/ar/services/marketing. Falling back to browser navigation. TypeError: Failed to fetch
+    at T (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:111256)
+    at async v (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:109392)
+    at async v (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:131179) @ http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:0
+[  481029ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3200/ar/services/marketing?_rsc=Udx_oDP3T86Q4Qkv:0
+[  481029ms] [ERROR] Failed to fetch RSC payload for http://localhost:3200/ar/services/marketing. Falling back to browser navigation. TypeError: Failed to fetch
+    at T (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:111256)
+    at async v (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:109392)
+    at async v (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:131179) @ http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:0
+[  481076ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3200/ar/services/marketing?_rsc=Udx_oDP3T86Q4Qkv:0
+[  481076ms] [ERROR] Failed to fetch RSC payload for http://localhost:3200/ar/services/marketing. Falling back to browser navigation. TypeError: Failed to fetch
+    at T (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:111256)
+    at async v (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:109392)
+    at async v (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:131179) @ http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:0
+[  483144ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3200/ar/services/marketing?_rsc=Udx_oDP3T86Q4Qkv:0
+[  483145ms] [ERROR] Failed to fetch RSC payload for http://localhost:3200/ar/services/marketing. Falling back to browser navigation. TypeError: Failed to fetch
+    at T (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:111256)
+    at async v (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:109392)
+    at async v (http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:1:131179) @ http://localhost:3200/_next/static/chunks/3ujwii60lw4sd.js:0

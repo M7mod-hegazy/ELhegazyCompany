@@ -3,96 +3,107 @@
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence } from "framer-motion";
 
-const MIN_MS = 800;
-const MAX_MS = 12000;
-const HOLD_AT_ZERO_MS = 200;
+const SESSION_KEY = "elhegazi:intro-seen";
+const MIN_MS = 520;   // the fill needs to be *seen*, not endured
+const MAX_MS = 2600;  // hard ceiling — the page is never held hostage
+const FADE_MS = 520;
 
 /**
- * Real preloader that gates on actual page readiness:
- *   1. document.readyState === "complete" (all resources loaded)
- *   2. document.fonts.ready (web fonts loaded)
- *   3. Forced minimum duration (cinematic fill animation)
+ * Preloader — the brand fill, shown once per session on first paint.
  *
- * On cold load / reload, the preloader stays until ALL three conditions pass.
- * This prevents the "flash of empty page" when navigation transitions dismiss
- * before content is actually painted.
+ * Three things were wrong before:
+ *
+ *  1. It ran on **every** route, so navigating from the home page to /projects
+ *     replayed a full-screen wordmark on top of a page that was already loaded.
+ *     It is now gated on sessionStorage: first visit only.
+ *  2. It waited on `readyState === "complete"`, which does not fire until every
+ *     image and video on the page has finished. On a page with heavy media that
+ *     meant several seconds of black, and it capped the counter at 96% while it
+ *     waited — so the number visibly stalled. It now gates on fonts only, with a
+ *     2.6s ceiling.
+ *  3. It exited by sliding the panel up, which dragged a full-viewport opaque
+ *     layer across the freshly painted hero. It now fades and scales out.
+ *
+ * SSR renders nothing; the panel mounts on the client only if this session has
+ * not seen it, so there is no flash for returning visitors.
  */
+/** Reads and claims the once-per-session slot. Runs during the lazy state
+ *  initialiser, which only happens on the client — this component is imported
+ *  with `ssr: false`, so there is no server render to mismatch. */
+function claimIntroSlot(): boolean {
+  try {
+    if (sessionStorage.getItem(SESSION_KEY) === "1") return false;
+    sessionStorage.setItem(SESSION_KEY, "1");
+    return true;
+  } catch {
+    return false; // private mode — skip the intro rather than replay it
+  }
+}
+
 export function Preloader() {
-  const [shown, setShown] = useState(0);
-  const [hidden, setHidden] = useState(false);
-  const stateRef = useRef({
-    fontsReady: false,
-    domComplete: false,
-    started: false,
-  });
+  const [active, setActive] = useState(claimIntroSlot);
+  const [pct, setPct] = useState(0);
+  const doneRef = useRef(false);
 
   useEffect(() => {
-    // Track font readiness
+    if (!active) return;
+
+    document.body.style.overflow = "hidden";
+
+    let fontsReady = false;
     document.fonts?.ready?.then(() => {
-      stateRef.current.fontsReady = true;
+      fontsReady = true;
     });
 
-    // Track DOM readiness
-    if (document.readyState === "complete") {
-      stateRef.current.domComplete = true;
-    } else {
-      const onLoaded = () => {
-        stateRef.current.domComplete = true;
-      };
-      window.addEventListener("load", onLoaded, { once: true });
-    }
-
+    const start = performance.now();
     let raf = 0;
-    let start: number | null = null;
-    const max = setTimeout(() => setHidden(true), MAX_MS);
+
+    const finish = () => {
+      if (doneRef.current) return;
+      doneRef.current = true;
+      cancelAnimationFrame(raf);
+      setPct(100);
+      document.body.style.overflow = "";
+      setActive(false);
+    };
+
+    const ceiling = setTimeout(finish, MAX_MS);
 
     const tick = (now: number) => {
-      if (start === null) {
-        start = now;
-        stateRef.current.started = true;
-      }
-      const elapsed = Math.max(0, now - start - HOLD_AT_ZERO_MS);
-      const timePct = Math.min(100, (elapsed / MIN_MS) * 100);
-
-      const s = stateRef.current;
-      const ready = s.fontsReady && s.domComplete;
-
-      // Counter ramps up smoothly; caps at 96% until everything is genuinely ready
-      const next = Math.floor(ready ? timePct : Math.min(timePct, 96));
-      setShown(next);
-
-      if (ready && elapsed >= MIN_MS) {
-        setHidden(true);
-        return;
-      }
+      const elapsed = now - start;
+      const ratio = Math.min(1, elapsed / MIN_MS);
+      // Ease-out so the count decelerates into 100 instead of stopping dead.
+      setPct(Math.round((1 - Math.pow(1 - ratio, 3)) * 100));
+      if (ratio >= 1 && fontsReady) return finish();
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(raf);
-      clearTimeout(max);
+      clearTimeout(ceiling);
+      document.body.style.overflow = "";
     };
-  }, []);
+  }, [active]);
 
   return (
     <AnimatePresence>
-      {!hidden && (
+      {active && (
         <m.div
+          key="preloader"
           className="fixed inset-0 z-[130] flex flex-col items-center justify-center bg-ink-900"
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          exit={{ y: "-100%" }}
-          transition={{ duration: 0.9, ease: [0.76, 0, 0.24, 1] }}
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 1.04 }}
+          transition={{ duration: FADE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className="relative leading-none" dir="rtl">
-            <span className="font-display-ar text-[16vw] font-semibold text-bone-muted/12 sm:text-[10vw]">
+            <span className="font-display-ar text-[14vw] font-semibold text-bone-muted/12 sm:text-[8vw]">
               الحجازي
             </span>
             <span
-              className="font-display-ar absolute inset-0 text-[16vw] font-semibold sm:text-[10vw]"
+              className="font-display-ar absolute inset-0 text-[14vw] font-semibold sm:text-[8vw]"
               style={{
-                backgroundImage: `linear-gradient(to top, var(--color-brass) ${shown}%, transparent ${shown}%)`,
+                backgroundImage: `linear-gradient(to top, var(--color-brass) ${pct}%, transparent ${pct}%)`,
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 color: "transparent",
@@ -101,11 +112,14 @@ export function Preloader() {
               الحجازي
             </span>
           </div>
-          <div className="mt-6 flex items-baseline gap-1 font-display text-2xl font-semibold text-brass">
-            {shown}
-            <span className="text-sm">%</span>
+
+          <div className="mt-7 h-px w-40 bg-bone/10">
+            <div
+              className="h-px bg-brass"
+              style={{ width: `${pct}%`, transition: "width 120ms linear" }}
+            />
           </div>
-          <div className="mt-2 text-[0.65rem] uppercase tracking-[0.4em] text-bone-muted/60">
+          <div className="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.42em] text-bone-muted/60">
             ELHEGAZI
           </div>
         </m.div>

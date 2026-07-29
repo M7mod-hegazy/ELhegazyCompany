@@ -5,6 +5,7 @@
     "pos": "POS System",
     "ecommerce": "E-commerce",
     "work": "Our Work",
+    "projects": "Our Projects",
     "start": "Start a project",
     "contact": "Contact",
     "faq": "FAQ",
@@ -12,11 +13,11 @@
     "terms": "Terms"
   },
   "Home": {
-    "kicker": "Creative & Digital Agency",
-    "headlineLine1": "We build brands",
-    "headlineLine2": "people see",
-    "lead": "Paid ads, image & video production, and brand identity — from a team that builds and runs its own real commerce.",
-    "cta": "Start with us",
+    "kicker": "We build commerce, not just ads",
+    "headlineLine1": "We run our own shops on",
+    "headlineLine2": "what we sell you",
+    "lead": "A POS system, an online store, and paid ads — from people who actually own shops and use these same tools every day.",
+    "cta": "Start your project",
     "ctaWhatsapp": "Chat on WhatsApp",
     "statement1": "We don't just sell ads —",
     "statement2": "we build brands people remember."
@@ -31,13 +32,23 @@
       "desc": "Measuring every pound you spend and optimizing for results.",
       "stat": "3.8x",
       "statLabel": "average ROAS",
-      "bullets": ["Paid Meta campaigns", "Design & creative", "Video & reels", "Brand identity"],
+      "bullets": [
+        "Paid Meta campaigns",
+        "Design & creative",
+        "Video & reels",
+        "Brand identity"
+      ],
       "beat1": {
         "title": "Paid Meta Campaigns",
         "desc": "Facebook & Instagram campaigns with precise interest & behavior targeting — A/B creative testing on every ad, continuous ROAS optimization, and clear weekly reports.",
         "stat": "2M+",
         "statLabel": "impressions delivered",
-        "features": ["Precise interest & behavior targeting", "A/B creative testing", "Continuous ROAS optimization", "Clear weekly reports"],
+        "features": [
+          "Precise interest & behavior targeting",
+          "A/B creative testing",
+          "Continuous ROAS optimization",
+          "Clear weekly reports"
+        ],
         "cta": "See ad packages"
       },
       "beat2": {
@@ -45,7 +56,12 @@
         "desc": "Scroll-stopping ad creative — designs in your brand identity, professional product shots, ready carousels & stories, and ad copy that sells.",
         "stat": "40+",
         "statLabel": "brands served",
-        "features": ["Designs in your brand identity", "Professional product shots", "Ready carousels & stories", "Ad copy that sells"],
+        "features": [
+          "Designs in your brand identity",
+          "Professional product shots",
+          "Ready carousels & stories",
+          "Ad copy that sells"
+        ],
         "cta": "See our creative work"
       },
       "beat3": {
@@ -53,7 +69,12 @@
         "desc": "Short videos and reels that attract and sell — scroll-stopping reels, editing & motion graphics, on-location shooting, and formats for every platform.",
         "stat": "10M+",
         "statLabel": "views generated",
-        "features": ["Scroll-stopping short reels", "Editing & motion graphics", "On-location shooting", "Formats for every platform"],
+        "features": [
+          "Scroll-stopping short reels",
+          "Editing & motion graphics",
+          "On-location shooting",
+          "Formats for every platform"
+        ],
         "cta": "See video work"
       },
       "beat4": {
@@ -61,7 +82,12 @@
         "desc": "A full visual identity from scratch — logo, colors, typography, ready social templates, and brand usage guide so your brand is seen everywhere.",
         "stat": "95%",
         "statLabel": "clients who stay",
-        "features": ["Logo & full identity", "Colors, type & tone of voice", "Ready social templates", "Brand usage guide"],
+        "features": [
+          "Logo & full identity",
+          "Colors, type & tone of voice",
+          "Ready social templates",
+          "Brand usage guide"
+        ],
         "cta": "Start your brand identity"
       },
       "long": "We plan and launch campaigns on Facebook and Instagram, produce scroll-stopping images and video, and build a complete visual identity — then measure every pound and optimize the results.",
@@ -84,13 +110,23 @@
       "desc": "Works offline, and safe on your machine.",
       "stat": "60+",
       "statLabel": "integrated tools",
-      "bullets": ["Truly Arabic RTL", "Works offline", "100+ ready reports", "10 shop types"],
+      "bullets": [
+        "Truly Arabic RTL",
+        "Works offline",
+        "100+ ready reports",
+        "10 shop types"
+      ],
       "beat1": {
         "title": "Point of Sale",
         "desc": "Sell in seconds — barcode scan, split payment, installments, and held tickets. A fast Arabic cashier app that works fully offline with no internet needed.",
         "stat": "100+",
         "statLabel": "ready reports",
-        "features": ["Barcode scan & split payment", "Installments & held tickets", "Works fully offline", "Instant receipt printing"],
+        "features": [
+          "Barcode scan & split payment",
+          "Installments & held tickets",
+          "Works fully offline",
+          "Instant receipt printing"
+        ],
         "cta": "Try it free"
       },
       "beat2": {
@@ -98,7 +134,12 @@
         "desc": "Inventory under control — multi-warehouse, branch transfers, stock-take, and WACC/FIFO costing. Each branch runs independently while HQ sees everything.",
         "stat": "10",
         "statLabel": "shop types supported",
-        "features": ["Multi-warehouse & branch transfers", "Stock-take & WACC/FIFO costing", "Serial & IMEI tracking", "Batch expiry with FEFO"],
+        "features": [
+          "Multi-warehouse & branch transfers",
+          "Stock-take & WACC/FIFO costing",
+          "Serial & IMEI tracking",
+          "Batch expiry with FEFO"
+        ],
         "cta": "Learn about inventory"
       },
       "beat3": {
@@ -106,7 +147,12 @@
         "desc": "Decisions by the numbers — 100+ reports, owner dashboard, PDF/Excel export, and VAT filing. Know your top products and best-performing branches instantly.",
         "stat": "100%",
         "statLabel": "offline & secure",
-        "features": ["100+ ready reports", "Owner dashboard", "PDF/Excel/Word export", "VAT filing ready"],
+        "features": [
+          "100+ ready reports",
+          "Owner dashboard",
+          "PDF/Excel/Word export",
+          "VAT filing ready"
+        ],
         "cta": "View reports"
       },
       "beat4": {
@@ -114,7 +160,12 @@
         "desc": "Market to customers from inside the POS — loyalty points, WhatsApp campaigns, message templates, and inbox management. Built-in CRM without leaving the app.",
         "stat": "100%",
         "statLabel": "Arabic-first RTL",
-        "features": ["Loyalty points system", "WhatsApp campaigns", "Message templates", "Built-in inbox"],
+        "features": [
+          "Loyalty points system",
+          "WhatsApp campaigns",
+          "Message templates",
+          "Built-in inbox"
+        ],
         "cta": "See WhatsApp CRM"
       },
       "long": "A complete Arabic point-of-sale system we build and run in our own stores: shifts, treasuries & banks, multi-warehouse stock, and loyalty — fast and fully offline.",
@@ -137,13 +188,23 @@
       "desc": "From product to checkout to analytics, everything under your control.",
       "stat": "50+",
       "statLabel": "stores launched",
-      "bullets": ["Arabic-first RTL", "3D room planner", "Mobile-first", "Analytics included"],
+      "bullets": [
+        "Arabic-first RTL",
+        "3D room planner",
+        "Mobile-first",
+        "Analytics included"
+      ],
       "beat1": {
         "title": "Storefront",
         "desc": "A store your customers love to browse — Arabic-first RTL, mobile-first design, instant search, and fast page loads. From homepage to product page, every pixel is intentional.",
         "stat": "10K+",
         "statLabel": "products listed",
-        "features": ["Arabic-first RTL design", "Mobile-first responsive", "Instant search & filtering", "Fast page loads"],
+        "features": [
+          "Arabic-first RTL design",
+          "Mobile-first responsive",
+          "Instant search & filtering",
+          "Fast page loads"
+        ],
         "cta": "See store examples"
       },
       "beat2": {
@@ -151,7 +212,12 @@
         "desc": "Let customers see products in their space — a unique 3D room planner that reduces returns and builds trust. Interactive product viewer, AR-ready.",
         "stat": "360°",
         "statLabel": "interactive view",
-        "features": ["3D room planner", "Interactive product viewer", "AR-ready", "Reduces returns"],
+        "features": [
+          "3D room planner",
+          "Interactive product viewer",
+          "AR-ready",
+          "Reduces returns"
+        ],
         "cta": "Try the 3D experience"
       },
       "beat3": {
@@ -159,7 +225,12 @@
         "desc": "Take their money, their way — multiple gateways, COD supported, smart shipping zones, and auto invoices. From payment to doorstep delivery.",
         "stat": "5+",
         "statLabel": "payment gateways",
-        "features": ["Multiple payment gateways", "Cash on delivery", "Smart shipping zones", "Auto invoices"],
+        "features": [
+          "Multiple payment gateways",
+          "Cash on delivery",
+          "Smart shipping zones",
+          "Auto invoices"
+        ],
         "cta": "See payment options"
       },
       "beat4": {
@@ -167,7 +238,12 @@
         "desc": "Know your numbers, grow your sales — real-time dashboard, sales analytics, customer insights, and inventory reports. Everything you need to make decisions.",
         "stat": "99.9%",
         "statLabel": "uptime guaranteed",
-        "features": ["Real-time dashboard", "Sales analytics", "Customer insights", "Inventory reports"],
+        "features": [
+          "Real-time dashboard",
+          "Sales analytics",
+          "Customer insights",
+          "Inventory reports"
+        ],
         "cta": "View analytics dashboard"
       },
       "long": "Fast Arabic online stores with a real 3D experience and an interactive room planner — from product to checkout to analytics, everything under your control.",
@@ -188,9 +264,9 @@
     "readySub": "Start your project with us today, or see the details first — we're with you step by step."
   },
   "CTA": {
-    "title": "Ready to begin?",
-    "subtitle": "Tell us about your project, and let's turn it into a brand people see.",
-    "primary": "Start a project",
+    "title": "Ready to start?",
+    "subtitle": "Tell us about your shop and we'll come back with a clear plan and a clear price.",
+    "primary": "Start your project",
     "whatsapp": "Chat on WhatsApp"
   },
   "Footer": {
@@ -198,39 +274,6 @@
     "explore": "Explore",
     "contact": "Contact",
     "madeBy": "Crafted with care in Egypt"
-  },
-  "Start": {
-    "title": "Start a project",
-    "subtitle": "Tell us about your project and we'll get back to you within hours.",
-    "services": "What do you need?",
-    "serviceOptions": {
-      "ads": "Paid ads",
-      "creative": "Design & creative",
-      "video": "Video & reels",
-      "brand": "Brand identity",
-      "web": "Website / store",
-      "pos": "POS system"
-    },
-    "budget": "Approximate budget",
-    "budgetOptions": {
-      "s": "Under 5,000",
-      "m": "5,000 – 20,000",
-      "l": "20,000 – 50,000",
-      "xl": "Over 50,000"
-    },
-    "timeline": "Timeline",
-    "timelineOptions": {
-      "asap": "As soon as possible",
-      "m1": "Within a month",
-      "m3": "Within 3 months",
-      "flex": "Flexible"
-    },
-    "about": "About your project",
-    "aboutPlaceholder": "A short brief about your project and goals...",
-    "name": "Name",
-    "contact": "Phone or email",
-    "submit": "Send via WhatsApp",
-    "note": "WhatsApp opens with a ready message containing your brief."
   },
   "Stats": {
     "roas": "Average ROAS",
@@ -650,7 +693,8 @@
           "cta": "Download full version",
           "waCta": "Order the full version"
         }
-      }
+      },
+      "proofTitle": "The system in numbers, not promises"
     },
     "ecommerce": {
       "kicker": "E-commerce · Online Store",
@@ -1033,57 +1077,12 @@
           "cta": "Launch full store",
           "waCta": "Order your full store"
         }
-      }
+      },
+      "proofTitle": "Stores actually running, not demos"
     }
   },
   "Film": {
-    "filmLabel": "The ElHegazi film",
-    "scroll": "Scroll",
-    "railLabel": "Film chapters",
-    "rail": {
-      "intro": "Opening",
-      "marketing": "Marketing",
-      "pos": "POS",
-      "ecommerce": "Store",
-      "outro": "Start"
-    },
-    "visitStore": "See the live store"
-  },
-  "Order": {
-    "title": "Complete your order",
-    "subtitle": "Pick a plan and leave your details — we follow up on WhatsApp to finish payment and activation.",
-    "plan": "Choose a plan",
-    "recommended": "Best fit",
-    "name": "Name",
-    "phone": "WhatsApp number",
-    "business": "Business / shop name",
-    "businessPh": "e.g. Al-Nour Furniture",
-    "city": "City",
-    "notes": "Notes (optional)",
-    "notesPh": "Anything you want to add...",
-    "submit": "Confirm order",
-    "submitting": "One moment...",
-    "afterNote": "No online payment — confirming reserves your order, then we contact you.",
-    "confirmedKicker": "Order received",
-    "confirmedTitle": "We got your order",
-    "refLabel": "Order ref",
-    "nextTitle": "What happens next",
-    "steps": [
-      "We review your order and prepare your final quote",
-      "We contact you on WhatsApp within hours to confirm details",
-      "Pay the way that suits you — activation and delivery follow immediately"
-    ],
-    "waCta": "Continue on WhatsApp with your ref",
-    "dlCta": "Download the trial now",
-    "backHome": "Home",
-    "required": "Please enter your name and WhatsApp number",
-    "payTitle": "Payment methods",
-    "payMethods": [
-      "Instapay",
-      "Vodafone Cash",
-      "Bank transfer",
-      "Cash"
-    ]
+    "scroll": "Scroll"
   },
   "Catalog": {
     "pos": {
@@ -1244,99 +1243,6 @@
     "cta": "See marketing packages",
     "ctaDetails": "Details"
   },
-  "Work": {
-    "kicker": "Our work",
-    "title": "We sell what we run ourselves",
-    "subtitle": "Not a theoretical portfolio — these are products and platforms genuinely running our own commerce every day.",
-    "statement": "The strongest proof we can offer: we are the first customer of everything we build.",
-    "cases": {
-      "store": {
-        "tag": "E-commerce store",
-        "title": "ElHegazi furniture & furnishings store",
-        "body": "Our real store — furniture with a 3D experience and interactive room planner, live and selling. The same platform we build for clients.",
-        "stats": [
-          {
-            "v": "Live",
-            "l": "Running now"
-          },
-          {
-            "v": "3D",
-            "l": "Room planner"
-          },
-          {
-            "v": "RTL",
-            "l": "Arabic-first"
-          }
-        ],
-        "cta": "Visit the store"
-      },
-      "pos": {
-        "tag": "POS system",
-        "title": "ElHegazi retail management system",
-        "body": "The complete system running our shops daily: shifts, treasury & banks, warehouses & branches, 100+ reports, WhatsApp CRM — fully offline.",
-        "stats": [
-          {
-            "v": "100+",
-            "l": "Reports"
-          },
-          {
-            "v": "10",
-            "l": "Shop types"
-          },
-          {
-            "v": "100%",
-            "l": "Offline"
-          }
-        ],
-        "cta": "Explore the system"
-      },
-      "campaigns": {
-        "tag": "Ad campaigns",
-        "title": "Social campaigns for our commerce and clients",
-        "body": "Paid campaigns, reels and creatives we launch for our own store and for clients — tight targeting, continuous ROAS optimization.",
-        "stats": [
-          {
-            "v": "3.8x",
-            "l": "Average ROAS"
-          },
-          {
-            "v": "2M+",
-            "l": "Impressions"
-          },
-          {
-            "v": "40+",
-            "l": "Brands"
-          }
-        ],
-        "cta": "Marketing services"
-      }
-    },
-    "gallery": {
-      "kicker": "Gallery",
-      "title": "More of our work",
-      "all": "All",
-      "close": "Close",
-      "visit": "Visit project",
-      "categories": {
-        "marketing": "Campaigns & marketing",
-        "brand": "Brand identity",
-        "video": "Video & reels",
-        "web": "Websites",
-        "pos": "POS",
-        "ecommerce": "E-commerce"
-      }
-    }
-  },
-  "Contact": {
-    "kicker": "Contact",
-    "title": "Talk to us — we reply fast",
-    "subtitle": "WhatsApp is the fastest path. Or email us, or follow on social.",
-    "email": "Email",
-    "hours": "Daily 10am – 10pm",
-    "briefTitle": "Have a project?",
-    "briefBody": "Fill a quick brief about your project and we come back with a clear plan.",
-    "briefCta": "Start your project"
-  },
   "Faq": {
     "kicker": "FAQ",
     "title": "Everything you need to know",
@@ -1431,5 +1337,193 @@
     "title": "Page not found",
     "body": "The link may have changed or was mistyped. Head back home and continue from there.",
     "cta": "Home"
+  },
+  "Diagnostic": {
+    "kicker": "Just 3 questions",
+    "title": "Tell us where you are, we'll tell you what you need",
+    "subtitle": "Three quick taps and you'll know the solution, the cost and the timeline — without talking to anyone.",
+    "progress": "{current} of {total}",
+    "back": "Back",
+    "resultTitle": "You need",
+    "priceLabel": "Roughly",
+    "durationLabel": "Timeline",
+    "priceValue": "{from} – {to} EGP",
+    "durationValue": "{min} – {max} weeks",
+    "ctaWhatsapp": "Send this on WhatsApp",
+    "ctaProduct": "See the details",
+    "q1": {
+      "question": "Do you have a shop right now?",
+      "a1": "One branch",
+      "a2": "More than one branch",
+      "a3": "Online only",
+      "a4": "Not yet"
+    },
+    "q2": {
+      "question": "What hurts most right now?",
+      "a1": "I don't know my numbers",
+      "a2": "Nobody knows me",
+      "a3": "I can't sell online",
+      "a4": "All three"
+    },
+    "q3": {
+      "question": "When do you want to start?",
+      "a1": "This month",
+      "a2": "Within 3 months",
+      "a3": "Just exploring"
+    },
+    "products": {
+      "pos": "POS system",
+      "ecommerce": "Online store",
+      "marketing": "Digital marketing"
+    },
+    "waMessage": "Hi, I answered the questions on your site:\n• I have: {q1}\n• The problem: {q2}\n• I want to start: {q3}\nSuggested: {products}"
+  },
+  "Counter": {
+    "kicker": "Behind the counter",
+    "title": "We're the first customer of everything we sell",
+    "hotspot1": {
+      "title": "The screen",
+      "body": "This is our own system. It runs our shops before it runs yours."
+    },
+    "hotspot2": {
+      "title": "The receipt printer",
+      "body": "Every sale, every return, every shift — recorded, printed, and closed out at end of day."
+    },
+    "hotspot3": {
+      "title": "The ledger",
+      "body": "We stopped using one years ago. That's how we know exactly what the system has to do."
+    },
+    "hotspot4": {
+      "title": "The oak counter",
+      "body": "We make the furniture too. That isn't a line on a website."
+    },
+    "body": "The systems we sell you run our own shops first. If they don't work for us, they never reach you.",
+    "hint": "Tap any point"
+  },
+  "Grid": {
+    "kicker": "One system",
+    "title": "Everything connects",
+    "legend": {
+      "pos": "POS",
+      "ecommerce": "Store",
+      "marketing": "Marketing"
+    },
+    "objects": {
+      "receipt": "Thermal receipt",
+      "barcode": "Barcode label",
+      "tape": "Tape measure",
+      "phone": "Ad reel",
+      "adCard": "Printed ad",
+      "swatch": "Fabric swatch",
+      "chairLeg": "Chair leg",
+      "seal": "The ElHegazi seal"
+    },
+    "body": "Your till, your store, and your ads — one system, one team. Nothing runs on its own, and no number goes missing.",
+    "hint": "Tap any object to see who makes it"
+  },
+  "Projects": {
+    "kicker": "Our projects",
+    "title": "The work speaks",
+    "subtitle": "Every project here we built ourselves, from day one to going live.",
+    "allFilter": "All",
+    "categories": {
+      "pos": "POS",
+      "ecommerce": "E-commerce",
+      "marketing": "Marketing",
+      "brand": "Brand",
+      "video": "Video",
+      "furniture": "Furniture"
+    },
+    "pagerPrev": "Previous",
+    "pagerNext": "Next",
+    "actionDetails": "Details",
+    "actionVisit": "Visit the site",
+    "selectedTitle": "Selected work",
+    "seeAll": "See all projects",
+    "empty": "We're still putting the gallery together. Message us on WhatsApp and we'll show you the work right away.",
+    "statProjects": "Projects",
+    "statFields": "Fields",
+    "statYears": "Years",
+    "statInHouse": "In-house",
+    "countOne": "1 project",
+    "countTwo": "2 projects",
+    "countFew": "projects",
+    "countMany": "projects"
+  },
+  "Contact": {
+    "kicker": "Contact",
+    "title": "Talk to us now",
+    "subtitle": "Fill this in under a minute and send it on WhatsApp. We reply the same day.",
+    "formTitle": "Your brief",
+    "name": "Name",
+    "contactField": "WhatsApp number or email",
+    "services": "What do you need?",
+    "serviceOptions": {
+      "ads": "Paid ads",
+      "photo": "Photography",
+      "video": "Video & reels",
+      "identity": "Brand identity",
+      "store": "Online store",
+      "pos": "POS system"
+    },
+    "budget": "Budget",
+    "budgetOptions": {
+      "s": "Under 5,000",
+      "m": "5,000 – 20,000",
+      "l": "20,000 – 50,000",
+      "xl": "Over 50,000"
+    },
+    "timing": "When do you want to start?",
+    "timingOptions": {
+      "thismonth": "This month",
+      "3months": "Within 3 months",
+      "exploring": "Just exploring"
+    },
+    "message": "Tell us about your project",
+    "submit": "Send on WhatsApp",
+    "submitNote": "Opens WhatsApp with your message ready — nothing else to type",
+    "errorName": "Enter your name",
+    "errorContact": "Enter a valid Egyptian phone number or email",
+    "channelsTitle": "Or reach us directly",
+    "hours": "Every day, 9am – 10pm",
+    "briefTitle": "Let's start"
+  },
+  "Day": {
+    "kicker": "A day in your shop",
+    "title": "Watch the system work with you, hour by hour",
+    "body": "Not our internal phases — your actual day behind the counter, and what happens on its own while you get on with it.",
+    "hint": "Pick any hour",
+    "hours": {
+      "open": {
+        "time": "9 AM",
+        "label": "Opening up",
+        "does": "You open the shift and count the drawer; the system reconciles expected against actual before the first sale.",
+        "tool": "POS — shifts & treasury"
+      },
+      "rush": {
+        "time": "12 PM",
+        "label": "The rush",
+        "does": "Barcode scanning and split payments keep running even if the internet drops. No sale is ever lost.",
+        "tool": "POS — fully offline"
+      },
+      "delivery": {
+        "time": "3 PM",
+        "label": "An online order",
+        "does": "Someone buys from your store at home. It lands against the same stock instantly — nobody re-types it.",
+        "tool": "E-commerce — shared inventory"
+      },
+      "shift": {
+        "time": "6 PM",
+        "label": "Shift change",
+        "does": "The shift closes on a count and the next one opens on clean numbers. Everyone owns what they sold.",
+        "tool": "POS — shift handover"
+      },
+      "close": {
+        "time": "11 PM",
+        "label": "Closing",
+        "does": "The full day reaches you: sales, profit, best seller, and what is about to run out.",
+        "tool": "Reports + WhatsApp"
+      }
+    }
   }
 }

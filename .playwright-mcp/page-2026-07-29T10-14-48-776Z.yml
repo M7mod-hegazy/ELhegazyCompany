@@ -1,0 +1,103 @@
+- generic [active] [ref=f8e1]:
+  - banner [ref=f8e2]:
+    - navigation [ref=f8e3]:
+      - link "الحجازي" [ref=f8e4] [cursor=pointer]:
+        - /url: /ar
+        - generic "شركة الحجازي · ElHegazi" [ref=f8e5]:
+          - generic [ref=f8e6]: الحجازي
+          - generic [ref=f8e7]: ElHegazi
+      - generic [ref=f8e8]:
+        - button "Switch language" [ref=f8e9]: English
+        - button "menu" [ref=f8e10]
+  - main [ref=f8e14]:
+    - region "شغلنا يتكلم" [ref=f8e15]:
+      - generic [ref=f8e19]:
+        - paragraph [ref=f8e20]: مشاريعنا
+        - heading "شغلنا يتكلم" [level=1] [ref=f8e21]
+        - paragraph [ref=f8e22]: 2 مشروع
+    - region "شغلنا يتكلم" [ref=f8e24]:
+      - list "شغلنا يتكلم" [ref=f8e27]:
+        - listitem [ref=f8e28]:
+          - button [ref=f8e29]:
+            - img "أثاث النور" [ref=f8e31]
+            - generic [ref=f8e32]:
+              - paragraph [ref=f8e33]: №01
+              - paragraph [ref=f8e34]: محل أثاث النور
+              - paragraph [ref=f8e35]: أثاث النور
+            - generic [ref=f8e36]: ↓
+        - listitem [ref=f8e37]:
+          - button [ref=f8e38]:
+            - img "مصر ريتيل" [ref=f8e40]
+            - generic [ref=f8e41]:
+              - paragraph [ref=f8e42]: №02
+              - paragraph [ref=f8e43]: سلسلة محلات مصر ريتيل
+              - paragraph [ref=f8e44]: مصر ريتيل
+            - generic [ref=f8e45]: ↓
+    - generic [ref=f8e47]:
+      - heading "جاهز تبدأ؟" [level=2] [ref=f8e49]
+      - paragraph [ref=f8e50]: احكيلنا عن محلك، ونرجعلك بخطة واضحة وسعر واضح — من غير لف ودوران.
+      - generic [ref=f8e51]:
+        - link "ابدأ مشروعك" [ref=f8e52] [cursor=pointer]:
+          - /url: /ar/start
+        - link "كلّمنا واتساب" [ref=f8e53] [cursor=pointer]:
+          - /url: https://wa.me/201000000000
+  - generic: مشاريعنا
+  - contentinfo [ref=f8e54]:
+    - generic [ref=f8e55]:
+      - generic [ref=f8e56]:
+        - generic "شركة الحجازي · ElHegazi" [ref=f8e57]:
+          - generic [ref=f8e58]: الحجازي
+          - generic [ref=f8e59]: ElHegazi
+        - paragraph [ref=f8e60]: وكالة إبداعية ورقمية من قلب التجارة الحقيقية — نصنع العلامات، ونطلق الحملات، ونبني المتاجر.
+      - generic [ref=f8e61]:
+        - heading "استكشف" [level=4] [ref=f8e62]
+        - list [ref=f8e63]:
+          - listitem [ref=f8e64]:
+            - link "التسويق الرقمي" [ref=f8e65] [cursor=pointer]:
+              - /url: /ar/services/marketing
+          - listitem [ref=f8e66]:
+            - link "نظام نقاط البيع" [ref=f8e67] [cursor=pointer]:
+              - /url: /ar/products/pos
+          - listitem [ref=f8e68]:
+            - link "المتجر الإلكتروني" [ref=f8e69] [cursor=pointer]:
+              - /url: /ar/products/ecommerce
+          - listitem [ref=f8e70]:
+            - link "مشاريعنا" [ref=f8e71] [cursor=pointer]:
+              - /url: /ar/projects
+          - listitem [ref=f8e72]:
+            - link "أسئلة شائعة" [ref=f8e73] [cursor=pointer]:
+              - /url: /ar/faq
+          - listitem [ref=f8e74]:
+            - link "تواصل" [ref=f8e75] [cursor=pointer]:
+              - /url: /ar/contact
+      - generic [ref=f8e76]:
+        - heading "تواصل" [level=4] [ref=f8e77]
+        - list [ref=f8e78]:
+          - listitem [ref=f8e79]:
+            - link "WhatsApp" [ref=f8e80] [cursor=pointer]:
+              - /url: https://wa.me/201000000000
+          - listitem [ref=f8e81]:
+            - link "hello@elhegazi.com" [ref=f8e82] [cursor=pointer]:
+              - /url: mailto:hello@elhegazi.com
+          - listitem [ref=f8e83]:
+            - link "Instagram" [ref=f8e84] [cursor=pointer]:
+              - /url: https://instagram.com/elhegazi
+          - listitem [ref=f8e85]:
+            - link "Facebook" [ref=f8e86] [cursor=pointer]:
+              - /url: https://facebook.com/elhegazi
+    - generic [ref=f8e88]:
+      - generic [ref=f8e89]: © 2026 الحجازي
+      - generic [ref=f8e90]:
+        - link "الخصوصية" [ref=f8e91] [cursor=pointer]:
+          - /url: /ar/privacy
+        - link "الشروط" [ref=f8e92] [cursor=pointer]:
+          - /url: /ar/terms
+        - generic [ref=f8e93]: صُنع بعناية في مصر
+  - generic [ref=f8e94]:
+    - generic [ref=f8e95]:
+      - text: الحجازي
+      - generic [ref=f8e96]: الحجازي
+    - generic [ref=f8e97]:
+      - text: "0"
+      - generic [ref=f8e98]: "%"
+    - generic [ref=f8e99]: ELHEGAZI

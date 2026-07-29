@@ -5,6 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { brand } from "@/lib/brand";
 import { cn } from "@/lib/cn";
+import { formatOrdinal } from "@/lib/num";
 import { siteConfig } from "@/config/site";
 import { catalog } from "@/config/catalog";
 
@@ -106,6 +107,7 @@ export function MarketingHero() {
 export function PillarSections() {
   const tOff = useTranslations("Offerings.marketing");
   const t = useTranslations("Marketing");
+  const locale = useLocale();
 
   return (
     <div>
@@ -121,7 +123,7 @@ export function PillarSections() {
             >
               <p className="flex items-baseline gap-3">
                 <span className="font-display-en text-3xl font-semibold" style={{ color: ACCENT }}>
-                  {String(i + 1).padStart(2, "0")}
+                  {formatOrdinal(i + 1, locale)}
                 </span>
                 <span className="text-xs uppercase tracking-[0.3em] text-bone-muted">
                   {t("pillarKicker")}
@@ -271,6 +273,7 @@ function PillarVisual({ pillar }: { pillar: (typeof PILLARS)[number] }) {
 
 export function ProcessStrip() {
   const t = useTranslations("Marketing");
+  const locale = useLocale();
   const steps = t.raw("process") as { t: string; d: string }[];
 
   return (
@@ -292,7 +295,7 @@ export function ProcessStrip() {
             className="rounded-3xl border border-brass/15 bg-ink-800/40 p-7"
           >
             <span className="font-display-en text-3xl font-semibold" style={{ color: ACCENT }}>
-              {String(i + 1).padStart(2, "0")}
+              {formatOrdinal(i + 1, locale)}
             </span>
             <h3 className="mt-3 text-lg font-semibold text-bone">{s.t}</h3>
             <p className="mt-2 text-sm leading-relaxed text-bone-muted">{s.d}</p>
@@ -363,7 +366,7 @@ export function MarketingPackages() {
                 ))}
               </ul>
               <Link
-                href={`/order?product=marketing&plan=${p.id}`}
+                href={`/contact?product=marketing&plan=${p.id}`}
                 className={cn(
                   "mt-8 rounded-full px-6 py-3.5 text-center text-sm font-semibold transition-all duration-300",
                   p.featured

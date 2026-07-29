@@ -1,12 +1,13 @@
-import { Fragment, use } from "react";
+import { Fragment } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { PageHero } from "@/components/site/PageHero";
 import { getWorld } from "@/config/worlds";
 import { WorldShell } from "@/components/world/WorldShell";
 import { WorldHero } from "@/components/world/WorldHero";
 import { KineticStatement } from "@/components/world/KineticStatement";
-import { VideoTheater } from "@/components/world/VideoTheater";
+import { ProofBand } from "@/components/world/ProofBand";
 import { AbilitiesBento } from "@/components/world/AbilitiesBento";
 import { StoryChapter } from "@/components/world/StoryChapter";
 import { ModuleGallery } from "@/components/world/ModuleGallery";
@@ -36,17 +37,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: t("hero"), description: t("promise") };
 }
 
-export default function PosWorldPage({ params }: Props) {
-  const { locale } = use(params);
+export default async function PosWorldPage({ params }: Props) {
+  const { locale } = await params;
   setRequestLocale(locale);
   const world = getWorld(KEY);
   if (!world) notFound();
+  const t = await getTranslations({ locale, namespace: `Worlds.${KEY}` });
 
   return (
     <WorldShell accent={world.accent} worldKey={world.key}>
+      <PageHero
+        videoKey="pos"
+        kicker={t("hero")}
+        title={t("promise")}
+        zone="bottom-right"
+      />
       <WorldHero worldKey={world.key} num={world.num} accent={world.accent} />
       <KineticStatement worldKey={world.key} />
-      <VideoTheater worldKey={world.key} video={world.video} />
+      <ProofBand world={world} plate="page-pos" />
       <TrustStrip worldKey={world.key} />
       <AbilitiesBento worldKey={world.key} />
       <BigNumbers worldKey={world.key} />

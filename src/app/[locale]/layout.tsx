@@ -4,6 +4,7 @@ import {
   Reem_Kufi,
   Fraunces,
   IBM_Plex_Sans_Arabic,
+  IBM_Plex_Mono,
   Inter,
 } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
@@ -38,6 +39,13 @@ const plexArabic = IBM_Plex_Sans_Arabic({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
@@ -83,7 +91,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html
       lang={locale}
       dir={dir}
-      className={`${reemKufi.variable} ${fraunces.variable} ${plexArabic.variable} ${inter.variable} h-full antialiased`}
+      className={`${reemKufi.variable} ${fraunces.variable} ${plexArabic.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
     >
       {/* NOTE: body is intentionally transparent (ink lives on <html>) so the
           fixed -z-10 3D stage isn't hidden behind the body background. */}

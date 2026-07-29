@@ -2,15 +2,13 @@ import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 import { locales } from "@/config/site";
 
+// NOTE: this list is hand-maintained — update it whenever a new page is added.
 const paths = [
   "",
   "/services/marketing",
   "/products/pos",
-  "/products/pos/download",
   "/products/ecommerce",
-  "/work",
-  "/start",
-  "/order",
+  "/projects",
   "/contact",
   "/faq",
   "/privacy",

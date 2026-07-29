@@ -24,7 +24,7 @@ export function DownloadCenter({ worldKey }: { worldKey: string }) {
 
   const wa = (msg: string) => `https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(msg)}`;
   const waPreview = wa(ar ? "السلام عليكم، ممكن رابط تحميل النسخة التجريبية من نظام نقاط البيع (الحجازي)؟" : "Hello, can I get the trial download link for the ElHegazi POS system?");
-  const orderHref = `/${locale}/order?product=${worldKey}&plan=full`;
+  const orderHref = `/${locale}/contact?product=${worldKey}&plan=full`;
 
   return (
     <div className="mx-auto max-w-4xl">
