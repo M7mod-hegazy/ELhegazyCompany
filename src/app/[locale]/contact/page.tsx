@@ -47,7 +47,7 @@ export default function ContactPage({ params }: Props) {
           className="absolute inset-0"
         />
         {/* Dimming overlay so text remains readable without blurring the video */}
-        <div className="absolute inset-0 bg-ink-950/50" />
+        <div className="absolute inset-0 bg-ink-950/85" />
       </div>
 
       <div className="relative z-10 pt-32 sm:pt-40 pb-16">
