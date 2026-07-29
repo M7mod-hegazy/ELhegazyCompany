@@ -50,8 +50,8 @@ export default function ContactPage({ params }: Props) {
         <div className="absolute inset-0 bg-ink-950/50" />
       </div>
 
-      <div className="relative z-10">
-        <ContactHero />
+      <div className="relative z-10 pt-32 sm:pt-40 pb-16">
+        <ContactHeader />
         <WorldAtmosphere transparent={true} />
         <ContactForm />
         <ContactChannels />
@@ -60,38 +60,39 @@ export default function ContactPage({ params }: Props) {
   );
 }
 
-/* ── Hero ─────────────────────────────────────────────────────────── */
-function ContactHero() {
+/* ── Integrated Header ────────────────────────────────────────────── */
+function ContactHeader() {
   const t = useTranslations("Contact");
   const whatsappHref = `https://wa.me/${siteConfig.contact.whatsapp}`;
 
   return (
-    <PageHero
-      videoKey="none"
-      kicker={t("kicker")}
-      title={t("title")}
-      subtitle={t("subtitle")}
-      zone="center"
-      className="!bg-transparent"
-      actions={
-        <div className="flex flex-wrap justify-center gap-3">
-          <a
-            href="#contact-form"
-            className="bg-brass px-7 py-3.5 font-mono text-sm font-semibold text-ink-900 transition-all hover:bg-brass-hi rounded-full hover:-translate-y-0.5"
-          >
-            {t("title")}
-          </a>
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-bone/30 px-7 py-3.5 font-mono text-sm text-bone transition-colors hover:border-brass hover:text-brass rounded-full"
-          >
-            WhatsApp
-          </a>
-        </div>
-      }
-    />
+    <div className="mx-auto max-w-3xl px-6 mb-12 text-center sm:text-start">
+      <p className="mb-4 font-mono text-sm uppercase tracking-[0.2em] text-brass">
+        {t("kicker")}
+      </p>
+      <h1 className="mb-6 font-display text-5xl font-medium tracking-tight text-bone sm:text-7xl">
+        {t("title")}
+      </h1>
+      <p className="mb-8 max-w-xl text-lg text-bone-muted sm:text-xl">
+        {t("subtitle")}
+      </p>
+      <div className="flex flex-wrap justify-center sm:justify-start gap-3">
+        <a
+          href="#contact-form"
+          className="bg-brass px-7 py-3.5 font-mono text-sm font-semibold text-ink-900 transition-all hover:bg-brass-hi rounded-full hover:-translate-y-0.5"
+        >
+          {t("title")}
+        </a>
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="border border-bone/30 px-7 py-3.5 font-mono text-sm text-bone transition-colors hover:border-brass hover:text-brass rounded-full"
+        >
+          WhatsApp
+        </a>
+      </div>
+    </div>
   );
 }
 
