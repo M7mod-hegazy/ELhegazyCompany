@@ -5,7 +5,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { PageHero } from "@/components/site/PageHero";
 import { getWorld } from "@/config/worlds";
 import { WorldShell } from "@/components/world/WorldShell";
-import { WorldHero } from "@/components/world/WorldHero";
+import { PlanButtons } from "@/components/world/PlanButtons";
 import { KineticStatement } from "@/components/world/KineticStatement";
 import { ProofBand } from "@/components/world/ProofBand";
 import { AbilitiesBento } from "@/components/world/AbilitiesBento";
@@ -48,12 +48,17 @@ export default async function PosWorldPage({ params }: Props) {
     <WorldShell accent={world.accent} worldKey={world.key}>
       <PageHero
         videoKey="pos"
-        kicker={t("hero")}
-        title={t("promise")}
-        zone="bottom-right"
+        numberTag={world.num}
+        kicker={t("kicker")}
+        title={t("hero")}
+        subtitle={t("promise")}
+        chips={t.raw("heroChips")}
+        zone="bottom-left"
+        accent={world.accent}
+        actions={<PlanButtons worldKey={world.key} />}
       />
-      <WorldHero worldKey={world.key} num={world.num} accent={world.accent} />
       <KineticStatement worldKey={world.key} />
+
       <ProofBand world={world} plate="page-pos" />
       <TrustStrip worldKey={world.key} />
       <AbilitiesBento worldKey={world.key} />

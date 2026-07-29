@@ -63,25 +63,25 @@ function ProjectsHero() {
   return (
     <PageHero
       videoKey="projects"
-      variant="index"
       kicker={t("kicker")}
       title={t("title")}
       subtitle={t("subtitle")}
+      zone="bottom-left"
       bridge={
-        <div className="mx-auto mt-10 max-w-7xl px-6">
-          <dl className="grid grid-cols-2 gap-px border border-brass/15 bg-brass/15 sm:grid-cols-4">
+        <div className="mx-auto mt-6 max-w-7xl px-6">
+          <dl className="grid grid-cols-2 gap-px border border-brass/15 bg-brass/15 sm:grid-cols-4 rounded-xl overflow-hidden backdrop-blur-md">
             {stats.map((s) => (
-              <div key={s.label} className="bg-ink-900 px-5 py-6">
+              <div key={s.label} className="bg-ink-900/80 px-5 py-4">
                 <dt className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-bone-muted">
                   {s.label}
                 </dt>
-                <dd className="mt-2 font-mono text-2xl font-semibold leading-none text-brass">
+                <dd className="mt-1.5 font-mono text-xl sm:text-2xl font-semibold leading-none text-brass">
                   {s.value}
                 </dd>
               </div>
             ))}
           </dl>
-          <p className="mt-6 font-mono text-xs text-bone-muted">
+          <p className="mt-4 font-mono text-xs text-bone-muted">
             {formatCount(projects.length, locale, {
               one: t("countOne"),
               two: t("countTwo"),

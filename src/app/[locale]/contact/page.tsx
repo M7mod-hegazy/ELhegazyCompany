@@ -42,6 +42,8 @@ export default function ContactPage({ params }: Props) {
 /* ── Hero ─────────────────────────────────────────────────────────── */
 function ContactHero() {
   const t = useTranslations("Contact");
+  const whatsappHref = `https://wa.me/${siteConfig.contact.whatsapp}`;
+
   return (
     <PageHero
       videoKey="contact"
@@ -49,6 +51,24 @@ function ContactHero() {
       title={t("title")}
       subtitle={t("subtitle")}
       zone="center"
+      actions={
+        <div className="flex flex-wrap justify-center gap-3">
+          <a
+            href="#contact-form"
+            className="bg-brass px-7 py-3.5 font-mono text-sm font-semibold text-ink-900 transition-colors hover:bg-brass-hi rounded-full"
+          >
+            {t("title")}
+          </a>
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border border-bone/30 px-7 py-3.5 font-mono text-sm text-bone transition-colors hover:border-brass hover:text-brass rounded-full"
+          >
+            WhatsApp
+          </a>
+        </div>
+      }
     />
   );
 }

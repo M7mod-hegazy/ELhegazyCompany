@@ -5,7 +5,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { PageHero } from "@/components/site/PageHero";
 import { getWorld } from "@/config/worlds";
 import { EcommerceShell } from "@/components/world/EcommerceShell";
-import { WorldHero } from "@/components/world/WorldHero";
+import { PlanButtons } from "@/components/world/PlanButtons";
 import { KineticStatement } from "@/components/world/KineticStatement";
 import { ProofBand } from "@/components/world/ProofBand";
 import { EcommerceAbilitiesBento } from "@/components/world/EcommerceAbilitiesBento";
@@ -47,11 +47,15 @@ export default async function EcommerceWorldPage({ params }: Props) {
     <EcommerceShell accent={world.accent} worldKey={world.key}>
       <PageHero
         videoKey="ecommerce"
-        kicker={t("hero")}
-        title={t("promise")}
+        numberTag={world.num}
+        kicker={t("kicker")}
+        title={t("hero")}
+        subtitle={t("promise")}
+        chips={t.raw("heroChips")}
         zone="bottom-left"
+        accent={world.accent}
+        actions={<PlanButtons worldKey={world.key} />}
       />
-      <WorldHero worldKey={world.key} num={world.num} accent={world.accent} />
       <KineticStatement worldKey={world.key} />
       <LiveStoreBand worldKey={world.key} href={world.externalHref} />
       <ProofBand world={world} plate="page-ecommerce" />
