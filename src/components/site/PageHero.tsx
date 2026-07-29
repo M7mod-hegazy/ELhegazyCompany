@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { m, useReducedMotion, useScroll, useMotionValueEvent } from "framer-motion";
 import { AmbientFilm } from "@/components/film/AmbientFilm";
 
-export type PageHeroVideoKey = "marketing" | "pos" | "ecommerce" | "projects" | "contact";
+export type PageHeroVideoKey = "marketing" | "pos" | "ecommerce" | "projects" | "contact" | "none";
 export type PageHeroZone = "bottom-left" | "bottom-right" | "center" | "bottom-center";
 
 export type PageHeroProps = {
-  videoKey: PageHeroVideoKey;
+  videoKey?: PageHeroVideoKey;
   kicker: string;
   title: string;
   subtitle?: string;
@@ -18,6 +18,7 @@ export type PageHeroProps = {
   accent?: string;
   actions?: React.ReactNode;
   bridge?: React.ReactNode;
+  className?: string;
 };
 
 const ZONE_ALIGN: Record<PageHeroZone, string> = {
@@ -45,6 +46,7 @@ export function PageHero({
   accent = "var(--color-brass)",
   actions,
   bridge,
+  className = "",
 }: PageHeroProps) {
   const reduced = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
@@ -80,26 +82,29 @@ export function PageHero({
     <section
       ref={sectionRef}
       aria-label={title}
-      className="relative h-[100svh] min-h-[100svh] w-full overflow-hidden bg-ink-900 flex flex-col justify-between"
+      className={`relative h-[100svh] min-h-[100svh] w-full overflow-hidden flex flex-col justify-between ${!videoKey || videoKey === "none" ? "bg-transparent" : "bg-ink-900"} ${className}`}
     >
       {/* ── 1. Full-screen Video Background (AmbientFilm) ── */}
-      <div ref={filmRef} className="parallax-layer absolute inset-0">
-        <AmbientFilm
-          src={`/films/page-${videoKey}.mp4`}
-          srcPortrait={`/films/page-${videoKey}-portrait.mp4`}
-          poster={`/films/page-${videoKey}.jpg`}
-          posterPortrait={`/films/page-${videoKey}-portrait.jpg`}
-          className="absolute inset-0"
-        />
-      </div>
+      {videoKey && videoKey !== "none" && (
+        <div ref={filmRef} className="parallax-layer absolute inset-0">
+          <AmbientFilm
+            src={`/films/page-${videoKey}.mp4`}
+            srcPortrait={`/films/page-${videoKey}-portrait.mp4`}
+            poster={`/films/page-${videoKey}.jpg`}
+            posterPortrait={`/films/page-${videoKey}-portrait.jpg`}
+            className="absolute inset-0"
+          />
+        </div>
+      )}
 
       {/* ── 2. Legibility Scrims & Bottom Gradient Dissolve ── */}
       <div
         aria-hidden
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
-          background:
-            "radial-gradient(ellipse 85% 75% at 50% 45%, rgba(10,10,11,0.88) 0%, rgba(10,10,11,0.6) 55%, rgba(10,10,11,0.35) 100%)",
+          background: videoKey && videoKey !== "none" ?
+            "radial-gradient(ellipse 85% 75% at 50% 45%, rgba(10,10,11,0.88) 0%, rgba(10,10,11,0.6) 55%, rgba(10,10,11,0.35) 100%)" :
+            "linear-gradient(to bottom, rgba(10,10,11,0.9) 0%, rgba(10,10,11,0.4) 100%)",
         }}
       />
       <div

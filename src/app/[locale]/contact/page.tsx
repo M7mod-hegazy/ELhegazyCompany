@@ -26,19 +26,36 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+import { AmbientFilm } from "@/components/film/AmbientFilm";
+
 export default function ContactPage({ params }: Props) {
   const { locale } = use(params);
   setRequestLocale(locale);
 
   return (
     <main
-      className="relative z-10 overflow-x-clip"
+      className="relative z-10 overflow-x-clip min-h-screen bg-ink-950"
       style={{ "--world-accent": "var(--color-brass)" } as CSSProperties}
     >
-      <ContactHero />
-      <WorldAtmosphere />
-      <ContactForm />
-      <ContactChannels />
+      {/* ── Fixed Background Video for the Entire Page ── */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <AmbientFilm
+          src="/films/page-contact.mp4"
+          srcPortrait="/films/page-contact-portrait.mp4"
+          poster="/films/page-contact.jpg"
+          posterPortrait="/films/page-contact-portrait.jpg"
+          className="absolute inset-0"
+        />
+        {/* Dimming overlay so text remains readable across the page */}
+        <div className="absolute inset-0 bg-ink-950/60 backdrop-blur-[2px]" />
+      </div>
+
+      <div className="relative z-10">
+        <ContactHero />
+        <WorldAtmosphere />
+        <ContactForm />
+        <ContactChannels />
+      </div>
     </main>
   );
 }
@@ -50,11 +67,12 @@ function ContactHero() {
 
   return (
     <PageHero
-      videoKey="contact"
+      videoKey="none"
       kicker={t("kicker")}
       title={t("title")}
       subtitle={t("subtitle")}
       zone="center"
+      className="!bg-transparent"
       actions={
         <div className="flex flex-wrap justify-center gap-3">
           <a
