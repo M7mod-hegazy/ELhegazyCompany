@@ -46,8 +46,8 @@ export default function ContactPage({ params }: Props) {
           posterPortrait="/films/page-contact-v3-portrait.jpg"
           className="absolute inset-0"
         />
-        {/* Dimming overlay so text remains readable across the page */}
-        <div className="absolute inset-0 bg-ink-950/60 backdrop-blur-[2px]" />
+        {/* Dimming overlay so text remains readable without blurring the video */}
+        <div className="absolute inset-0 bg-ink-950/50" />
       </div>
 
       <div className="relative z-10">
