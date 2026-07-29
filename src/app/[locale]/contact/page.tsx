@@ -1,9 +1,11 @@
+import type { CSSProperties } from "react";
 import { use } from "react";
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { useTranslations, useLocale } from "next-intl";
 import { PageHero } from "@/components/site/PageHero";
 import { ContactForm } from "@/components/site/ContactForm";
+import { WorldAtmosphere } from "@/components/world/WorldAtmosphere";
 import { siteConfig } from "@/config/site";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -29,11 +31,13 @@ export default function ContactPage({ params }: Props) {
   setRequestLocale(locale);
 
   return (
-    <main>
+    <main
+      className="relative z-10 overflow-x-clip"
+      style={{ "--world-accent": "var(--color-brass)" } as CSSProperties}
+    >
       <ContactHero />
-      {/* The form — client component */}
+      <WorldAtmosphere />
       <ContactForm />
-      {/* Direct channels below the form */}
       <ContactChannels />
     </main>
   );
@@ -55,7 +59,7 @@ function ContactHero() {
         <div className="flex flex-wrap justify-center gap-3">
           <a
             href="#contact-form"
-            className="bg-brass px-7 py-3.5 font-mono text-sm font-semibold text-ink-900 transition-colors hover:bg-brass-hi rounded-full"
+            className="bg-brass px-7 py-3.5 font-mono text-sm font-semibold text-ink-900 transition-all hover:bg-brass-hi rounded-full hover:-translate-y-0.5"
           >
             {t("title")}
           </a>
@@ -80,43 +84,48 @@ function ContactChannels() {
   const whatsappHref = `https://wa.me/${siteConfig.contact.whatsapp}`;
 
   return (
-    <div className="mx-auto max-w-2xl px-6 pb-24">
-      <div className="rule-seal mb-8 w-full" />
-      <p className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-bone-muted">
-        {t("channelsTitle")}
-      </p>
-      <div className="grid gap-4 sm:grid-cols-2">
-        {/* WhatsApp */}
-        <a
-          href={whatsappHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="border border-brass/30 px-6 py-5 transition-colors hover:border-brass/60 group"
-        >
-          <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass">
-            WhatsApp
-          </span>
-          <p className="mt-2 text-bone" dir="ltr">
-            {siteConfig.contact.phoneDisplay}
+    <div className="relative z-10 mx-auto max-w-3xl px-6 pb-24">
+      <div className="rounded-3xl border border-brass/20 bg-ink-800/60 p-8 backdrop-blur-xl shadow-2xl">
+        <div className="flex items-center gap-3 mb-6">
+          <span className="h-px w-8 bg-brass/40" />
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-brass font-semibold">
+            {t("channelsTitle")}
           </p>
-        </a>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {/* WhatsApp */}
+          <a
+            href={whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-2xl border border-brass/25 bg-ink-900/60 p-6 transition-all hover:border-brass hover:bg-brass/10 group"
+          >
+            <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
+              WhatsApp
+            </span>
+            <p className="mt-2 text-lg font-semibold text-bone" dir="ltr">
+              {siteConfig.contact.phoneDisplay}
+            </p>
+          </a>
 
-        {/* Email */}
-        <a
-          href={`mailto:${siteConfig.contact.email}`}
-          className="border border-brass/20 px-6 py-5 transition-colors hover:border-brass/40 group"
-        >
-          <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass">
-            Email
-          </span>
-          <p className="mt-2 text-bone" dir="ltr">
-            {siteConfig.contact.email}
-          </p>
-        </a>
+          {/* Email */}
+          <a
+            href={`mailto:${siteConfig.contact.email}`}
+            className="rounded-2xl border border-brass/25 bg-ink-900/60 p-6 transition-all hover:border-brass hover:bg-brass/10 group"
+          >
+            <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
+              Email
+            </span>
+            <p className="mt-2 text-lg font-semibold text-bone" dir="ltr">
+              {siteConfig.contact.email}
+            </p>
+          </a>
+        </div>
+
+        {/* Hours */}
+        <p className="mt-6 font-mono text-xs text-bone-muted text-center sm:text-start">{t("hours")}</p>
       </div>
-
-      {/* Hours */}
-      <p className="mt-6 font-mono text-xs text-bone-muted">{t("hours")}</p>
     </div>
   );
 }
+

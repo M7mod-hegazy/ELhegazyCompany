@@ -102,142 +102,157 @@ export function ContactForm() {
 
   /* ── Render ─────────────────────────────────────────────────── */
   return (
-    <form
-      onSubmit={handleSubmit}
-      noValidate
-      className="mx-auto max-w-2xl px-6 py-16"
-      aria-label={t("formTitle")}
-    >
-      <h2 className="mb-8 text-2xl font-semibold text-bone">{t("formTitle")}</h2>
+    <div id="contact-form" className="relative mx-auto max-w-3xl px-6 py-16 scroll-mt-24">
+      {/* Decorative ambient card glow */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -inset-2 rounded-3xl opacity-50 blur-2xl"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(201,168,106,0.18) 0%, transparent 70%)",
+        }}
+      />
 
-      {/* ── Name ── */}
-      <FieldRow label={t("name")} htmlFor={`${id}-name`} error={errors.name}>
-        <input
-          id={`${id}-name`}
-          type="text"
-          autoComplete="name"
-          value={form.name}
-          onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-          className="w-full border-0 border-b border-brass/20 bg-transparent py-2 text-bone placeholder:text-bone-muted/40 focus:border-brass focus:outline-none"
-          placeholder="—"
-          aria-invalid={!!errors.name}
-          aria-describedby={errors.name ? `${id}-name-err` : undefined}
-        />
-        {errors.name && (
-          <p id={`${id}-name-err`} role="alert" className="mt-1 font-mono text-xs text-oxblood-tint">
-            {errors.name}
-          </p>
-        )}
-      </FieldRow>
-
-      {/* ── Contact ── */}
-      <FieldRow label={t("contactField")} htmlFor={`${id}-contact`} error={errors.contact}>
-        <input
-          id={`${id}-contact`}
-          type="text"
-          autoComplete="tel"
-          inputMode="tel"
-          value={form.contact}
-          onChange={(e) => setForm((f) => ({ ...f, contact: e.target.value }))}
-          className="w-full border-0 border-b border-brass/20 bg-transparent py-2 text-bone placeholder:text-bone-muted/40 focus:border-brass focus:outline-none"
-          placeholder="01xxxxxxxxx"
-          aria-invalid={!!errors.contact}
-          aria-describedby={errors.contact ? `${id}-contact-err` : undefined}
-        />
-        {errors.contact && (
-          <p id={`${id}-contact-err`} role="alert" className="mt-1 font-mono text-xs text-oxblood-tint">
-            {errors.contact}
-          </p>
-        )}
-      </FieldRow>
-
-      {/* ── Services (multi-select chips) ── */}
-      <FieldRow label={t("services")} htmlFor="">
-        <div role="group" aria-label={t("services")} className="flex flex-wrap gap-2 pt-1">
-          {SERVICE_KEYS.map((key) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => toggleService(key)}
-              aria-pressed={form.services.has(key)}
-              className={`border px-4 py-2 font-mono text-xs transition-colors ${
-                form.services.has(key)
-                  ? "border-brass bg-brass/10 text-bone"
-                  : "border-brass/20 text-bone-muted hover:border-brass/50"
-              }`}
-            >
-              {t(`serviceOptions.${key}`)}
-            </button>
-          ))}
+      <form
+        onSubmit={handleSubmit}
+        noValidate
+        className="relative z-10 rounded-3xl border border-brass/25 bg-ink-800/70 p-8 sm:p-12 backdrop-blur-xl shadow-2xl"
+        aria-label={t("formTitle")}
+      >
+        <div className="flex items-center gap-3 mb-6">
+          <span className="h-px w-8 bg-brass/40" />
+          <h2 className="text-2xl sm:text-3xl font-semibold text-bone font-display">{t("formTitle")}</h2>
         </div>
-      </FieldRow>
 
-      {/* ── Budget (single-select) ── */}
-      <FieldRow label={t("budget")} htmlFor="">
-        <div role="group" aria-label={t("budget")} className="flex flex-wrap gap-2 pt-1">
-          {BUDGET_KEYS.map((key) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setForm((f) => ({ ...f, budget: key }))}
-              aria-pressed={form.budget === key}
-              className={`border px-4 py-2 font-mono text-xs transition-colors ${
-                form.budget === key
-                  ? "border-brass bg-brass/10 text-bone"
-                  : "border-brass/20 text-bone-muted hover:border-brass/50"
-              }`}
-            >
-              {t(`budgetOptions.${key}`)}
-            </button>
-          ))}
+        {/* ── Name ── */}
+        <FieldRow label={t("name")} htmlFor={`${id}-name`} error={errors.name}>
+          <input
+            id={`${id}-name`}
+            type="text"
+            autoComplete="name"
+            value={form.name}
+            onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+            className="w-full border-0 border-b border-brass/25 bg-transparent py-2.5 text-bone placeholder:text-bone-muted/40 focus:border-brass focus:outline-none transition-colors"
+            placeholder="—"
+            aria-invalid={!!errors.name}
+            aria-describedby={errors.name ? `${id}-name-err` : undefined}
+          />
+          {errors.name && (
+            <p id={`${id}-name-err`} role="alert" className="mt-1 font-mono text-xs text-oxblood-tint">
+              {errors.name}
+            </p>
+          )}
+        </FieldRow>
+
+        {/* ── Contact ── */}
+        <FieldRow label={t("contactField")} htmlFor={`${id}-contact`} error={errors.contact}>
+          <input
+            id={`${id}-contact`}
+            type="text"
+            autoComplete="tel"
+            inputMode="tel"
+            value={form.contact}
+            onChange={(e) => setForm((f) => ({ ...f, contact: e.target.value }))}
+            className="w-full border-0 border-b border-brass/25 bg-transparent py-2.5 text-bone placeholder:text-bone-muted/40 focus:border-brass focus:outline-none transition-colors"
+            placeholder="01xxxxxxxxx"
+            aria-invalid={!!errors.contact}
+            aria-describedby={errors.contact ? `${id}-contact-err` : undefined}
+          />
+          {errors.contact && (
+            <p id={`${id}-contact-err`} role="alert" className="mt-1 font-mono text-xs text-oxblood-tint">
+              {errors.contact}
+            </p>
+          )}
+        </FieldRow>
+
+        {/* ── Services (multi-select chips) ── */}
+        <FieldRow label={t("services")} htmlFor="">
+          <div role="group" aria-label={t("services")} className="flex flex-wrap gap-2 pt-1">
+            {SERVICE_KEYS.map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => toggleService(key)}
+                aria-pressed={form.services.has(key)}
+                className={`rounded-full border px-4 py-2 font-mono text-xs transition-all ${
+                  form.services.has(key)
+                    ? "border-brass bg-brass text-ink-900 font-semibold"
+                    : "border-brass/25 bg-ink-900/50 text-bone-muted hover:border-brass/60 hover:text-bone"
+                }`}
+              >
+                {t(`serviceOptions.${key}`)}
+              </button>
+            ))}
+          </div>
+        </FieldRow>
+
+        {/* ── Budget (single-select) ── */}
+        <FieldRow label={t("budget")} htmlFor="">
+          <div role="group" aria-label={t("budget")} className="flex flex-wrap gap-2 pt-1">
+            {BUDGET_KEYS.map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, budget: key }))}
+                aria-pressed={form.budget === key}
+                className={`rounded-full border px-4 py-2 font-mono text-xs transition-all ${
+                  form.budget === key
+                    ? "border-brass bg-brass text-ink-900 font-semibold"
+                    : "border-brass/25 bg-ink-900/50 text-bone-muted hover:border-brass/60 hover:text-bone"
+                }`}
+              >
+                {t(`budgetOptions.${key}`)}
+              </button>
+            ))}
+          </div>
+        </FieldRow>
+
+        {/* ── Timing (single-select) ── */}
+        <FieldRow label={t("timing")} htmlFor="">
+          <div role="group" aria-label={t("timing")} className="flex flex-wrap gap-2 pt-1">
+            {TIMING_KEYS.map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setForm((f) => ({ ...f, timing: key }))}
+                aria-pressed={form.timing === key}
+                className={`rounded-full border px-4 py-2 font-mono text-xs transition-all ${
+                  form.timing === key
+                    ? "border-brass bg-brass text-ink-900 font-semibold"
+                    : "border-brass/25 bg-ink-900/50 text-bone-muted hover:border-brass/60 hover:text-bone"
+                }`}
+              >
+                {t(`timingOptions.${key}`)}
+              </button>
+            ))}
+          </div>
+        </FieldRow>
+
+        {/* ── Message (optional) ── */}
+        <FieldRow label={t("message")} htmlFor={`${id}-msg`}>
+          <textarea
+            id={`${id}-msg`}
+            rows={4}
+            value={form.message}
+            onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
+            className="w-full resize-none border-0 border-b border-brass/25 bg-transparent py-2.5 text-bone placeholder:text-bone-muted/40 focus:border-brass focus:outline-none transition-colors"
+            placeholder="—"
+          />
+        </FieldRow>
+
+        {/* Submit */}
+        <div className="rule-seal my-8 w-full" />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center justify-between">
+          <button
+            type="submit"
+            className="rounded-full bg-brass px-8 py-3.5 font-mono text-sm font-semibold text-ink-900 transition-all hover:bg-brass-hi hover:-translate-y-0.5"
+          >
+            {t("submit")}
+          </button>
+          <p className="font-mono text-xs text-bone-muted">{t("submitNote")}</p>
         </div>
-      </FieldRow>
-
-      {/* ── Timing (single-select) ── */}
-      <FieldRow label={t("timing")} htmlFor="">
-        <div role="group" aria-label={t("timing")} className="flex flex-wrap gap-2 pt-1">
-          {TIMING_KEYS.map((key) => (
-            <button
-              key={key}
-              type="button"
-              onClick={() => setForm((f) => ({ ...f, timing: key }))}
-              aria-pressed={form.timing === key}
-              className={`border px-4 py-2 font-mono text-xs transition-colors ${
-                form.timing === key
-                  ? "border-brass bg-brass/10 text-bone"
-                  : "border-brass/20 text-bone-muted hover:border-brass/50"
-              }`}
-            >
-              {t(`timingOptions.${key}`)}
-            </button>
-          ))}
-        </div>
-      </FieldRow>
-
-      {/* ── Message (optional) ── */}
-      <FieldRow label={t("message")} htmlFor={`${id}-msg`}>
-        <textarea
-          id={`${id}-msg`}
-          rows={4}
-          value={form.message}
-          onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-          className="w-full resize-none border-0 border-b border-brass/20 bg-transparent py-2 text-bone placeholder:text-bone-muted/40 focus:border-brass focus:outline-none"
-          placeholder="—"
-        />
-      </FieldRow>
-
-      {/* Submit */}
-      <div className="rule-seal my-8 w-full" />
-      <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-        <button
-          type="submit"
-          className="bg-brass px-8 py-3 font-mono text-sm font-semibold text-ink-900 transition-opacity hover:opacity-90"
-        >
-          {t("submit")}
-        </button>
-        <p className="font-mono text-xs text-bone-muted">{t("submitNote")}</p>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }
 
