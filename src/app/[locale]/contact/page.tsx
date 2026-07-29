@@ -40,10 +40,10 @@ export default function ContactPage({ params }: Props) {
       {/* ── Fixed Background Video for the Entire Page ── */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <AmbientFilm
-          src="/films/page-contact-v2.mp4"
-          srcPortrait="/films/page-contact-v2-portrait.mp4"
-          poster="/films/page-contact-v2.jpg"
-          posterPortrait="/films/page-contact-v2-portrait.jpg"
+          src="/films/page-contact-v3.mp4"
+          srcPortrait="/films/page-contact-v3-portrait.mp4"
+          poster="/films/page-contact-v3.jpg"
+          posterPortrait="/films/page-contact-v3-portrait.jpg"
           className="absolute inset-0"
         />
         {/* Dimming overlay so text remains readable across the page */}
