@@ -6,10 +6,10 @@
  * a slow light sweep, and floating brass dust. Tinted by `--world-accent`.
  * Purely CSS-animated (killed automatically under prefers-reduced-motion).
  */
-export function WorldAtmosphere() {
+export function WorldAtmosphere({ transparent = false }: { transparent?: boolean } = {}) {
   const dust = Array.from({ length: 18 });
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-ink-900">
+    <div className={`pointer-events-none fixed inset-0 -z-10 overflow-hidden ${transparent ? "" : "bg-ink-900"}`}>
       {/* deep base glow */}
       <div
         className="absolute inset-0"

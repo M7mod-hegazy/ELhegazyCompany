@@ -52,7 +52,7 @@ export default function ContactPage({ params }: Props) {
 
       <div className="relative z-10">
         <ContactHero />
-        <WorldAtmosphere />
+        <WorldAtmosphere transparent={true} />
         <ContactForm />
         <ContactChannels />
       </div>
