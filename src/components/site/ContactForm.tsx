@@ -103,20 +103,10 @@ export function ContactForm() {
   /* ── Render ─────────────────────────────────────────────────── */
   return (
     <div id="contact-form" className="relative mx-auto max-w-3xl px-6 py-16 scroll-mt-24">
-      {/* Decorative ambient card glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -inset-2 rounded-3xl opacity-50 blur-2xl"
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(201,168,106,0.18) 0%, transparent 70%)",
-        }}
-      />
-
       <form
         onSubmit={handleSubmit}
         noValidate
-        className="relative z-10 rounded-3xl border border-brass/25 bg-ink-800/70 p-8 sm:p-12 backdrop-blur-xl shadow-2xl"
+        className="relative z-10 w-full"
         aria-label={t("formTitle")}
       >
         <div className="flex items-center gap-3 mb-6">

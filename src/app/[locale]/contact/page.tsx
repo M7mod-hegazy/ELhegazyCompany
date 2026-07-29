@@ -103,7 +103,7 @@ function ContactChannels() {
 
   return (
     <div className="relative z-10 mx-auto max-w-3xl px-6 pb-24">
-      <div className="rounded-3xl border border-brass/20 bg-ink-800/60 p-8 backdrop-blur-xl shadow-2xl">
+      <div className="w-full">
         <div className="flex items-center gap-3 mb-6">
           <span className="h-px w-8 bg-brass/40" />
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-brass font-semibold">
@@ -116,7 +116,7 @@ function ContactChannels() {
             href={whatsappHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-2xl border border-brass/25 bg-ink-900/60 p-6 transition-all hover:border-brass hover:bg-brass/10 group"
+            className="rounded-none border-b border-brass/25 py-6 transition-all hover:border-brass group"
           >
             <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
               WhatsApp
@@ -129,7 +129,7 @@ function ContactChannels() {
           {/* Email */}
           <a
             href={`mailto:${siteConfig.contact.email}`}
-            className="rounded-2xl border border-brass/25 bg-ink-900/60 p-6 transition-all hover:border-brass hover:bg-brass/10 group"
+            className="rounded-none border-b border-brass/25 py-6 transition-all hover:border-brass group"
           >
             <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
               Email
