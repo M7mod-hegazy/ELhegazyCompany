@@ -51,7 +51,7 @@ export function AmbientFilm({
   const [painting, setPainting] = useState(false);
 
   const resolvedSrc = (isPortrait && srcPortrait ? srcPortrait : src) + "?v=3";
-  const resolvedPoster = (isPortrait && posterPortrait ? posterPortrait : poster) + "?v=3";
+  const resolvedPoster = isPortrait && posterPortrait ? posterPortrait : poster;
 
   /* ── Attach the source once permission is granted. ── */
   useEffect(() => {
