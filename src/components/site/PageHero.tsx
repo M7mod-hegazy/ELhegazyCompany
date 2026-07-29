@@ -88,10 +88,10 @@ export function PageHero({
       {videoKey && videoKey !== "none" && (
         <div ref={filmRef} className="parallax-layer absolute inset-0">
           <AmbientFilm
-            src={`/films/page-${videoKey}-v3.mp4`}
-            srcPortrait={`/films/page-${videoKey}-v3-portrait.mp4`}
-            poster={`/films/page-${videoKey}-v3.jpg`}
-            posterPortrait={`/films/page-${videoKey}-v3-portrait.jpg`}
+            src={`/films/page-${videoKey}-v4.mp4`}
+            srcPortrait={`/films/page-${videoKey}-v4-portrait.mp4`}
+            poster={`/films/page-${videoKey}-v4.jpg`}
+            posterPortrait={`/films/page-${videoKey}-v4-portrait.jpg`}
             className="absolute inset-0"
           />
         </div>
