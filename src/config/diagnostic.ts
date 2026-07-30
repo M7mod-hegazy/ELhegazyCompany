@@ -73,7 +73,7 @@ export const diagnosticOutcomes: Record<string, DiagnosticOutcome> = {
  *
  * Q1: shop situation — "1branch" | "multi" | "online" | "none"
  * Q2: biggest problem — "numbers" | "visibility" | "sellonline" | "all"
- * Q3: timing — "thismonth" | "3months" | "exploring"
+ * Q3: next step — "trial" (try it free first) | "call" (talk it through) | "now" (start immediately)
  */
 export const diagnosticRules: { match: string; outcome: string }[] = [
   // "All of them" → full suite regardless of other answers
@@ -94,12 +94,11 @@ export const diagnosticRules: { match: string; outcome: string }[] = [
   // Online only → ecommerce + marketing
   { match: "online-*-*",           outcome: "ecommerce-marketing" },
 
-  // Nothing yet + exploring → start with marketing
-  { match: "none-*-exploring",     outcome: "marketing-only" },
+  // Nothing yet + wants a free trial first → start with marketing (smaller commitment)
+  { match: "none-*-trial",        outcome: "marketing-only" },
 
-  // Nothing yet + urgent → full plan
-  { match: "none-*-thismonth",     outcome: "all" },
-  { match: "none-*-3months",       outcome: "all" },
+  // Nothing yet + wants a call or ready to start now → full plan
+  { match: "none-*-*",             outcome: "all" },
 
   // Fallback
   { match: "*-*-*",                outcome: "marketing-only" },

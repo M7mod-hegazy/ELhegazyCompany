@@ -7,11 +7,12 @@ import { getWorld } from "@/config/worlds";
 import { WorldShell } from "@/components/world/WorldShell";
 import { PlanButtons } from "@/components/world/PlanButtons";
 import { KineticStatement } from "@/components/world/KineticStatement";
-import { ProofBand } from "@/components/world/ProofBand";
+import { VideoWalkthrough } from "@/components/world/VideoWalkthrough";
 import { AbilitiesBento } from "@/components/world/AbilitiesBento";
 import { StoryChapter } from "@/components/world/StoryChapter";
-import { ModuleGallery } from "@/components/world/ModuleGallery";
+
 import { HorizontalFeatures } from "@/components/world/HorizontalFeatures";
+import { ModuleGallery } from "@/components/world/ModuleGallery";
 import { FeatureIndex } from "@/components/world/FeatureIndex";
 import { WorldProof } from "@/components/world/WorldProof";
 import {
@@ -59,7 +60,38 @@ export default async function PosWorldPage({ params }: Props) {
       />
       <KineticStatement worldKey={world.key} />
 
-      <ProofBand world={world} plate="page-pos" />
+      <VideoWalkthrough
+        title={t("videoTitle")}
+        subtitle={t("videoSub")}
+        chapterHeading={t("chapterHeading")}
+        videos={[
+          {
+            youtubeId: "YOUTUBE_ID_HERE",
+            labelAr: "النظام كامل",
+            labelEn: "Full system",
+          },
+          {
+            youtubeId: "YOUTUBE_ID_HERE",
+            labelAr: "المخزون والمبيعات",
+            labelEn: "Inventory & sales",
+          },
+          {
+            youtubeId: "YOUTUBE_ID_HERE",
+            labelAr: "التقارير والتحليلات",
+            labelEn: "Reports & analytics",
+          },
+        ]}
+        chapters={[
+          { time: "0:00", seconds: 0, labelAr: "المقدمة", labelEn: "Introduction" },
+          { time: "1:30", seconds: 90, labelAr: "واجهة البيع", labelEn: "POS interface" },
+          { time: "3:15", seconds: 195, labelAr: "إضافة منتج للفاتورة", labelEn: "Adding items to invoice" },
+          { time: "5:00", seconds: 300, labelAr: "طرق الدفع", labelEn: "Payment methods" },
+          { time: "6:45", seconds: 405, labelAr: "طباعة الفاتورة", labelEn: "Printing receipts" },
+          { time: "8:30", seconds: 510, labelAr: "إدارة المخزون", labelEn: "Inventory management" },
+          { time: "10:15", seconds: 615, labelAr: "تقارير المبيعات", labelEn: "Sales reports" },
+          { time: "12:00", seconds: 720, labelAr: "شاشة التقارير", labelEn: "Reports dashboard" },
+        ]}
+      />
       <TrustStrip worldKey={world.key} />
       <AbilitiesBento worldKey={world.key} />
       <BigNumbers worldKey={world.key} />

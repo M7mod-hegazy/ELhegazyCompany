@@ -10,7 +10,7 @@ import { formatNum } from "@/lib/num";
 
 const Q1_VALUES = ["1branch", "multi", "online", "none"] as const;
 const Q2_VALUES = ["numbers", "visibility", "sellonline", "all"] as const;
-const Q3_VALUES = ["thismonth", "3months", "exploring"] as const;
+const Q3_VALUES = ["trial", "call", "now"] as const;
 
 type State =
   | { step: 0; q1: null; q2: null; q3: null }
@@ -82,24 +82,13 @@ export function DiagnosticSection() {
       className="relative isolate overflow-hidden py-24 sm:py-28"
       aria-labelledby="diagnostic-title"
     >
-      {/* Grounding surface: plaster texture, dimmed to a wall rather than a
-          flat black void, with a brass wash from the top corner. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 -z-10 bg-ink-900"
-        style={{
-          backgroundImage: "url(/bg/backdrop.jpg)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.16,
-        }}
-      />
+      {/* A soft brass wash grounds the quiz panel — no separate opaque plaster
+          layer competing with the shared page-wide atmosphere underneath. */}
       <div
         aria-hidden
         className="absolute inset-0 -z-10"
         style={{
-          background:
-            "radial-gradient(ellipse 60% 50% at 12% 0%, rgba(201,168,106,0.11) 0%, transparent 70%), linear-gradient(to bottom, rgba(10,10,11,0.55), rgba(10,10,11,0.9))",
+          background: "radial-gradient(ellipse 60% 50% at 12% 0%, rgba(201,168,106,0.14) 0%, transparent 70%)",
         }}
       />
 
@@ -211,8 +200,8 @@ function DiagnosticResult({
     t("q2.a4")
   );
   const q3Label = (
-    state.q3 === "thismonth"  ? t("q3.a1") :
-    state.q3 === "3months"    ? t("q3.a2") :
+    state.q3 === "trial" ? t("q3.a1") :
+    state.q3 === "call"  ? t("q3.a2") :
     t("q3.a3")
   );
 
@@ -225,10 +214,17 @@ function DiagnosticResult({
   const waHref = `https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(waText)}`;
 
   // Primary product page
+  const primaryProduct = outcome.products[0];
   const productHref =
-    outcome.products[0] === "pos" ? "/products/pos" :
-    outcome.products[0] === "ecommerce" ? "/products/ecommerce" :
+    primaryProduct === "pos" ? "/products/pos" :
+    primaryProduct === "ecommerce" ? "/products/ecommerce" :
     "/services/marketing";
+
+  // A free trial only exists for POS and the online store, and only reads well
+  // when there's one clear product to try — not a bundle of two or three.
+  const showTrialCta =
+    state.q3 === "trial" && outcome.products.length === 1 && primaryProduct !== "marketing";
+  const trialHref = `${productHref}#pricing`;
 
   return (
     <m.div
@@ -276,14 +272,26 @@ function DiagnosticResult({
           </div>
         </div>
 
-        {/* Actions */}
+        {/* Actions — asked for a free trial → that's the primary action. */}
         <div className="mt-8 flex flex-wrap gap-4">
+          {showTrialCta && (
+            <Link
+              href={trialHref}
+              className="bg-brass px-6 py-3 font-mono text-sm font-semibold text-ink-900 transition-opacity hover:opacity-90"
+            >
+              {t("ctaTrial", { product: productNames })}
+            </Link>
+          )}
           {/* WhatsApp — must be a real <a>, not window.open. iOS blocks the latter. */}
           <a
             href={waHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-brass px-6 py-3 font-mono text-sm font-semibold text-ink-900 transition-opacity hover:opacity-90"
+            className={
+              showTrialCta
+                ? "border border-brass/30 px-6 py-3 font-mono text-sm text-bone transition-colors hover:border-brass/60"
+                : "bg-brass px-6 py-3 font-mono text-sm font-semibold text-ink-900 transition-opacity hover:opacity-90"
+            }
           >
             {t("ctaWhatsapp")}
           </a>

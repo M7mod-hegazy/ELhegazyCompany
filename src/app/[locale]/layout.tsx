@@ -8,7 +8,7 @@ import {
   Inter,
 } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/config/site";
@@ -85,6 +85,7 @@ export default async function LocaleLayout({ children, params }: Props) {
     notFound();
   }
   setRequestLocale(locale);
+  const messages = await getMessages();
   const dir = locale === "ar" ? "rtl" : "ltr";
 
   return (
@@ -96,7 +97,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       {/* NOTE: body is intentionally transparent (ink lives on <html>) so the
           fixed -z-10 3D stage isn't hidden behind the body background. */}
       <body suppressHydrationWarning className="min-h-full flex flex-col text-bone">
-        <NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>
           <MotionProvider>
             <SmoothScroll>
               <Navbar />

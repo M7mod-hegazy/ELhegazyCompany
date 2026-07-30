@@ -271,8 +271,16 @@
   },
   "Footer": {
     "blurb": "A creative & digital agency born from real commerce — we craft brands, launch campaigns, and build stores.",
+    "ctaTitle": "Ready to start your project?",
+    "ctaSub": "Tell us about your business and we'll come back with a clear plan and a clear price.",
     "explore": "Explore",
+    "services": "Services",
+    "products": "Products",
+    "company": "Company",
     "contact": "Contact",
+    "follow": "Follow us",
+    "location": "Cairo, Egypt",
+    "hours": "Every day, 9am – 10pm",
     "madeBy": "Crafted with care in Egypt"
   },
   "Stats": {
@@ -282,7 +290,10 @@
     "years": "Years of craft"
   },
   "Marquee": {
-    "title": "Brands we're proud to work with"
+    "kicker": "Brands we're proud to work with",
+    "title": "Numbers, not promises",
+    "subtitle": "From the first campaign to today — this is real work, not a pitch.",
+    "cta": "See our work"
   },
   "Common": {
     "details": "Details",
@@ -694,7 +705,9 @@
           "waCta": "Order the full version"
         }
       },
-      "proofTitle": "The system in numbers, not promises"
+      "videoTitle": "See the system for yourself",
+      "videoSub": "A full video walkthrough of the POS system — from invoicing to reports",
+      "chapterHeading": "Jump to a specific part"
     },
     "ecommerce": {
       "kicker": "E-commerce · Online Store",
@@ -1078,7 +1091,9 @@
           "waCta": "Order your full store"
         }
       },
-      "proofTitle": "Stores actually running, not demos"
+      "videoTitle": "See the store in action",
+      "videoSub": "A full video walkthrough of the e-commerce system — from products to checkout to analytics",
+      "chapterHeading": "Jump to a specific part"
     }
   },
   "Film": {
@@ -1366,17 +1381,18 @@
       "a4": "All three"
     },
     "q3": {
-      "question": "When do you want to start?",
-      "a1": "This month",
-      "a2": "Within 3 months",
-      "a3": "Just exploring"
+      "question": "What would you like to do now?",
+      "a1": "Try the product free first",
+      "a2": "Have someone call and explain",
+      "a3": "Start right away"
     },
+    "ctaTrial": "Try {product} free",
     "products": {
       "pos": "POS system",
       "ecommerce": "Online store",
       "marketing": "Digital marketing"
     },
-    "waMessage": "Hi, I answered the questions on your site:\n• I have: {q1}\n• The problem: {q2}\n• I want to start: {q3}\nSuggested: {products}"
+    "waMessage": "Hi, I answered the questions on your site:\n• I have: {q1}\n• The problem: {q2}\n• Next step: {q3}\nSuggested: {products}"
   },
   "Counter": {
     "kicker": "Behind the counter",
@@ -1419,13 +1435,15 @@
       "seal": "The ElHegazi seal"
     },
     "body": "Your till, your store, and your ads — one system, one team. Nothing runs on its own, and no number goes missing.",
-    "hint": "Tap any object to see who makes it"
+    "hint": "Tap any object to see who makes it",
+    "details": "Details"
   },
   "Projects": {
     "kicker": "Our projects",
     "title": "The work speaks",
     "subtitle": "Every project here we built ourselves, from day one to going live.",
     "allFilter": "All",
+    "exploreHint": "Tap any project to see the details and numbers",
     "categories": {
       "pos": "POS",
       "ecommerce": "E-commerce",
@@ -1438,6 +1456,7 @@
     "pagerNext": "Next",
     "actionDetails": "Details",
     "actionVisit": "Visit the site",
+    "close": "Close",
     "selectedTitle": "Selected work",
     "seeAll": "See all projects",
     "empty": "We're still putting the gallery together. Message us on WhatsApp and we'll show you the work right away.",
@@ -1488,42 +1507,59 @@
     "hours": "Every day, 9am – 10pm",
     "briefTitle": "Let's start"
   },
-  "Day": {
-    "kicker": "A day in your shop",
-    "title": "Watch the system work with you, hour by hour",
-    "body": "Not our internal phases — your actual day behind the counter, and what happens on its own while you get on with it.",
-    "hint": "Pick any hour",
-    "hours": {
-      "open": {
-        "time": "9 AM",
-        "label": "Opening up",
-        "does": "You open the shift and count the drawer; the system reconciles expected against actual before the first sale.",
-        "tool": "POS — shifts & treasury"
-      },
-      "rush": {
-        "time": "12 PM",
-        "label": "The rush",
-        "does": "Barcode scanning and split payments keep running even if the internet drops. No sale is ever lost.",
-        "tool": "POS — fully offline"
-      },
-      "delivery": {
-        "time": "3 PM",
-        "label": "An online order",
-        "does": "Someone buys from your store at home. It lands against the same stock instantly — nobody re-types it.",
-        "tool": "E-commerce — shared inventory"
-      },
-      "shift": {
-        "time": "6 PM",
-        "label": "Shift change",
-        "does": "The shift closes on a count and the next one opens on clean numbers. Everyone owns what they sold.",
-        "tool": "POS — shift handover"
-      },
-      "close": {
-        "time": "11 PM",
-        "label": "Closing",
-        "does": "The full day reaches you: sales, profit, best seller, and what is about to run out.",
-        "tool": "Reports + WhatsApp"
-      }
+  "Compare": {
+    "kicker": "Before & after",
+    "title": "See the difference for yourself",
+    "body": "Same counter, two different ways to run it.",
+    "beforeLabel": "Before",
+    "beforePoints": [
+      "Forget to log a sale",
+      "Nobody knows who sold what",
+      "A stock count eats a whole day",
+      "The numbers live in your head"
+    ],
+    "afterLabel": "With ElHegazi",
+    "afterPoints": [
+      "Every sale logs itself",
+      "Know who sold what, instantly",
+      "Stock count in one tap",
+      "A full report every night"
+    ],
+    "mockHeader": "Shift close",
+    "mockItem1": "Turkish coffee × 2",
+    "mockItem2": "Wood chair",
+    "mockTotal": "Total",
+    "mockToast": "Shift closed — actual matches expected",
+    "cta": "Start the switch now",
+    "ctaWhatsapp": "Message us on WhatsApp"
+  },
+  "ProblemFix": {
+    "kicker": "No runaround",
+    "title": "The problem, and the fix right next to it",
+    "body": "No guessing needed. These are the problems we hear from shop owners every day, and what actually fixes them.",
+    "problemLabel": "The problem",
+    "fixLabel": "The fix",
+    "rows": [
+      { "problem": "You forget to log a sale mid-rush", "fix": "Barcode scan in one second" },
+      { "problem": "You don't know who sold what today", "fix": "A live sales dashboard" },
+      { "problem": "Online orders don't match your stock", "fix": "One shared inventory, online and off" },
+      { "problem": "A stock count eats a whole day", "fix": "A physical count in one tap" },
+      { "problem": "Nobody follows up after the first sale", "fix": "WhatsApp CRM and ready campaigns" }
+    ],
+    "cta": "Tell us your problem"
+  },
+  "Capabilities": {
+    "kicker": "Not just what we sell",
+    "title": "We also build custom projects and websites",
+    "body": "Got a company or a brand and need a website, an identity, or content? That's our work too, built in-house — not just POS and store systems.",
+    "cta": "See every kind of work we do",
+    "items": {
+      "companySites": "Company websites",
+      "portfolios": "Portfolios",
+      "brand": "Brand identity",
+      "video": "Video & motion",
+      "webApps": "Web apps",
+      "landingPages": "Landing pages"
     }
   }
 }

@@ -1,38 +1,39 @@
 "use client";
 
 import { useRef } from "react";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
 /**
- * A full-screen pinned statement moment. The line is revealed word-by-word,
- * scrubbed by scroll — a big cinematic beat between sections.
+ * A statement beat between sections. The line reveals word-by-word as it
+ * enters view. Previously pinned for 220vh of scroll-scrubbing — on a
+ * touchpad or a smoothed scroller that read as the page "getting stuck" on
+ * one sentence. It's a quick 60vh pass now: still a beat, not a hostage.
  */
 export function KineticStatement({ worldKey }: { worldKey: string }) {
   const t = useTranslations(`Worlds.${worldKey}`);
   const ref = useRef<HTMLDivElement>(null);
   const words = t("statement").split(" ");
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "start 0.25"] });
 
   return (
-    <section ref={ref} className="relative h-[220vh]">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(60% 60% at 50% 50%, color-mix(in oklab, var(--world-accent,#C9A86A) 12%, transparent), transparent 70%)",
-          }}
-        />
-        <p className="font-display relative mx-auto max-w-5xl px-6 text-center text-4xl font-semibold leading-[1.15] sm:text-6xl lg:text-7xl">
-          {words.map((w, i) => {
-            const start = i / words.length;
-            const end = (i + 1) / words.length;
-            return <Word key={i} progress={scrollYProgress} range={[start, end]} text={w} />;
-          })}
-        </p>
-      </div>
+    <section ref={ref} className="relative flex min-h-[60vh] items-center overflow-hidden py-20 sm:py-28">
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(60% 60% at 50% 50%, color-mix(in oklab, var(--world-accent,#C9A86A) 12%, transparent), transparent 70%)",
+        }}
+      />
+      <p className="font-display relative mx-auto max-w-5xl px-6 text-center text-4xl font-semibold leading-[1.15] sm:text-6xl lg:text-7xl">
+        {words.map((w, i) => {
+          const start = reduced ? 0 : i / words.length;
+          const end = reduced ? 0 : (i + 1) / words.length;
+          return <Word key={i} progress={scrollYProgress} range={[start, end]} text={w} reduced={!!reduced} />;
+        })}
+      </p>
     </section>
   );
 }
@@ -41,13 +42,18 @@ function Word({
   progress,
   range,
   text,
+  reduced,
 }: {
   progress: ReturnType<typeof useScroll>["scrollYProgress"];
   range: [number, number];
   text: string;
+  reduced: boolean;
 }) {
-  const opacity = useTransform(progress, range, [0.12, 1]);
+  const opacity = useTransform(progress, range, [0.25, 1]);
   const color = useTransform(progress, range, ["#4a463d", "#EDE7DA"]);
+  if (reduced) {
+    return <span className="inline-block text-bone">{text} </span>;
+  }
   return (
     <>
       <m.span style={{ opacity, color }} className="inline-block">

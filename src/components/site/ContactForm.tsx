@@ -102,11 +102,11 @@ export function ContactForm() {
 
   /* ── Render ─────────────────────────────────────────────────── */
   return (
-    <div id="contact-form" className="relative mx-auto max-w-3xl px-6 py-16 scroll-mt-24">
+    <div id="contact-form" className="relative w-full scroll-mt-24">
       <form
         onSubmit={handleSubmit}
         noValidate
-        className="relative z-10 w-full"
+        className="relative z-10 w-full rounded-2xl border border-brass/15 bg-ink-900/70 p-6 backdrop-blur-md sm:p-8"
         aria-label={t("formTitle")}
       >
         <div className="flex items-center gap-3 mb-6">

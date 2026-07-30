@@ -43,16 +43,8 @@ export function Navbar() {
 
   useMotionValueEvent(scrollYProgress, "change", (p) => {
     if (progressRef.current) progressRef.current.style.transform = `scaleX(${p})`;
+    if (headerRef.current) headerRef.current.classList.toggle("scrolled", p > 0.02);
   });
-
-  useEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
-    const onScroll = () => el.classList.toggle("scrolled", window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";

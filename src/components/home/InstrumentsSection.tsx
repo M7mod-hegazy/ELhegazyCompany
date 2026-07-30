@@ -101,11 +101,14 @@ export function InstrumentsSection() {
 
   return (
     <>
-      {/* ── Desktop: sticky stacking ── */}
+      {/* ── Desktop: sticky stacking ──
+          320vh previously — three screens of wheel-scrolling pinned in place
+          before the page moved again, which read as the scroll getting stuck.
+          180vh still gives each panel its own stretch of scroll to land on. */}
       <div
         ref={trackRef}
         className="relative hidden sm:block"
-        style={{ height: "320vh" }}
+        style={{ height: "180vh" }}
         aria-label={t("title")}
       >
         <div className="sticky top-0 h-svh overflow-hidden">
@@ -151,9 +154,9 @@ function PanelPlate({ panelKey, t }: { panelKey: PanelKey; t: PanelProps["t"] })
     <div className="absolute inset-0 overflow-hidden">
       <ParallaxImage
         src={`/films/${PANEL_PLATE[panelKey]}.jpg`}
-        travel={10}
+        travel={20}
         scale={1.05}
-        quality={80}
+        quality={85}
         sizes="(max-width: 640px) 100vw, 50vw"
         className="absolute inset-0 overflow-hidden"
       />
@@ -212,13 +215,13 @@ function PanelCopy({ panelKey, num, t }: PanelProps) {
         ))}
       </ul>
 
-      {/* No arrow glyph: a hardcoded → points backwards in RTL. */}
+      {/* A real button, not a text link — this is the one action the panel
+          exists to drive, so it should look like it. */}
       <Link
         href={PANEL_HREF[panelKey]}
-        className="group inline-flex flex-col self-start font-mono text-xs text-brass"
+        className="inline-flex w-fit items-center gap-2 self-start bg-brass px-6 py-3 font-mono text-xs font-semibold text-ink-900 transition-colors hover:bg-brass-hi"
       >
         {t("details")}
-        <span aria-hidden className="rail-underline mt-1 h-px w-full bg-brass" />
       </Link>
     </>
   );
@@ -241,7 +244,14 @@ const PanelDesktop = React.forwardRef<HTMLDivElement, PanelProps>(
         />
       </div>
 
-      <div className="flex flex-col justify-center px-10 py-16 lg:px-16">
+      <div className="relative flex flex-col justify-center px-10 py-16 lg:px-16">
+        {/* Accent glow — the copy half was flat opaque black; this ties it to
+            the panel's own colour instead of reading as a dead zone. */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -end-24 top-1/3 -z-10 h-72 w-72 rounded-full opacity-[0.14] blur-[100px]"
+          style={{ background: PANEL_ACCENTS[panelKey] }}
+        />
         <PanelCopy panelKey={panelKey} num={num} t={t} />
       </div>
     </div>

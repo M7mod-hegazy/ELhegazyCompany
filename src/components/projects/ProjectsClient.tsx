@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { m, AnimatePresence, useReducedMotion } from "framer-motion";
-import { ExpandingPanels } from "./ExpandingPanels";
+import { ProjectsGrid } from "./ProjectsGrid";
 import { getProjectCategories, type Project, type ProjectCategory } from "@/config/projects";
 import { formatOrdinal } from "@/lib/num";
 
@@ -16,7 +16,7 @@ type Props = { projects: Project[] };
  * ProjectsClient — Phase 4.3 client shell.
  *
  * Owns: category filter state, pagination state.
- * Renders: filter rail (only when >2 categories used) → ExpandingPanels → pager.
+ * Renders: filter rail (only when >2 categories used) → ProjectsGrid → pager.
  *
  * Filter + page changes do NOT navigate — they swap the visible slice in memory.
  * After a page change, scrolls to the top of the panels.
@@ -53,30 +53,33 @@ export function ProjectsClient({ projects }: Props) {
 
   return (
     <section className="relative" aria-label={t("title")}>
-      {/* Filter rail */}
-      {showFilterRail && (
-        <div
-          className="mx-auto flex max-w-7xl flex-wrap gap-2 px-6 py-8"
-          role="group"
-          aria-label={t("allFilter")}
-        >
-          <FilterChip
-            label={t("allFilter")}
-            active={activeCategory === "all"}
-            onClick={() => handleCategoryChange("all")}
-          />
-          {usedCategories.map((cat) => (
+      {/* Filter rail + explore hint */}
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-6 py-8">
+        {showFilterRail ? (
+          <div className="flex flex-wrap gap-2" role="group" aria-label={t("allFilter")}>
             <FilterChip
-              key={cat}
-              label={t(`categories.${cat}`)}
-              active={activeCategory === cat}
-              onClick={() => handleCategoryChange(cat)}
+              label={t("allFilter")}
+              active={activeCategory === "all"}
+              onClick={() => handleCategoryChange("all")}
             />
-          ))}
-        </div>
-      )}
+            {usedCategories.map((cat) => (
+              <FilterChip
+                key={cat}
+                label={t(`categories.${cat}`)}
+                active={activeCategory === cat}
+                onClick={() => handleCategoryChange(cat)}
+              />
+            ))}
+          </div>
+        ) : (
+          <span />
+        )}
+        <p className="hidden font-mono text-xs uppercase tracking-[0.15em] text-brass/70 lg:block">
+          {t("exploreHint")}
+        </p>
+      </div>
 
-      {/* Panels */}
+      {/* Grid */}
       <div ref={panelsRef}>
         <AnimatePresence mode="wait">
           <m.div
@@ -86,7 +89,7 @@ export function ProjectsClient({ projects }: Props) {
             exit={prefersReduced ? {} : { opacity: 0 }}
             transition={{ duration: 0.3, ease }}
           >
-            <ExpandingPanels projects={visible} />
+            <ProjectsGrid projects={visible} />
           </m.div>
         </AnimatePresence>
       </div>

@@ -82,7 +82,7 @@ export function PageHero({
     <section
       ref={sectionRef}
       aria-label={title}
-      className={`relative h-[100svh] min-h-[100svh] w-full overflow-hidden flex flex-col justify-between ${!videoKey || videoKey === "none" ? "bg-transparent" : "bg-ink-900"} ${className}`}
+      className={`relative w-full overflow-hidden flex flex-col justify-between ${bridge ? "min-h-[100svh] h-auto pb-8" : "h-[100svh] min-h-[100svh]"} ${!videoKey || videoKey === "none" ? "bg-transparent" : "bg-ink-900"} ${className}`}
     >
       {/* ── 1. Full-screen Video Background (AmbientFilm) ── */}
       {videoKey && videoKey !== "none" && (

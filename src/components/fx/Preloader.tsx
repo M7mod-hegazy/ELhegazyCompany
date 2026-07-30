@@ -26,10 +26,15 @@ const FADE_MS = 520;
  *
  * SSR renders nothing; the panel mounts on the client only if this session has
  * not seen it, so there is no flash for returning visitors.
+ *
+ * `active` always starts `false` so the first client render matches the
+ * server render exactly — sessionStorage is read in an effect (client-only,
+ * post-hydration) rather than in a lazy `useState` initialiser. The initialiser
+ * ran during hydration too, on a session where sessionStorage said "first
+ * visit", so the client's very first paint already showed the full-screen
+ * panel while the server had rendered nothing — a hydration mismatch that
+ * crashed and remounted the whole tree.
  */
-/** Reads and claims the once-per-session slot. Runs during the lazy state
- *  initialiser, which only happens on the client — this component is imported
- *  with `ssr: false`, so there is no server render to mismatch. */
 function claimIntroSlot(): boolean {
   try {
     if (sessionStorage.getItem(SESSION_KEY) === "1") return false;
@@ -41,9 +46,17 @@ function claimIntroSlot(): boolean {
 }
 
 export function Preloader() {
-  const [active, setActive] = useState(claimIntroSlot);
+  const [active, setActive] = useState(false);
   const [pct, setPct] = useState(0);
   const doneRef = useRef(false);
+
+  useEffect(() => {
+    // One-time client-only read (sessionStorage) after mount, deliberately —
+    // this is the only safe place to make this check without diverging from
+    // the server's render.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (claimIntroSlot()) setActive(true);
+  }, []);
 
   useEffect(() => {
     if (!active) return;

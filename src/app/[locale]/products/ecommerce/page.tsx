@@ -7,7 +7,7 @@ import { getWorld } from "@/config/worlds";
 import { EcommerceShell } from "@/components/world/EcommerceShell";
 import { PlanButtons } from "@/components/world/PlanButtons";
 import { KineticStatement } from "@/components/world/KineticStatement";
-import { ProofBand } from "@/components/world/ProofBand";
+import { VideoWalkthrough } from "@/components/world/VideoWalkthrough";
 import { EcommerceAbilitiesBento } from "@/components/world/EcommerceAbilitiesBento";
 import { StoryChapter } from "@/components/world/StoryChapter";
 import { ModuleGallery } from "@/components/world/ModuleGallery";
@@ -58,7 +58,38 @@ export default async function EcommerceWorldPage({ params }: Props) {
       />
       <KineticStatement worldKey={world.key} />
       <LiveStoreBand worldKey={world.key} href={world.externalHref} />
-      <ProofBand world={world} plate="page-ecommerce" />
+      <VideoWalkthrough
+        title={t("videoTitle")}
+        subtitle={t("videoSub")}
+        chapterHeading={t("chapterHeading")}
+        videos={[
+          {
+            youtubeId: "YOUTUBE_ID_HERE",
+            labelAr: "المتجر كامل",
+            labelEn: "Full store",
+          },
+          {
+            youtubeId: "YOUTUBE_ID_HERE",
+            labelAr: "المنتجات والكتالوج",
+            labelEn: "Products & catalog",
+          },
+          {
+            youtubeId: "YOUTUBE_ID_HERE",
+            labelAr: "الطلبات والشحن",
+            labelEn: "Orders & shipping",
+          },
+        ]}
+        chapters={[
+          { time: "0:00", seconds: 0, labelAr: "المقدمة", labelEn: "Introduction" },
+          { time: "1:30", seconds: 90, labelAr: "واجهة المتجر", labelEn: "Storefront" },
+          { time: "3:15", seconds: 195, labelAr: "إدارة المنتجات", labelEn: "Product management" },
+          { time: "5:00", seconds: 300, labelAr: "سلة التسوق والدفع", labelEn: "Cart & checkout" },
+          { time: "6:45", seconds: 405, labelAr: "طرق الدفع والشحن", labelEn: "Payment & shipping" },
+          { time: "8:30", seconds: 510, labelAr: "لوحة التحكم", labelEn: "Owner dashboard" },
+          { time: "10:15", seconds: 615, labelAr: "التقارير والتحليلات", labelEn: "Reports & analytics" },
+          { time: "12:00", seconds: 720, labelAr: "تطبيق الموبايل", labelEn: "Mobile app" },
+        ]}
+      />
       <TrustStrip worldKey={world.key} />
       <EcommerceAbilitiesBento worldKey={world.key} />
       <BigNumbers worldKey={world.key} />

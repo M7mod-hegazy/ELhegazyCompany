@@ -1,7 +1,7 @@
 /**
  * Brand design tokens as typed values (the CSS-var counterparts live in
- * globals.css @theme). Use these where JS needs the raw values: Three.js
- * materials, canvas, framer-motion, dynamic styles.
+ * globals.css @theme). Use these where JS needs the raw values: canvas,
+ * framer-motion, dynamic styles.
  */
 
 export const brand = {

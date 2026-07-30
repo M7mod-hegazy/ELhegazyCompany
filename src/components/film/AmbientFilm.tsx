@@ -50,7 +50,7 @@ export function AmbientFilm({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [painting, setPainting] = useState(false);
 
-  const resolvedSrc = (isPortrait && srcPortrait ? srcPortrait : src) + "?v=3";
+  const resolvedSrc = (isPortrait && srcPortrait ? srcPortrait : src) + "?v=4";
   const resolvedPoster = isPortrait && posterPortrait ? posterPortrait : poster;
 
   /* ── Attach the source once permission is granted. ── */

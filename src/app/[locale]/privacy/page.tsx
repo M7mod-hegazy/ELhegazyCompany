@@ -2,6 +2,7 @@ import { use } from "react";
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { LegalContent } from "@/components/site/LegalContent";
+import { CtaBand } from "@/components/site/CtaBand";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -14,5 +15,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default function PrivacyPage({ params }: Props) {
   const { locale } = use(params);
   setRequestLocale(locale);
-  return <LegalContent ns="privacy" />;
+  return (
+    <>
+      <LegalContent ns="privacy" />
+      <CtaBand />
+    </>
+  );
 }

@@ -34,8 +34,8 @@ export function ProofBand({
         <ParallaxImage
           src={`/films/${plate}.jpg`}
           srcPortrait={`/films/${plate}-portrait.jpg`}
-          travel={18}
-          scale={1.06}
+          travel={28}
+          scale={1.07}
           quality={82}
           className="absolute inset-0 overflow-hidden"
         />

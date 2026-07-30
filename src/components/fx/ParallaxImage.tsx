@@ -23,6 +23,8 @@ export type ParallaxImageProps = {
   className?: string;
   /** Object position, e.g. "center 60%". */
   objectPosition?: string;
+  /** Optional CSS filter, e.g. "grayscale(0.6) brightness(0.85)". */
+  filter?: string;
 };
 
 /**
@@ -40,13 +42,14 @@ export function ParallaxImage({
   src,
   srcPortrait,
   alt = "",
-  travel = 18,
-  scale = 1,
+  travel = 28,
+  scale = 1.05,
   priority = false,
   quality = 82,
   sizes = "100vw",
   className,
   objectPosition = "center",
+  filter,
 }: ParallaxImageProps) {
   const reduced = useReducedMotion();
   const hostRef = useRef<HTMLDivElement>(null);
@@ -83,7 +86,7 @@ export function ParallaxImage({
           quality={quality}
           priority={priority}
           className={srcPortrait ? "portrait:hidden" : undefined}
-          style={{ objectFit: "cover", objectPosition }}
+          style={{ objectFit: "cover", objectPosition, filter }}
         />
         {srcPortrait && (
           <Image

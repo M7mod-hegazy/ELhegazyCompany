@@ -2,8 +2,7 @@ import type { CSSProperties } from "react";
 import { use } from "react";
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import { useTranslations, useLocale } from "next-intl";
-import { PageHero } from "@/components/site/PageHero";
+import { useTranslations } from "next-intl";
 import { ContactForm } from "@/components/site/ContactForm";
 import { WorldAtmosphere } from "@/components/world/WorldAtmosphere";
 import { siteConfig } from "@/config/site";
@@ -50,11 +49,19 @@ export default function ContactPage({ params }: Props) {
         <div className="absolute inset-0 bg-ink-900/80" />
       </div>
 
-      <div className="relative z-10 pt-32 sm:pt-40 pb-16">
-        <ContactHeader />
+      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-24 pt-32 sm:pt-40">
         <WorldAtmosphere transparent={true} />
-        <ContactForm />
-        <ContactChannels />
+
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+          {/* ── Left: header + direct channels ── */}
+          <div className="flex flex-col">
+            <ContactHeader />
+            <ContactChannels />
+          </div>
+
+          {/* ── Right: the form, contained in its own card ── */}
+          <ContactForm />
+        </div>
       </div>
     </main>
   );
@@ -66,22 +73,22 @@ function ContactHeader() {
   const whatsappHref = `https://wa.me/${siteConfig.contact.whatsapp}`;
 
   return (
-    <div className="mx-auto max-w-3xl px-6 mb-12 text-center sm:text-start">
+    <div className="mb-10">
       <p className="mb-4 font-mono text-sm uppercase tracking-[0.2em] text-brass">
         {t("kicker")}
       </p>
-      <h1 className="mb-6 font-display text-5xl font-medium tracking-tight text-bone sm:text-7xl">
+      <h1 className="mb-5 font-display text-4xl font-medium tracking-tight text-bone sm:text-6xl">
         {t("title")}
       </h1>
-      <p className="mb-8 max-w-xl text-lg text-bone-muted sm:text-xl">
+      <p className="mb-7 max-w-md text-lg leading-relaxed text-bone-muted">
         {t("subtitle")}
       </p>
-      <div className="flex flex-wrap justify-center sm:justify-start gap-3">
+      <div className="flex flex-wrap gap-3">
         <a
           href="#contact-form"
           className="bg-brass px-7 py-3.5 font-mono text-sm font-semibold text-ink-900 transition-all hover:bg-brass-hi rounded-full hover:-translate-y-0.5"
         >
-          {t("title")}
+          {t("formTitle")}
         </a>
         <a
           href={whatsappHref}
@@ -96,54 +103,51 @@ function ContactHeader() {
   );
 }
 
-/* ── Direct channels strip ─────────────────────────────────────────── */
+/* ── Direct channels — always-visible cards, not link rows. ── */
 function ContactChannels() {
   const t = useTranslations("Contact");
-  const locale = useLocale() as "ar" | "en";
   const whatsappHref = `https://wa.me/${siteConfig.contact.whatsapp}`;
 
   return (
-    <div className="relative z-10 mx-auto max-w-3xl px-6 pb-24">
-      <div className="w-full">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="h-px w-8 bg-brass/40" />
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-brass font-semibold">
-            {t("channelsTitle")}
-          </p>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {/* WhatsApp */}
-          <a
-            href={whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-none border-b border-brass/25 py-6 transition-all hover:border-brass group"
-          >
-            <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
-              WhatsApp
-            </span>
-            <p className="mt-2 text-lg font-semibold text-bone" dir="ltr">
-              {siteConfig.contact.phoneDisplay}
-            </p>
-          </a>
-
-          {/* Email */}
-          <a
-            href={`mailto:${siteConfig.contact.email}`}
-            className="rounded-none border-b border-brass/25 py-6 transition-all hover:border-brass group"
-          >
-            <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
-              Email
-            </span>
-            <p className="mt-2 text-lg font-semibold text-bone" dir="ltr">
-              {siteConfig.contact.email}
-            </p>
-          </a>
-        </div>
-
-        {/* Hours */}
-        <p className="mt-6 font-mono text-xs text-bone-muted text-center sm:text-start">{t("hours")}</p>
+    <div className="mt-auto pt-8">
+      <div className="flex items-center gap-3 mb-5">
+        <span className="h-px w-8 bg-brass/40" />
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-brass font-semibold">
+          {t("channelsTitle")}
+        </p>
       </div>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {/* WhatsApp */}
+        <a
+          href={whatsappHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group rounded-xl border border-brass/20 bg-ink-900/60 p-5 transition-all hover:border-brass/50 hover:bg-ink-900/80"
+        >
+          <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
+            WhatsApp
+          </span>
+          <p className="mt-2 text-lg font-semibold text-bone" dir="ltr">
+            {siteConfig.contact.phoneDisplay}
+          </p>
+        </a>
+
+        {/* Email */}
+        <a
+          href={`mailto:${siteConfig.contact.email}`}
+          className="group rounded-xl border border-brass/20 bg-ink-900/60 p-5 transition-all hover:border-brass/50 hover:bg-ink-900/80"
+        >
+          <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
+            Email
+          </span>
+          <p className="mt-2 text-lg font-semibold text-bone" dir="ltr">
+            {siteConfig.contact.email}
+          </p>
+        </a>
+      </div>
+
+      {/* Hours */}
+      <p className="mt-5 font-mono text-xs text-bone-muted">{t("hours")}</p>
     </div>
   );
 }

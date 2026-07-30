@@ -42,7 +42,7 @@ export function CounterSection() {
     const layer = layerRef.current;
     if (!layer || reduced) return;
     // Image is 130% tall; travel the spare 30% across the full pass.
-    const travel = (p - 0.5) * -22; // −11% … +11% of section height
+    const travel = (p - 0.5) * -28; // −14% … +14% of section height
     layer.style.transform = `translate3d(0, ${travel}%, 0)`;
   });
 
@@ -147,15 +147,21 @@ function Hotspot({
         onMouseLeave={() => setOpen(false)}
         className="relative grid h-11 w-11 place-items-center"
       >
-        <span
-          aria-hidden
-          className="seal-round absolute h-7 w-7 border border-brass/50 motion-safe:animate-ping"
-          style={{ animationDuration: "2.6s" }}
-        />
         <span className="seal-round relative grid h-5 w-5 place-items-center border border-brass bg-ink-900/90">
           <span className="seal-round h-1.5 w-1.5 bg-brass" />
         </span>
       </button>
+
+      {/* Always-visible short label — the name shouldn't be locked behind a hover. */}
+      {!open && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute top-full mt-1.5 whitespace-nowrap border border-brass/20 bg-ink-900/80 px-2 py-1 font-mono text-[0.65rem] text-bone-muted"
+          style={flip ? { right: 0 } : { left: "50%", transform: "translateX(-50%)" }}
+        >
+          {title}
+        </span>
+      )}
 
       <div
         id={panelId}

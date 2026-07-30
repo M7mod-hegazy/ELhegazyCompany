@@ -1,21 +1,20 @@
 "use client";
 
-import { useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { useTranslations } from "next-intl";
-import { useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
-import Image from "next/image";
+import { Link } from "@/i18n/navigation";
+import { ParallaxImage } from "@/components/fx/ParallaxImage";
 
 /**
- * GridSection — parallax #2, "كل حاجة متوصلة".
+ * GridSection — "كل حاجة متوصلة".
  *
- * The specimen tray photograph is the section. Tapping any object names it and
- * draws a hairline to the world that makes it, in that world's accent colour.
- * The brass seal in the centre belongs to all three, so it draws three lines at
- * once — that is the payoff of the section.
- *
- * Hotspot and legend coordinates are percentages of the photograph's own 16:9
- * box, so the container keeps that aspect ratio at every width and the numbers
- * stay accurate without measurement.
+ * Was a photograph of a specimen tray where every object's name was hidden
+ * behind a hover/tap — nothing on the section was readable at a glance. Now a
+ * plain three-column breakdown: one column per world, its own items listed in
+ * the open, no interaction required to understand any of it. Each card carries
+ * its own icon, an accent glow, and a real button — not a text link — so the
+ * one action on the card (go see that product) is as easy to spot as the card
+ * itself.
  */
 
 type World = "pos" | "ecommerce" | "marketing";
@@ -26,52 +25,43 @@ const WORLD_ACCENT: Record<World, string> = {
   marketing: "var(--color-brass)",
 };
 
-/** x/y measured against the real photograph. */
-const OBJECTS: { id: string; x: number; y: number; worlds: World[] }[] = [
-  { id: "receipt", x: 22, y: 23, worlds: ["pos"] },
-  { id: "barcode", x: 41, y: 22, worlds: ["pos"] },
-  { id: "tape", x: 66, y: 25, worlds: ["pos"] },
-  { id: "phone", x: 82, y: 27, worlds: ["marketing"] },
-  { id: "adCard", x: 25, y: 64, worlds: ["marketing"] },
-  { id: "seal", x: 50, y: 49, worlds: ["pos", "ecommerce", "marketing"] },
-  { id: "chairLeg", x: 48, y: 76, worlds: ["ecommerce"] },
-  { id: "swatch", x: 76, y: 70, worlds: ["ecommerce"] },
-];
-
-const LEGEND: Record<World, { x: number; y: number }> = {
-  pos: { x: 22, y: 95 },
-  ecommerce: { x: 50, y: 95 },
-  marketing: { x: 78, y: 95 },
+const WORLD_HREF: Record<World, string> = {
+  pos: "/products/pos",
+  ecommerce: "/products/ecommerce",
+  marketing: "/services/marketing",
 };
+
+/** Each world's items, grouped for a plain list — no coordinates needed. */
+const WORLD_ITEMS: Record<World, string[]> = {
+  pos: ["receipt", "barcode", "tape"],
+  marketing: ["phone", "adCard"],
+  ecommerce: ["chairLeg", "swatch"],
+};
+
+const WORLDS: World[] = ["pos", "ecommerce", "marketing"];
 
 export function GridSection() {
   const t = useTranslations("Grid");
-  const reduced = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
-  const layerRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState<string | null>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  useMotionValueEvent(scrollYProgress, "change", (p) => {
-    const layer = layerRef.current;
-    if (!layer || reduced) return;
-    layer.style.transform = `translate3d(0, ${(p - 0.5) * -14}%, 0) scale(1.06)`;
-  });
-
-  const activeObj = OBJECTS.find((o) => o.id === active) ?? null;
-  const litWorlds = new Set<World>(activeObj?.worlds ?? []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden bg-ink-900 py-20 sm:py-28"
-      aria-labelledby="grid-heading"
-    >
-      <div className="mx-auto max-w-6xl px-6">
+    <section className="relative overflow-hidden bg-ink-900 py-20 sm:py-28" aria-labelledby="grid-heading">
+      {/* Atmosphere only — the photograph no longer carries the content, but it
+          still drifts on scroll like every other plate on the page. */}
+      <div aria-hidden className="absolute inset-0 -z-10">
+        <ParallaxImage
+          src="/bg/grid.jpg"
+          travel={24}
+          scale={1.08}
+          quality={60}
+          className="absolute inset-0 overflow-hidden"
+        />
+        <div
+          className="absolute inset-0"
+          style={{ background: "linear-gradient(to bottom, rgba(10,10,11,0.94) 0%, rgba(10,10,11,0.9) 100%)" }}
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-6xl px-6">
         <div className="mb-10 max-w-[38ch]">
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.28em] text-brass/80">
             {t("kicker")}
@@ -83,131 +73,104 @@ export function GridSection() {
             {t("title")}
           </h2>
           <p className="mt-4 leading-relaxed text-bone-muted">{t("body")}</p>
-          <p className="mt-5 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-brass/70">
-            {t("hint")}
-          </p>
         </div>
 
-        {/* ── The tray ── */}
-        <div className="relative isolate aspect-video w-full overflow-hidden border border-brass/15">
-          <div ref={layerRef} className="parallax-layer absolute inset-0">
-            <Image
-              src="/bg/grid.jpg"
-              alt={t("title")}
-              fill
-              sizes="(max-width: 1152px) 100vw, 1152px"
-              quality={84}
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-
-          {/* Connector lines. viewBox is 0–100 in both axes so the object and
-              legend percentages above can be used directly as coordinates. */}
-          <svg
-            aria-hidden
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            className="pointer-events-none absolute inset-0 h-full w-full"
-          >
-            {activeObj?.worlds.map((w) => (
-              <line
-                key={w}
-                x1={activeObj.x}
-                y1={activeObj.y}
-                x2={LEGEND[w].x}
-                y2={LEGEND[w].y}
-                stroke={WORLD_ACCENT[w]}
-                strokeWidth={0.22}
-                vectorEffect="non-scaling-stroke"
-                strokeDasharray="120"
-                strokeDashoffset="120"
-                style={{
-                  animation: reduced
-                    ? undefined
-                    : "gridConnector 420ms var(--ease-out-soft) forwards",
-                  strokeDashoffset: reduced ? 0 : undefined,
-                }}
-              />
-            ))}
-          </svg>
-
-          {/* Hotspots */}
-          {OBJECTS.map((o) => {
-            const isOn = active === o.id;
+        {/* ── One card per world — icon, items, and a real button. ── */}
+        <div className="grid gap-5 sm:grid-cols-3">
+          {WORLDS.map((w) => {
+            const accent = WORLD_ACCENT[w];
             return (
-              <button
-                key={o.id}
-                type="button"
-                aria-pressed={isOn}
-                onClick={() => setActive(isOn ? null : o.id)}
-                onMouseEnter={() => setActive(o.id)}
-                onFocus={() => setActive(o.id)}
-                className="absolute z-10 grid h-10 w-10 place-items-center"
-                style={{
-                  left: `${o.x}%`,
-                  top: `${o.y}%`,
-                  transform: "translate(-50%, -50%)",
-                }}
+              <div
+                key={w}
+                className="group relative flex flex-col overflow-hidden border border-brass/15 bg-ink-800/60 p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[color:var(--card-accent)]"
+                style={{ "--card-accent": accent } as CSSProperties}
               >
-                <span
-                  className="seal-round h-3 w-3 border transition-all duration-300"
-                  style={{
-                    borderColor: isOn
-                      ? WORLD_ACCENT[o.worlds[0]]
-                      : "color-mix(in srgb, var(--color-brass) 55%, transparent)",
-                    background: isOn ? WORLD_ACCENT[o.worlds[0]] : "transparent",
-                    transform: isOn ? "scale(1.5)" : "scale(1)",
-                  }}
+                {/* Corner glow — the card's own accent, not just a hairline. */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -end-10 -top-10 h-32 w-32 rounded-full opacity-25 blur-2xl transition-opacity duration-300 group-hover:opacity-45"
+                  style={{ background: accent }}
                 />
-                <span className="sr-only">{t(`objects.${o.id}`)}</span>
-              </button>
+
+                <div
+                  className="relative mb-5 grid h-11 w-11 place-items-center border"
+                  style={{ borderColor: accent, color: accent }}
+                >
+                  <WorldIcon world={w} />
+                </div>
+
+                <p
+                  className="relative mb-4 font-mono text-xs font-semibold uppercase tracking-[0.22em]"
+                  style={{ color: accent }}
+                >
+                  {t(`legend.${w}`)}
+                </p>
+
+                <ul className="relative mb-6 space-y-2.5">
+                  {WORLD_ITEMS[w].map((id) => (
+                    <li key={id} className="flex items-center gap-3">
+                      <span aria-hidden className="h-px w-4 shrink-0" style={{ background: accent }} />
+                      <span className="text-sm text-bone-muted">{t(`objects.${id}`)}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link
+                  href={WORLD_HREF[w]}
+                  className="relative mt-auto inline-flex w-fit items-center gap-2 border px-5 py-2.5 font-mono text-xs font-semibold uppercase tracking-wider transition-colors"
+                  style={{ borderColor: accent, color: accent }}
+                >
+                  {t("details")}
+                  <span aria-hidden>↗</span>
+                </Link>
+              </div>
             );
           })}
+        </div>
 
-          {/* Floating label for the active object */}
-          {activeObj && (
-            <span
-              className="pointer-events-none absolute z-20 whitespace-nowrap border border-brass/25 bg-ink-900/95 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.15em] text-bone"
-              style={{
-                left: `${activeObj.x}%`,
-                top: `${activeObj.y}%`,
-                transform: "translate(-50%, -220%)",
-              }}
-            >
-              {t(`objects.${activeObj.id}`)}
-            </span>
-          )}
-
-          {/* Legend */}
-          {(Object.keys(LEGEND) as World[]).map((w) => (
-            <span
-              key={w}
-              className="pointer-events-none absolute z-20 flex items-center gap-2 whitespace-nowrap border px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.15em] transition-all duration-300"
-              style={{
-                left: `${LEGEND[w].x}%`,
-                top: `${LEGEND[w].y}%`,
-                transform: "translate(-50%, -50%)",
-                borderColor: litWorlds.has(w)
-                  ? WORLD_ACCENT[w]
-                  : "color-mix(in srgb, var(--color-bone) 18%, transparent)",
-                background: "rgba(10,10,11,0.9)",
-                color: litWorlds.has(w) ? "var(--color-bone)" : "var(--color-bone-muted)",
-              }}
-            >
-              <span
-                aria-hidden
-                className="seal-round h-1.5 w-1.5"
-                style={{
-                  background: litWorlds.has(w)
-                    ? WORLD_ACCENT[w]
-                    : "var(--color-bone-muted)",
-                }}
-              />
-              {t(`legend.${w}`)}
-            </span>
-          ))}
+        {/* ── The seal — the one thing shared by all three. ── */}
+        <div className="mt-8 flex items-center justify-center gap-3 border-t border-brass/10 pt-8">
+          <span className="seal-round h-2.5 w-2.5 border border-brass bg-ink-900" />
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-brass/80">
+            {t("objects.seal")}
+          </p>
         </div>
       </div>
     </section>
+  );
+}
+
+/* ── Simple mono-line icons — no icon library, on-brand stroke weight. ── */
+function WorldIcon({ world }: { world: World }) {
+  const common = {
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.5,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    className: "h-5 w-5",
+  };
+  if (world === "pos") {
+    return (
+      <svg {...common} aria-hidden>
+        <rect x="3" y="4" width="18" height="12" rx="1" />
+        <path d="M8 20h8M9 16v4M15 16v4M7 8h4M7 11h6" />
+      </svg>
+    );
+  }
+  if (world === "ecommerce") {
+    return (
+      <svg {...common} aria-hidden>
+        <path d="M6 8h12l-1 12H7L6 8Z" />
+        <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+      </svg>
+    );
+  }
+  return (
+    <svg {...common} aria-hidden>
+      <path d="M3 11v2a2 2 0 0 0 2 2h1l2 5h2l-1.5-5H10l9-4V7l-9 4H6a2 2 0 0 0-2 2Z" />
+      <path d="M19 8v8" />
+    </svg>
   );
 }

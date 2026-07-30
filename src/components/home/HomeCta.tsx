@@ -49,8 +49,8 @@ export function HomeCta() {
     >
       <ParallaxImage
         src="/films/hero-outro.jpg"
-        travel={16}
-        scale={1.05}
+        travel={26}
+        scale={1.06}
         quality={82}
         className="absolute inset-0 overflow-hidden"
       />

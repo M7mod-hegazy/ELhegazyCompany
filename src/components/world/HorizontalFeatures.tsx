@@ -47,8 +47,10 @@ export function HorizontalFeatures({ worldKey, ids }: { worldKey: string; ids?: 
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const x = useTransform(scrollYProgress, [0, 1], [0, rtl ? maxScroll : -maxScroll]);
   const progress = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-  // generous travel: ~1.35× the overflow so cards glide past one at a time
-  const sectionH = maxScroll > 0 ? `${maxScroll * 1.35 + vh}px` : "100vh";
+  // With 12–14 cards, 1.35× the overflow pinned the page for 7-8 screens of
+  // wheel-scrolling before it moved on — on a mouse (not a trackpad) that read
+  // as the scroll dying. Capped to at most 4 screens of travel.
+  const sectionH = maxScroll > 0 ? `${Math.min(maxScroll * 0.9 + vh, vh * 4)}px` : "100vh";
 
   return (
     <section ref={ref} style={{ height: sectionH }} className="relative">
