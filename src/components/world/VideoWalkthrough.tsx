@@ -22,12 +22,14 @@ export function VideoWalkthrough({
   videos,
   chapters,
   chapterHeading,
+  playlistId,
 }: {
   title: string;
   subtitle: string;
   videos: [VideoItem, ...VideoItem[]];
   chapters: VideoChapter[];
   chapterHeading: string;
+  playlistId?: string;
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -119,6 +121,18 @@ export function VideoWalkthrough({
               </li>
             ))}
           </ul>
+
+          {playlistId && (
+            <a
+              href={`https://www.youtube.com/playlist?list=${playlistId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-8 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-brass/70 transition-colors hover:text-brass"
+            >
+              <span>{isAr ? "شاهد كل الفيديوهات" : "View all videos"}</span>
+              <span aria-hidden>→</span>
+            </a>
+          )}
         </div>
       </div>
     </section>

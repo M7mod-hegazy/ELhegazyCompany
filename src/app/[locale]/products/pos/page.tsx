@@ -63,32 +63,26 @@ export default async function PosWorldPage({ params }: Props) {
         title={t("videoTitle")}
         subtitle={t("videoSub")}
         chapterHeading={t("chapterHeading")}
+        playlistId="PLPw2WmqwSe_s"
         videos={[
           {
-            youtubeId: "YOUTUBE_ID_HERE",
-            labelAr: "النظام كامل",
-            labelEn: "Full system",
+            youtubeId: "05DinTxsKA0",
+            labelAr: "البداية الصح لمشروعك",
+            labelEn: "Getting started",
           },
-          {
-            youtubeId: "YOUTUBE_ID_HERE",
-            labelAr: "المخزون والمبيعات",
-            labelEn: "Inventory & sales",
-          },
-          {
-            youtubeId: "YOUTUBE_ID_HERE",
-            labelAr: "التقارير والتحليلات",
-            labelEn: "Reports & analytics",
-          },
+          // Add more videos here as they appear in the playlist:
+          // {
+          //   youtubeId: "VIDEO_ID",
+          //   labelAr: "العنوان بالعربي",
+          //   labelEn: "English title",
+          // },
         ]}
         chapters={[
           { time: "0:00", seconds: 0, labelAr: "المقدمة", labelEn: "Introduction" },
-          { time: "1:30", seconds: 90, labelAr: "واجهة البيع", labelEn: "POS interface" },
-          { time: "3:15", seconds: 195, labelAr: "إضافة منتج للفاتورة", labelEn: "Adding items to invoice" },
-          { time: "5:00", seconds: 300, labelAr: "طرق الدفع", labelEn: "Payment methods" },
-          { time: "6:45", seconds: 405, labelAr: "طباعة الفاتورة", labelEn: "Printing receipts" },
-          { time: "8:30", seconds: 510, labelAr: "إدارة المخزون", labelEn: "Inventory management" },
-          { time: "10:15", seconds: 615, labelAr: "تقارير المبيعات", labelEn: "Sales reports" },
-          { time: "12:00", seconds: 720, labelAr: "شاشة التقارير", labelEn: "Reports dashboard" },
+          { time: "1:30", seconds: 90, labelAr: "تسجيل الدخول", labelEn: "Logging in" },
+          { time: "3:15", seconds: 195, labelAr: "لوحة التحكم", labelEn: "Dashboard overview" },
+          { time: "5:00", seconds: 300, labelAr: "إعداد المنتجات", labelEn: "Setting up products" },
+          { time: "6:45", seconds: 405, labelAr: "إنشاء أول فاتورة", labelEn: "Creating first invoice" },
         ]}
       />
       <TrustStrip worldKey={world.key} />
