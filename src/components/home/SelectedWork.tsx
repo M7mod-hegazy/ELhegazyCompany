@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { getFeaturedProjects } from "@/config/projects";
+import type { Project } from "@/config/projects";
 import { ExpandingPanels } from "@/components/projects/ExpandingPanels";
 import { Link } from "@/i18n/navigation";
 
@@ -29,10 +29,10 @@ import { Link } from "@/i18n/navigation";
 const CAPABILITIES = ["companySites", "portfolios", "brand", "video", "webApps", "landingPages"] as const;
 type Capability = (typeof CAPABILITIES)[number];
 
-export function SelectedWork() {
+export function SelectedWork({ projects }: { projects: Project[] }) {
   const t = useTranslations("Projects");
   const tCap = useTranslations("Capabilities");
-  const featured = getFeaturedProjects(3);
+  const featured = projects;
 
   if (featured.length === 0) return null;
 

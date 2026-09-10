@@ -26,7 +26,7 @@ export function ProjectsClient({ projects }: Props) {
   const locale = useLocale() as "ar" | "en";
   const prefersReduced = useReducedMotion();
 
-  const usedCategories = getProjectCategories();
+  const usedCategories = getProjectCategories(projects);
   const showFilterRail = usedCategories.length >= 2;
 
   const [activeCategory, setActiveCategory] = useState<ProjectCategory | "all">("all");

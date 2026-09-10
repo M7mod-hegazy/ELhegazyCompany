@@ -20,12 +20,11 @@ export const siteConfig = {
   },
   url: "https://elhegazi-agency.vercel.app",
 
-  // --- PLACEHOLDERS: owner to replace ---
   contact: {
     /** International format, digits only, used in wa.me deep links. */
-    whatsapp: "201000000000",
-    email: "hello@elhegazi.com",
-    phoneDisplay: "+20 100 000 0000",
+    whatsapp: "201032440775",
+    email: "medo.hagaze33@gmail.com",
+    phoneDisplay: "+20 103 244 0775",
     location: { ar: "القاهرة، مصر", en: "Cairo, Egypt" },
   },
   social: {

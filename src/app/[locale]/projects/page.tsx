@@ -1,8 +1,8 @@
-import { use } from "react";
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { useTranslations, useLocale } from "next-intl";
-import { projects, getProjectCategories } from "@/config/projects";
+import { getProjects } from "@/lib/projects";
+import { getProjectCategories, type Project } from "@/config/projects";
 import { PageHero } from "@/components/site/PageHero";
 import { ProjectsClient } from "@/components/projects/ProjectsClient";
 import { CtaBand } from "@/components/site/CtaBand";
@@ -27,13 +27,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ProjectsPage({ params }: Props) {
-  const { locale } = use(params);
+export default async function ProjectsPage({ params }: Props) {
+  const { locale } = await params;
   setRequestLocale(locale);
+  const projects = await getProjects();
 
   return (
     <main>
-      <ProjectsHero />
+      <ProjectsHero projects={projects} />
       <ProjectsClient projects={projects} />
       <CtaBand />
     </main>
@@ -46,7 +47,7 @@ export default function ProjectsPage({ params }: Props) {
  * overlaps the panels below. That bridge is what welds the opening to the work
  * instead of stacking two unrelated blocks.
  */
-function ProjectsHero() {
+function ProjectsHero({ projects }: { projects: Project[] }) {
   const t = useTranslations("Projects");
   const locale = useLocale();
 
@@ -55,7 +56,7 @@ function ProjectsHero() {
 
   const stats = [
     { value: formatNum(projects.length, locale), label: t("statProjects") },
-    { value: formatNum(getProjectCategories().length, locale), label: t("statFields") },
+    { value: formatNum(getProjectCategories(projects).length, locale), label: t("statFields") },
     { value: formatNum(span, locale), label: t("statYears") },
     { value: locale === "ar" ? "١٠٠٪" : "100%", label: t("statInHouse") },
   ];

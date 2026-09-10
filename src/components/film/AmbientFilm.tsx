@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useVideoAllowed, useIsPortrait } from "@/lib/video/capabilities";
+import { ResilientImage } from "@/components/media/ResilientImage";
 
 export type AmbientFilmProps = {
   /** Landscape source, e.g. "/films/hero.mp4" */
@@ -16,6 +16,10 @@ export type AmbientFilmProps = {
   className?: string;
   /** Extra styles merged onto the <video> element. */
   videoStyle?: React.CSSProperties;
+  /** Hero films play once by default and hold their final frame. */
+  loop?: boolean;
+  /** Signals that the film has finished so the page can offer a hand-off. */
+  onEnded?: () => void;
 };
 
 /**
@@ -42,6 +46,8 @@ export function AmbientFilm({
   posterPortrait,
   className,
   videoStyle,
+  loop = false,
+  onEnded,
 }: AmbientFilmProps) {
   const videoAllowed = useVideoAllowed();
   const isPortrait = useIsPortrait();
@@ -59,7 +65,7 @@ export function AmbientFilm({
     if (!video || !videoAllowed) return;
 
     video.muted = true; // some mobile browsers ignore the JSX attribute
-    video.loop = true;
+    video.loop = loop;
 
     const absolute = new URL(resolvedSrc, window.location.href).href;
     if (video.currentSrc !== absolute) {
@@ -70,7 +76,7 @@ export function AmbientFilm({
     return () => {
       video.pause();
     };
-  }, [videoAllowed, resolvedSrc]);
+  }, [loop, videoAllowed, resolvedSrc]);
 
   /* ── Play/pause on visibility, and rewind on every re-entry. ── */
   useEffect(() => {
@@ -81,13 +87,7 @@ export function AmbientFilm({
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry?.isIntersecting) {
-          // Rewind so the clip always opens on its first frame.
-          try {
-            video.currentTime = 0;
-          } catch {
-            /* seeking before metadata is harmless to skip */
-          }
-          video.play().catch(() => {});
+          if (loop || !video.ended) video.play().catch(() => {});
         } else {
           video.pause();
         }
@@ -97,20 +97,26 @@ export function AmbientFilm({
     io.observe(wrapper);
 
     const onPlaying = () => setPainting(true);
+    const onLoadedData = () => setPainting(true);
+    const onFilmEnded = () => onEnded?.();
     const onVisibility = () => {
       if (document.visibilityState === "hidden") video.pause();
       else if (isInViewport(wrapper) && video.src) video.play().catch(() => {});
     };
 
     video.addEventListener("playing", onPlaying);
+    video.addEventListener("loadeddata", onLoadedData);
+    video.addEventListener("ended", onFilmEnded);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       io.disconnect();
       video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("loadeddata", onLoadedData);
+      video.removeEventListener("ended", onFilmEnded);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [videoAllowed]);
+  }, [loop, onEnded, videoAllowed]);
 
   /* ── Release the download on unmount. ── */
   useEffect(() => {
@@ -133,7 +139,7 @@ export function AmbientFilm({
       style={{ overflow: "hidden" }}
     >
       {/* Still layer — always present, always correctly covered. */}
-      <Image
+      <ResilientImage
         src={resolvedPoster}
         alt=""
         fill
@@ -149,7 +155,7 @@ export function AmbientFilm({
         playsInline
         disablePictureInPicture
         disableRemotePlayback
-        preload="auto"
+        preload="metadata"
         aria-hidden
         style={{
           position: "absolute",

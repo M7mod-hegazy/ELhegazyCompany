@@ -41,11 +41,15 @@ export function BackToTop() {
 /* ── floating WhatsApp orb with a pulse (#48) ── */
 export function WhatsAppOrb({ worldKey }: { worldKey: string }) {
   const locale = useLocale();
-  void worldKey;
+  const isEcommerce = worldKey === "ecommerce";
   const msg = encodeURIComponent(
-    locale === "ar"
-      ? "مرحبًا، مهتم بنظام نقاط البيع من الحجازي — ممكن تفاصيل؟"
-      : "Hi, I'm interested in the ElHegazi POS system — can I get details?",
+    isEcommerce
+      ? locale === "ar"
+        ? "مرحبًا، مهتم بطلب متجر إلكتروني من الحجازي — ممكن تفاصيل؟"
+        : "Hi, I'm interested in an ElHegazi e-commerce store — can I get details?"
+      : locale === "ar"
+        ? "مرحبًا، مهتم بنظام نقاط البيع من الحجازي — ممكن تفاصيل؟"
+        : "Hi, I'm interested in the ElHegazi POS system — can I get details?",
   );
   return (
     <a
@@ -69,7 +73,9 @@ export function StickyCTA({ worldKey }: { worldKey: string }) {
   const t = useTranslations("CTA");
   const tc = useTranslations("Common");
   const locale = useLocale();
-  const dlPage = `/${locale}${getWorld(worldKey)?.href ?? ""}/download`;
+  const world = getWorld(worldKey);
+  const primary = world?.externalHref;
+  const primaryHref = primary ?? `/${locale}${world?.href ?? ""}/download`;
   const [show, setShow] = useState(false);
   useEffect(() => {
     const on = () => {
@@ -90,8 +96,13 @@ export function StickyCTA({ worldKey }: { worldKey: string }) {
         <a href="#pricing" data-cursor className="rounded-full border border-brass/30 px-4 py-2 text-sm font-semibold text-bone transition-colors hover:border-brass hover:text-brass max-sm:hidden">
           {tc("pricing")}
         </a>
-        <a href={dlPage} data-cursor className="rounded-full bg-brass px-5 py-2 text-sm font-semibold text-ink-900 transition-colors hover:bg-brass-hi">
-          {tc("download")}
+        <a
+          href={primaryHref}
+          data-cursor
+          {...(primary ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          className="rounded-full bg-brass px-5 py-2 text-sm font-semibold text-ink-900 transition-colors hover:bg-brass-hi"
+        >
+          {primary ? tc("previewLive") : tc("download")}
         </a>
       </div>
     </div>

@@ -25,7 +25,7 @@ export const catalog: Record<ProductKey, { plans: PlanDef[]; defaultPlan: string
   },
   ecommerce: {
     defaultPlan: "full",
-    plans: [{ id: "starter" }, { id: "full", featured: true }],
+    plans: [{ id: "preview" }, { id: "full", featured: true }],
   },
   marketing: {
     defaultPlan: "growth",

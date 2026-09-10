@@ -34,6 +34,20 @@ export function TrustStrip({ worldKey }: { worldKey: string }) {
 }
 
 /* ── #14 big-numbers reveal ── */
+/** Fixed Tailwind breakpoints (text-4xl/5xl/6xl…) assume every value is
+ *  short. "5+" never revealed the problem; "WhatsApp", "AR/EN", and
+ *  "١٠آلاف+" all overflowed their quarter-width grid cell and visually
+ *  overlapped the neighboring stat regardless of which fixed ceiling was
+ *  picked. `clamp()` keyed to the actual string length scales every value
+ *  to fit its own column — robust to whatever text lands in `bigNums`
+ *  next, not just the ones visible when this was last tuned. */
+function statFontSize(value: string): string {
+  const len = [...value].length;
+  if (len <= 3) return "clamp(2.25rem, 5vw, 4.5rem)";
+  if (len <= 5) return "clamp(1.875rem, 4vw, 3.5rem)";
+  return "clamp(1.5rem, 3vw, 2.75rem)";
+}
+
 export function BigNumbers({ worldKey }: { worldKey: string }) {
   const t = useTranslations(`Worlds.${worldKey}`);
   const nums = t.raw("bigNums") as { v: string; l: string }[];
@@ -54,7 +68,12 @@ export function BigNumbers({ worldKey }: { worldKey: string }) {
             transition={{ duration: 0.7, delay: i * 0.1, ease: brand.ease.cinematic }}
             className="text-center"
           >
-            <div className="font-display text-6xl font-bold sm:text-7xl" style={{ color: "var(--world-accent)" }}>{n.v}</div>
+            <div
+              className="font-display break-words font-bold leading-none"
+              style={{ color: "var(--world-accent)", fontSize: statFontSize(n.v) }}
+            >
+              {n.v}
+            </div>
             <div className="mt-3 text-sm text-bone-muted">{n.l}</div>
           </m.div>
         ))}
@@ -132,16 +151,30 @@ export function SparkDivider() {
 const WHEEL_AR = ["نقطة بيع", "خزينة", "مخزون", "تقارير", "واتساب", "أقساط", "موردين", "فروع", "ضريبة", "رواتب", "شيكات", "ولاء", "باركود", "أوفلاين"];
 const WHEEL_EN = ["POS", "Treasury", "Stock", "Reports", "WhatsApp", "Installments", "Suppliers", "Branches", "VAT", "Payroll", "Cheques", "Loyalty", "Barcode", "Offline"];
 
+/** E-commerce wheel (14 chips, same count as the POS default so the fixed
+ *  positions line up) — real store capabilities only: pages, catalog,
+ *  ordering, and POS sync, not the generic SaaS list above. */
+export const EC_WHEEL_AR = ["متجر", "أقسام", "منتجات", "عائلات", "معارض صور", "بحث", "مخزون", "عروض", "الأكثر مبيعًا", "تقييمات", "عملاء", "لوحة تحكم", "واتساب", "مزامنة"];
+export const EC_WHEEL_EN = ["Store", "Categories", "Products", "Families", "Galleries", "Search", "Stock", "Offers", "Best-sellers", "Reviews", "Customers", "Dashboard", "WhatsApp", "Sync"];
+
 const WHEEL_POSITIONS = WHEEL_AR.map((_, i) => {
   const a = (i / WHEEL_AR.length) * Math.PI * 2 - Math.PI / 2;
   const R = 46;
   return { left: Math.round((50 + Math.cos(a) * R) * 100) / 100, top: Math.round((50 + Math.sin(a) * R) * 100) / 100 };
 });
 
-export function CapabilityWheel({ worldKey }: { worldKey: string }) {
+export function CapabilityWheel({
+  worldKey,
+  chipsAr,
+  chipsEn,
+}: {
+  worldKey: string;
+  chipsAr?: string[];
+  chipsEn?: string[];
+}) {
   const t = useTranslations(`Worlds.${worldKey}`);
   const locale = useLocale();
-  const chips = locale === "ar" ? WHEEL_AR : WHEEL_EN;
+  const chips = locale === "ar" ? (chipsAr ?? WHEEL_AR) : (chipsEn ?? WHEEL_EN);
   return (
     <section className="relative overflow-hidden py-24">
       <div className="mx-auto mb-4 max-w-3xl px-6 text-center">

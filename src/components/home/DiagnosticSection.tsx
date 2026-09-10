@@ -8,74 +8,145 @@ import { siteConfig } from "@/config/site";
 import { Link } from "@/i18n/navigation";
 import { formatNum } from "@/lib/num";
 
-const Q1_VALUES = ["1branch", "multi", "online", "none"] as const;
-const Q2_VALUES = ["numbers", "visibility", "sellonline", "all"] as const;
-const Q3_VALUES = ["trial", "call", "now"] as const;
+type ScreenId = "q1" | "branches" | "q2" | "q3";
 
-type State =
-  | { step: 0; q1: null; q2: null; q3: null }
-  | { step: 1; q1: string; q2: null; q3: null }
-  | { step: 2; q1: string; q2: string; q3: null }
-  | { step: 3; q1: string; q2: string; q3: string };
+type Answers = {
+  q1: string | null;
+  /** Only asked when q1 = "multi". */
+  branches: string | null;
+  q2: string | null;
+  q3: string | null;
+};
+
+type State = {
+  current: ScreenId | "result";
+  answers: Answers;
+  /** Screens answered so far, in order — drives the receipt trail, the
+      progress count, and back/edit navigation. */
+  history: ScreenId[];
+};
+
+const initialState: State = {
+  current: "q1",
+  answers: { q1: null, branches: null, q2: null, q3: null },
+  history: [],
+};
+
+/** The path branches once: a multi-branch shop gets one extra question
+    (how many branches) before the standard problem/next-step pair. */
+function nextScreen(justAnswered: ScreenId, answers: Answers): ScreenId | "result" {
+  if (justAnswered === "q1") return answers.q1 === "multi" ? "branches" : "q2";
+  if (justAnswered === "branches") return "q2";
+  if (justAnswered === "q2") return "q3";
+  return "result";
+}
 
 type Action =
-  | { type: "answer"; value: string }
-  | { type: "back" };
+  | { type: "answer"; screen: ScreenId; value: string }
+  | { type: "back" }
+  /** Jump back to an earlier answer from the receipt trail — re-answering
+      it clears it and everything answered after it. */
+  | { type: "edit"; screen: ScreenId };
 
 function reducer(state: State, action: Action): State {
-  if (action.type === "back") {
-    if (state.step === 1) return { step: 0, q1: null, q2: null, q3: null };
-    if (state.step === 2) return { step: 1, q1: state.q1, q2: null, q3: null };
-    if (state.step === 3) return { step: 2, q1: state.q1, q2: state.q2, q3: null };
-    return state;
+  if (action.type === "answer") {
+    const answers: Answers = { ...state.answers, [action.screen]: action.value };
+    const history = [...state.history, action.screen];
+    return { current: nextScreen(action.screen, answers), answers, history };
   }
-  if (state.step === 0) return { step: 1, q1: action.value, q2: null, q3: null };
-  if (state.step === 1) return { step: 2, q1: state.q1, q2: action.value, q3: null };
-  if (state.step === 2) return { step: 3, q1: state.q1, q2: state.q2, q3: action.value };
-  return state;
+  if (action.type === "back") {
+    if (state.history.length === 0) return state;
+    const leaving = state.history[state.history.length - 1];
+    const answers: Answers = { ...state.answers, [leaving]: null };
+    return { current: leaving, answers, history: state.history.slice(0, -1) };
+  }
+  // edit
+  const idx = state.history.indexOf(action.screen);
+  if (idx === -1) return state;
+  const answers: Answers = { ...state.answers };
+  for (const screen of state.history.slice(idx)) answers[screen] = null;
+  return { current: action.screen, answers, history: state.history.slice(0, idx) };
 }
 
 const ease = [0.22, 1, 0.36, 1] as const;
+
+type TFn = ReturnType<typeof useTranslations>;
+type ScreenConfig = { question: string; options: { label: string; value: string }[] };
+
+/** Q2's wording adapts to Q1's answer, so "what's your biggest problem"
+    reads like it was written for that specific situation rather than a
+    one-size-fits-all question. The underlying values stay the same
+    (numbers/visibility/sellonline/all) — only the labels change — so the
+    recommendation rules in diagnostic.ts don't need to know about groups. */
+function q2Group(q1: string | null): "shop" | "online" | "none" {
+  if (q1 === "online") return "online";
+  if (q1 === "none") return "none";
+  return "shop";
+}
+
+function getScreenConfig(screen: ScreenId, answers: Answers, t: TFn): ScreenConfig {
+  if (screen === "q1") {
+    return {
+      question: t("q1.question"),
+      options: [
+        { label: t("q1.a1"), value: "1branch" },
+        { label: t("q1.a2"), value: "multi" },
+        { label: t("q1.a3"), value: "online" },
+        { label: t("q1.a4"), value: "none" },
+      ],
+    };
+  }
+  if (screen === "branches") {
+    return {
+      question: t("branches.question"),
+      options: [
+        { label: t("branches.a1"), value: "2" },
+        { label: t("branches.a2"), value: "3to5" },
+        { label: t("branches.a3"), value: "6plus" },
+      ],
+    };
+  }
+  if (screen === "q2") {
+    const group = q2Group(answers.q1);
+    return {
+      question: t(`q2.${group}.question`),
+      options: [
+        { label: t(`q2.${group}.a1`), value: "numbers" },
+        { label: t(`q2.${group}.a2`), value: "visibility" },
+        { label: t(`q2.${group}.a3`), value: "sellonline" },
+        { label: t(`q2.${group}.a4`), value: "all" },
+      ],
+    };
+  }
+  return {
+    question: t("q3.question"),
+    options: [
+      { label: t("q3.a1"), value: "trial" },
+      { label: t("q3.a2"), value: "call" },
+      { label: t("q3.a3"), value: "now" },
+    ],
+  };
+}
+
+type Line = { screen: ScreenId; question: string; answer: string };
 
 export function DiagnosticSection() {
   const t = useTranslations("Diagnostic");
   const locale = useLocale();
   const prefersReduced = useReducedMotion();
 
-  const [state, dispatch] = useReducer(reducer, { step: 0, q1: null, q2: null, q3: null });
-  const totalSteps = 3;
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const questions = [
-    {
-      key: "q1",
-      question: t("q1.question"),
-      answers: [
-        { label: t("q1.a1"), value: Q1_VALUES[0] },
-        { label: t("q1.a2"), value: Q1_VALUES[1] },
-        { label: t("q1.a3"), value: Q1_VALUES[2] },
-        { label: t("q1.a4"), value: Q1_VALUES[3] },
-      ],
-    },
-    {
-      key: "q2",
-      question: t("q2.question"),
-      answers: [
-        { label: t("q2.a1"), value: Q2_VALUES[0] },
-        { label: t("q2.a2"), value: Q2_VALUES[1] },
-        { label: t("q2.a3"), value: Q2_VALUES[2] },
-        { label: t("q2.a4"), value: Q2_VALUES[3] },
-      ],
-    },
-    {
-      key: "q3",
-      question: t("q3.question"),
-      answers: [
-        { label: t("q3.a1"), value: Q3_VALUES[0] },
-        { label: t("q3.a2"), value: Q3_VALUES[1] },
-        { label: t("q3.a3"), value: Q3_VALUES[2] },
-      ],
-    },
-  ];
+  // Total question count is 3 normally, 4 once "multi" pulls the branch-count
+  // follow-up into the path — the denominator updates the moment we know.
+  const total = state.answers.q1 === "multi" || state.current === "branches" ? 4 : 3;
+  const currentIndex = state.history.length;
+
+  const answeredLines: Line[] = state.history.map((screen) => {
+    const cfg = getScreenConfig(screen, state.answers, t);
+    const chosen = cfg.options.find((o) => o.value === state.answers[screen]);
+    return { screen, question: cfg.question, answer: chosen?.label ?? "" };
+  });
 
   return (
     <section
@@ -105,60 +176,119 @@ export function DiagnosticSection() {
         <p className="mt-4 max-w-[52ch] leading-relaxed text-bone-muted">{t("subtitle")}</p>
         <div className="rule-seal my-8 w-full" />
 
-        <div className="min-h-[340px] border border-brass/15 bg-ink-900/70 p-6 sm:p-8">
-        <AnimatePresence mode="wait">
-          {state.step < 3 ? (
-            <m.div
-              key={`q${state.step}`}
-              initial={prefersReduced ? false : { opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={prefersReduced ? {} : { opacity: 0, y: -24 }}
-              transition={{ duration: 0.42, ease }}
-            >
-              {/* Progress */}
-              <p className="font-mono text-xs text-bone-muted mb-6">
-                {t("progress", { current: formatNum(state.step + 1, locale), total: formatNum(totalSteps, locale) })}
-              </p>
+        {/* Two faint duplicate plies stacked behind the pad — the carbon-copy
+            depth cue, built from flat offset panels rather than any shadow
+            (the brand runs on hairlines and washes, never blur). */}
+        <div className="relative">
+          <div
+            aria-hidden
+            className="absolute inset-0 translate-x-2 translate-y-2 border border-brass/10 bg-ink-800/30"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 translate-x-1 translate-y-1 border border-brass/15 bg-ink-800/50"
+          />
 
-              {/* Question */}
-              <p className="text-xl font-semibold text-bone mb-6">
-                {questions[state.step].question}
-              </p>
-
-              {/* Answer grid */}
-              <div className="grid gap-3 sm:grid-cols-2">
-                {questions[state.step].answers.map(({ label, value }) => (
-                  <button
-                    key={value}
-                    onClick={() => dispatch({ type: "answer", value })}
-                    className="min-h-[64px] border border-brass/20 bg-ink-800 px-5 py-4 text-start text-bone transition-colors hover:border-brass/60 hover:bg-ink-700 focus-visible:border-brass"
-                  >
-                    {label}
-                  </button>
-                ))}
+          <div className="relative min-h-[340px] border border-brass/25 bg-ink-800">
+            {/* The running receipt strip — one printed line per answered
+                question, editable by clicking back onto its own line. */}
+            {answeredLines.length > 0 && state.current !== "result" && (
+              <div className="border-b border-dashed border-brass/20 px-6 py-4 sm:px-8">
+                <ul className="space-y-1.5">
+                  {answeredLines.map((line, i) => (
+                    <li key={line.screen}>
+                      <button
+                        type="button"
+                        onClick={() => dispatch({ type: "edit", screen: line.screen })}
+                        className="group flex w-full items-baseline gap-3 text-start font-mono text-xs text-bone-muted/80 transition-colors hover:text-brass"
+                      >
+                        <span className="shrink-0 text-brass/50 group-hover:text-brass">
+                          {formatNum(i + 1, locale)}.
+                        </span>
+                        <span className="min-w-0 flex-1 truncate">{line.question}</span>
+                        <span className="shrink-0 text-bone group-hover:text-brass">{line.answer}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <div aria-hidden className="receipt-tear -mx-6 -mb-4 mt-4 sm:-mx-8" />
               </div>
+            )}
 
-              {/* Back button */}
-              {state.step > 0 && (
-                <button
-                  onClick={() => dispatch({ type: "back" })}
-                  className="mt-6 font-mono text-xs text-bone-muted underline-offset-4 hover:text-bone hover:underline"
-                >
-                  {/* No arrow glyph: a hardcoded ← points the wrong way in RTL. */}
-                  {t("back")}
-                </button>
-              )}
-            </m.div>
-          ) : (
-            <DiagnosticResult
-              key="result"
-              state={state as { step: 3; q1: string; q2: string; q3: string }}
-              onBack={() => dispatch({ type: "back" })}
-              t={t}
-              locale={locale}
-            />
-          )}
-          </AnimatePresence>
+            <div className="p-6 sm:p-8">
+              <AnimatePresence mode="wait">
+                {state.current !== "result" ? (
+                  <m.div
+                    key={state.current}
+                    initial={prefersReduced ? false : { opacity: 0, y: 24 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={prefersReduced ? {} : { opacity: 0, y: -24 }}
+                    transition={{ duration: 0.42, ease }}
+                  >
+                    {/* Progress */}
+                    <div className="mb-6 flex items-center gap-3">
+                      <p className="font-mono text-xs text-bone-muted">
+                        {t("progress", { current: formatNum(currentIndex + 1, locale), total: formatNum(total, locale) })}
+                      </p>
+                      <div className="flex items-center gap-1.5" aria-hidden>
+                        {Array.from({ length: total }).map((_, i) => (
+                          <span
+                            key={i}
+                            className={
+                              "seal-round h-1.5 w-1.5 border " +
+                              (i <= currentIndex ? "border-brass bg-brass" : "border-brass/30 bg-transparent")
+                            }
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Question */}
+                    <p className="text-xl font-semibold text-bone mb-6">
+                      {getScreenConfig(state.current, state.answers, t).question}
+                    </p>
+
+                    {/* Answer grid */}
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {getScreenConfig(state.current, state.answers, t).options.map(({ label, value }, i) => (
+                        <m.button
+                          key={value}
+                          onClick={() => dispatch({ type: "answer", screen: state.current as ScreenId, value })}
+                          whileTap={prefersReduced ? undefined : { scale: 0.98 }}
+                          className="group flex min-h-[64px] items-center gap-3 border border-brass/20 bg-ink-800 px-5 py-4 text-start text-bone transition-[border-color,background-color,transform] duration-200 hover:-translate-y-0.5 hover:border-brass/60 hover:bg-ink-700 focus-visible:-translate-y-0.5 focus-visible:border-brass"
+                        >
+                          <span className="seal-round flex h-6 w-6 shrink-0 items-center justify-center border border-brass/30 font-mono text-[11px] text-brass/70 transition-colors group-hover:border-brass group-hover:bg-brass group-hover:text-ink-900">
+                            {formatNum(i + 1, locale)}
+                          </span>
+                          <span className="min-w-0">{label}</span>
+                        </m.button>
+                      ))}
+                    </div>
+
+                    {/* Back button */}
+                    {state.history.length > 0 && (
+                      <button
+                        onClick={() => dispatch({ type: "back" })}
+                        className="mt-6 font-mono text-xs text-bone-muted underline-offset-4 hover:text-bone hover:underline"
+                      >
+                        {/* No arrow glyph: a hardcoded ← points the wrong way in RTL. */}
+                        {t("back")}
+                      </button>
+                    )}
+                  </m.div>
+                ) : (
+                  <DiagnosticResult
+                    key="result"
+                    answers={state.answers as { q1: string; branches: string | null; q2: string; q3: string }}
+                    answeredLines={answeredLines}
+                    onBack={() => dispatch({ type: "back" })}
+                    t={t}
+                    locale={locale}
+                  />
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -166,47 +296,50 @@ export function DiagnosticSection() {
 }
 
 /* ── Result panel ──────────────────────────────────────────────────── */
-type ResultState = { step: 3; q1: string; q2: string; q3: string };
-type TFn = ReturnType<typeof useTranslations>;
 
 function DiagnosticResult({
-  state,
+  answers,
+  answeredLines,
   onBack,
   t,
   locale,
 }: {
-  state: ResultState;
+  answers: { q1: string; branches: string | null; q2: string; q3: string };
+  answeredLines: Line[];
   onBack: () => void;
   t: TFn;
   locale: string;
 }) {
   const prefersReduced = useReducedMotion();
-  const outcome = getDiagnosticOutcome(state.q1, state.q2, state.q3);
+  const outcome = getDiagnosticOutcome(answers.q1, answers.q2, answers.q3, answers.branches);
   const ease = [0.22, 1, 0.36, 1] as const;
 
   const productNames = outcome.products.map((p) => t(`products.${p}`)).join(" + ");
 
-  // Build WhatsApp URL
-  const q1Label = (
-    state.q1 === "1branch" ? t("q1.a1") :
-    state.q1 === "multi"    ? t("q1.a2") :
-    state.q1 === "online"   ? t("q1.a3") :
-    t("q1.a4")
-  );
-  const q2Label = (
-    state.q2 === "numbers"    ? t("q2.a1") :
-    state.q2 === "visibility" ? t("q2.a2") :
-    state.q2 === "sellonline" ? t("q2.a3") :
-    t("q2.a4")
-  );
-  const q3Label = (
-    state.q3 === "trial" ? t("q3.a1") :
-    state.q3 === "call"  ? t("q3.a2") :
-    t("q3.a3")
-  );
+  // Every label below is pulled straight from the printed trail — the
+  // WhatsApp message and the itemized receipt both read off the same
+  // source, so they can never drift out of sync with each other.
+  const lineFor = (screen: ScreenId) => answeredLines.find((l) => l.screen === screen)?.answer ?? "";
+  const q1Label = lineFor("q1");
+  const branchesLabel = lineFor("branches");
+  const q2Label = lineFor("q2");
+  const q3Label = lineFor("q3");
+  const branchesSuffix = branchesLabel ? ` (${branchesLabel})` : "";
 
-  const waText = t("waMessage", {
+  const wantsTrial = answers.q3 === "trial";
+
+  // A free trial only exists for POS and the online store, and only reads well
+  // when there's one clear product to try — not a bundle of two or three.
+  const primaryProduct = outcome.products[0];
+  const showTrialCta =
+    wantsTrial && outcome.products.length === 1 && primaryProduct !== "marketing";
+  // They asked for a trial but this outcome has none (marketing, or a bundle) —
+  // reframe as a free call instead of quietly falling back to a plain WhatsApp button.
+  const showCallCta = wantsTrial && !showTrialCta;
+
+  const waText = t(showCallCta ? "waMessageCall" : "waMessage", {
     q1: q1Label,
+    branches: branchesSuffix,
     q2: q2Label,
     q3: q3Label,
     products: productNames,
@@ -214,16 +347,11 @@ function DiagnosticResult({
   const waHref = `https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(waText)}`;
 
   // Primary product page
-  const primaryProduct = outcome.products[0];
   const productHref =
     primaryProduct === "pos" ? "/products/pos" :
     primaryProduct === "ecommerce" ? "/products/ecommerce" :
     "/services/marketing";
 
-  // A free trial only exists for POS and the online store, and only reads well
-  // when there's one clear product to try — not a bundle of two or three.
-  const showTrialCta =
-    state.q3 === "trial" && outcome.products.length === 1 && primaryProduct !== "marketing";
   const trialHref = `${productHref}#pricing`;
 
   return (
@@ -247,7 +375,21 @@ function DiagnosticResult({
         </p>
         <p className="text-2xl font-semibold text-bone mb-6">{productNames}</p>
 
-        <div className="grid grid-cols-2 gap-4 border-t border-brass/10 pt-6">
+        {/* The answers, itemized like the tally on a receipt — the price
+            below isn't a black box, it's the sum of these lines. */}
+        <ul className="space-y-1.5 border-t border-dashed border-brass/20 pt-5">
+          {answeredLines.map((line) => (
+            <li
+              key={line.screen}
+              className="flex items-baseline gap-3 font-mono text-xs text-bone-muted"
+            >
+              <span className="min-w-0 flex-1 truncate">{line.question}</span>
+              <span className="shrink-0 text-bone">{line.answer}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="grid grid-cols-2 gap-4 border-t border-brass/10 pt-5 mt-5">
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-bone-muted mb-1">
               {t("priceLabel")}
@@ -258,6 +400,11 @@ function DiagnosticResult({
                 to: formatNum(outcome.priceToEGP.toLocaleString("en-US"), locale),
               })}
             </p>
+            {outcome.multiBranch && (
+              <p className="mt-1.5 max-w-[26ch] font-mono text-[11px] leading-relaxed text-bone-muted/70">
+                {t("multiBranchNote")}
+              </p>
+            )}
           </div>
           <div>
             <p className="font-mono text-xs uppercase tracking-widest text-bone-muted mb-1">
@@ -272,7 +419,9 @@ function DiagnosticResult({
           </div>
         </div>
 
-        {/* Actions — asked for a free trial → that's the primary action. */}
+        {/* Actions — a stated trial preference is the primary action when the
+            outcome supports it; otherwise the reframed call CTA leads instead
+            of silently handing back a generic WhatsApp button. */}
         <div className="mt-8 flex flex-wrap gap-4">
           {showTrialCta && (
             <Link
@@ -293,7 +442,7 @@ function DiagnosticResult({
                 : "bg-brass px-6 py-3 font-mono text-sm font-semibold text-ink-900 transition-opacity hover:opacity-90"
             }
           >
-            {t("ctaWhatsapp")}
+            {showCallCta ? t("ctaCall") : t("ctaWhatsapp")}
           </a>
           <Link
             href={productHref}

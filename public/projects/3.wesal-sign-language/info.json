@@ -1,0 +1,19 @@
+{
+  "title": { "ar": "وصال", "en": "Wesal" },
+  "client": { "ar": "وصال للغة الإشاره", "en": "WESAL Sign Language" },
+  "year": 2025,
+  "category": "apps",
+  "summary": {
+    "ar": "تطبيق يترجم لغة الإشارة لتسهيل التواصل مع الصم وضعاف السمع.",
+    "en": "An app that translates sign language to make communication with the deaf and hard of hearing easier."
+  },
+  "body": {
+    "ar": "بنينا تطبيق وصال ليكون جسر تواصل بين الصم وضعاف السمع وباقي المجتمع، عبر ترجمة لغة الإشارة بشكل مباشر. تولينا التصميم والتطوير الكامل من الفكرة الأولى وحتى الإطلاق.",
+    "en": "We built Wesal to be a communication bridge between the deaf and hard of hearing and the rest of society, translating sign language directly. We handled the full design and development, from the first idea through launch."
+  },
+  "services": [
+    { "ar": "تطبيقات", "en": "App Development" },
+    { "ar": "تصميم واجهات", "en": "UI/UX Design" },
+    { "ar": "إتاحة", "en": "Accessibility" }
+  ]
+}

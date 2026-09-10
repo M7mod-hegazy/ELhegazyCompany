@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { resolveActive } from "@/lib/scrollSections";
+import { subscribeActive } from "@/lib/scrollSections";
 import { brand } from "@/lib/brand";
 
 const ACCENTS: Record<string, string> = {
@@ -15,19 +15,9 @@ const ACCENTS: Record<string, string> = {
 export function MoodTint() {
   const [color, setColor] = useState(ACCENTS.hero);
   useEffect(() => {
-    let raf = 0;
-    let lastCheck = 0;
-    const check = () => {
-      const now = performance.now();
-      if (now - lastCheck > 250) {
-        lastCheck = now;
-        const a = resolveActive().id;
-        if (a && ACCENTS[a]) setColor(ACCENTS[a]);
-      }
-      raf = requestAnimationFrame(check);
-    };
-    raf = requestAnimationFrame(check);
-    return () => cancelAnimationFrame(raf);
+    return subscribeActive(({ id }) => {
+      if (id && ACCENTS[id]) setColor(ACCENTS[id]);
+    });
   }, []);
   return (
     <div

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { m, useReducedMotion, useScroll, useMotionValueEvent } from "framer-motion";
 import { AmbientFilm } from "@/components/film/AmbientFilm";
@@ -30,6 +30,7 @@ export function HomeHero() {
   const t = useTranslations("Home");
   const tOff = useTranslations("Offerings");
   const tFilm = useTranslations("Film");
+  const tMedia = useTranslations("Media");
   const reduced = useReducedMotion();
 
   const sectionRef = useRef<HTMLElement>(null);
@@ -37,6 +38,15 @@ export function HomeHero() {
   const barTopRef = useRef<HTMLDivElement>(null);
   const barBottomRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [filmEnded, setFilmEnded] = useState(false);
+
+  const handleFilmEnded = useCallback(() => setFilmEnded(true), []);
+  const continueToContent = useCallback(() => {
+    sectionRef.current?.nextElementSibling?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [reduced]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -49,9 +59,8 @@ export function HomeHero() {
       filmRef.current.style.transform = `translate3d(0, ${p * -10}%, 0) scale(${1 + p * 0.05})`;
       filmRef.current.style.opacity = String(1 - p * 0.3);
     }
-    const bar = `${p * 12}svh`;
-    if (barTopRef.current) barTopRef.current.style.height = bar;
-    if (barBottomRef.current) barBottomRef.current.style.height = bar;
+    if (barTopRef.current) barTopRef.current.style.transform = `scaleY(${p})`;
+    if (barBottomRef.current) barBottomRef.current.style.transform = `scaleY(${p})`;
   });
 
   useEffect(() => {
@@ -78,6 +87,7 @@ export function HomeHero() {
           poster="/films/hero-intro.jpg"
           posterPortrait="/films/hero-intro-portrait.jpg"
           className="absolute inset-0"
+          onEnded={handleFilmEnded}
         />
       </div>
 
@@ -98,8 +108,8 @@ export function HomeHero() {
       />
 
       {/* Letterbox bars that close as the hero leaves. */}
-      <div ref={barTopRef} aria-hidden className="absolute inset-x-0 top-0 bg-ink-900" style={{ height: 0 }} />
-      <div ref={barBottomRef} aria-hidden className="absolute inset-x-0 bottom-0 bg-ink-900" style={{ height: 0 }} />
+      <div ref={barTopRef} aria-hidden className="absolute inset-x-0 top-0 h-[12svh] origin-top scale-y-0 bg-ink-900" />
+      <div ref={barBottomRef} aria-hidden className="absolute inset-x-0 bottom-0 h-[12svh] origin-bottom scale-y-0 bg-ink-900" />
 
       {/* Copy — centred, the clip's reserved clear zone. */}
       <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 pb-[132px] pt-[72px] sm:pb-[112px]">
@@ -182,9 +192,13 @@ export function HomeHero() {
 
       {/* Scroll cue — sits above the rail, and only while at the top. */}
       {!scrolled && (
-        <m.div
-          aria-hidden
-          className="absolute bottom-[128px] left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-2 sm:flex"
+        <m.button
+          type="button"
+          onClick={continueToContent}
+          aria-label={tMedia("continue")}
+          className={`absolute bottom-[176px] left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2 sm:bottom-[128px] ${
+            filmEnded ? "text-brass-hi" : "text-brass"
+          }`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 1.1 }}
@@ -197,10 +211,10 @@ export function HomeHero() {
                 : { scaleY: [0, 1, 0], transition: { duration: 2.4, repeat: Infinity, ease: "easeInOut" } }
             }
           />
-          <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-brass">
-            {tFilm("scroll")}
+          <span className="font-mono text-[10px] uppercase tracking-[0.25em]">
+            {filmEnded ? tMedia("continue") : tFilm("scroll")}
           </span>
-        </m.div>
+        </m.button>
       )}
     </section>
   );

@@ -3,13 +3,23 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
-type Row = { problem: string; fix: string };
+type Field = "pos" | "ecommerce" | "marketing";
+type Row = { category: Field; problem: string; fix: string };
+
+const FIELD_ACCENT: Record<Field, string> = {
+  pos: "var(--color-slate)",
+  ecommerce: "var(--color-oxblood-tint)",
+  marketing: "var(--color-brass)",
+};
 
 /**
  * ProblemFixSection — direct pain-point → feature mapping.
  *
  * No metaphor, no interaction: the problem and its fix sit side by side on
- * the same row. Reads in a single pass, top to bottom.
+ * the same row. Reads in a single pass, top to bottom. Previously every row
+ * happened to be a POS pain point — six rows now split evenly, two per
+ * field, each carrying a small colored tag (the same accent used across the
+ * rest of the home page) so the spread is visible without reading closely.
  */
 export function ProblemFixSection() {
   const t = useTranslations("ProblemFix");
@@ -54,7 +64,15 @@ export function ProblemFixSection() {
                 >
                   ✕
                 </span>
-                <p className="text-sm leading-snug text-bone-muted">{r.problem}</p>
+                <div>
+                  <span
+                    className="mb-1.5 inline-block font-mono text-[0.6rem] font-semibold uppercase tracking-[0.18em]"
+                    style={{ color: FIELD_ACCENT[r.category] }}
+                  >
+                    {t(`categoryLabel.${r.category}`)}
+                  </span>
+                  <p className="text-sm leading-snug text-bone-muted">{r.problem}</p>
+                </div>
               </div>
               <div className="flex items-start gap-3 bg-brass/[0.04] p-5">
                 <span

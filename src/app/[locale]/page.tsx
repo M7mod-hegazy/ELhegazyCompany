@@ -1,9 +1,9 @@
 import { setRequestLocale } from "next-intl/server";
-import { use } from "react";
 import dynamic from "next/dynamic";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { siteConfig } from "@/config/site";
+import { getFeaturedProjects } from "@/lib/projects";
 
 // Above-fold: imported normally
 import { HomeHero } from "@/components/home/HomeHero";
@@ -73,13 +73,17 @@ export async function generateMetadata({
   };
 }
 
-export default function HomePage({
+export default async function HomePage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
-  const { locale } = use(params);
+  const { locale } = await params;
   setRequestLocale(locale);
+
+  // Every project marked `featured: true` in its info.json previews here.
+  // No hard cap — the owner picks the set by toggling the flag per project.
+  const featuredProjects = await getFeaturedProjects();
 
   return (
     <main>
@@ -117,7 +121,7 @@ export default function HomePage({
       {/* 7. Selected work — expanding panels (featured projects). Its header
           carries the "we build more than the 3 core products" message and
           category tags now, directly beside the headline. */}
-      <SelectedWork />
+      <SelectedWork projects={featuredProjects} />
 
       {/* 8. CTA — clip 5 with letterbox close */}
       <HomeCta />

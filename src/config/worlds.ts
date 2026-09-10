@@ -45,7 +45,7 @@ export type WorldConfig = {
   chapters: Chapter[];
   modulesAfter?: string;
   modules?: WorldModule[];
-  proof: { id: string; value: string }[];
+  proof?: { id: string; value: string }[];
   externalHref?: string;
 };
 
@@ -74,7 +74,12 @@ export const worlds: Record<string, WorldConfig> = {
       ],
     },
     chapters: [
-      { id: "checkout", shot: { id: "pos-checkout", device: "app" }, layout: "right" },
+      {
+        id: "checkout",
+        shot: { id: "pos-checkout", device: "app" },
+        extraShots: [{ id: "fast-checkout", device: "app" }],
+        layout: "right",
+      },
       {
         id: "shifts",
         shot: { id: "shift-close", device: "app" },
@@ -93,23 +98,42 @@ export const worlds: Record<string, WorldConfig> = {
         extraShots: [{ id: "owner-dash", device: "app" }],
         layout: "left",
       },
-      { id: "crm", shot: { id: "whatsapp-crm", device: "app" }, layout: "right" },
+      {
+        id: "crm",
+        shot: { id: "whatsapp-crm", device: "app" },
+        extraShots: [{ id: "whatsapp-invoice", device: "app" }],
+        layout: "right",
+      },
+      {
+        id: "users",
+        shot: { id: "pos-users", device: "app" },
+        extraShots: [{ id: "pos-roles", device: "app" }],
+        layout: "left",
+      },
+      {
+        id: "employees",
+        shot: { id: "pos-employees", device: "app" },
+        extraShots: [{ id: "payroll", device: "app" }],
+        layout: "right",
+      },
+      {
+        id: "sync",
+        shot: { id: "pos-sync", device: "app" },
+        extraShots: [{ id: "sync-orders", device: "app" }],
+        layout: "left",
+      },
       {
         id: "print",
         shot: { id: "print-designer", device: "app" },
-        extraShots: [{ id: "receipt-80", device: "thermal" }],
+        extraShots: [{ id: "receipt-80", device: "app" }],
+        layout: "right",
+      },
+      {
+        id: "offline",
+        shot: { id: "backup", device: "app" },
+        extraShots: [{ id: "offline-mode", device: "app" }],
         layout: "left",
       },
-      { id: "offline", shot: { id: "backup", device: "app" }, layout: "right" },
-    ],
-    modulesAfter: "crm",
-    modules: [
-      { id: "restaurant", shot: { id: "mod-restaurant", device: "app" } },
-      { id: "gold", shot: { id: "mod-gold", device: "app" } },
-      { id: "serials", shot: { id: "mod-serials", device: "app" } },
-      { id: "pharmacy", shot: { id: "mod-pharmacy", device: "app" } },
-      { id: "clothing", shot: { id: "mod-clothing", device: "app" } },
-      { id: "repair", shot: { id: "mod-repair", device: "app" } },
     ],
     proof: [
       { id: "reports", value: "100+" },
@@ -132,57 +156,42 @@ export const worlds: Record<string, WorldConfig> = {
       chapters: [
         { t: 0, id: "intro" },
         { t: 60, id: "storefront" },
-        { t: 180, id: "builder3d" },
+        { t: 180, id: "sync" },
         { t: 300, id: "payments" },
         { t: 450, id: "analytics" },
         { t: 600, id: "dashboard" },
       ],
     },
+    // Was 6 chapters built around abstract capabilities (storefront / 3D /
+    // payments / analytics / products / mobile), several pointing at shots
+    // that were either never real (admin dashboard, behind a login we can't
+    // use) or didn't match how this business actually sells (a checkout/
+    // payment-gateway flow — real orders happen over WhatsApp). Rebuilt as a
+    // tour of the real, live store: one chapter per actual page, each with
+    // that page's real desktop screenshot as the primary shot and its real
+    // mobile screenshot as the second (StoryChapter already renders `shot` +
+    // `extraShots` as a stacked desktop+mobile pair — no layout change
+    // needed, just real content in both slots). The 3D planner is
+    // deliberately excluded — it's covered elsewhere already, and there are
+    // enough other real pages to fill this tour without it.
     chapters: [
-      { id: "storefront", shot: { id: "ec-storefront", device: "browser" }, layout: "right" },
-      {
-        id: "builder3d",
-        shot: { id: "ec-room-planner", device: "browser" },
-        extraShots: [{ id: "ec-3d-viewer", device: "browser" }],
-        layout: "left",
-      },
-      {
-        id: "payments",
-        shot: { id: "ec-checkout", device: "browser" },
-        extraShots: [{ id: "ec-payment-methods", device: "phone" }],
-        layout: "right",
-      },
-      {
-        id: "analytics",
-        shot: { id: "ec-dashboard", device: "app" },
-        extraShots: [{ id: "ec-reports", device: "app" }],
-        layout: "left",
-      },
-      {
-        id: "products",
-        shot: { id: "ec-products", device: "browser" },
-        layout: "right",
-      },
-      {
-        id: "mobile",
-        shot: { id: "ec-mobile", device: "phone" },
-        layout: "left",
-      },
-    ],
-    modulesAfter: "payments",
-    modules: [
-      { id: "fashion", shot: { id: "mod-fashion", device: "browser" } },
-      { id: "electronics", shot: { id: "mod-electronics", device: "browser" } },
-      { id: "food", shot: { id: "mod-food", device: "browser" } },
-      { id: "furniture", shot: { id: "mod-furniture", device: "browser" } },
-      { id: "books", shot: { id: "mod-books", device: "browser" } },
-      { id: "services", shot: { id: "mod-services", device: "browser" } },
-    ],
-    proof: [
-      { id: "stores", value: "50+" },
-      { id: "products", value: "10K+" },
-      { id: "gateways", value: "5+" },
-      { id: "languages", value: "AR/EN" },
+      { id: "home", shot: { id: "ec-home", device: "browser" }, extraShots: [{ id: "ec-home-mobile", device: "phone" }], layout: "right" },
+      { id: "login", shot: { id: "ec-login", device: "browser" }, extraShots: [{ id: "ec-login-mobile", device: "phone" }], layout: "left" },
+      { id: "product", shot: { id: "ec-product", device: "browser" }, extraShots: [{ id: "ec-product-mobile", device: "phone" }], layout: "right" },
+      { id: "products", shot: { id: "ec-products", device: "browser" }, extraShots: [{ id: "ec-products-mobile", device: "phone" }], layout: "left" },
+      // No real screenshot — behind the store's admin login, which we don't
+      // have credentials for. Shown as a clearly-labelled placeholder
+      // instead of skipped entirely, since the capability is real even
+      // without a photo of it. (There was a second admin chapter here about
+      // reports, but that isn't an actual feature of this store — cut
+      // rather than describe something that doesn't exist.)
+      { id: "dashboard", shot: { id: "ec-dashboard", device: "app" }, layout: "right" },
+      { id: "categories", shot: { id: "ec-categories", device: "browser" }, extraShots: [{ id: "ec-categories-mobile", device: "phone" }], layout: "left" },
+      { id: "about", shot: { id: "ec-about", device: "browser" }, extraShots: [{ id: "ec-about-mobile", device: "phone" }], layout: "right" },
+      { id: "portfolio", shot: { id: "ec-portfolio", device: "browser" }, extraShots: [{ id: "ec-portfolio-mobile", device: "phone" }], layout: "left" },
+      { id: "locations", shot: { id: "ec-locations", device: "browser" }, extraShots: [{ id: "ec-locations-mobile", device: "phone" }], layout: "right" },
+      { id: "offers", shot: { id: "ec-offers", device: "browser" }, extraShots: [{ id: "ec-offers-mobile", device: "phone" }], layout: "left" },
+      { id: "bestsellers", shot: { id: "ec-bestsellers", device: "browser" }, extraShots: [{ id: "ec-bestsellers-mobile", device: "phone" }], layout: "right" },
     ],
   },
 };

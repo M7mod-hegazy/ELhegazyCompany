@@ -116,7 +116,7 @@ function ContactChannels() {
           {t("channelsTitle")}
         </p>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid gap-3 sm:grid-cols-3">
         {/* WhatsApp */}
         <a
           href={whatsappHref}
@@ -127,7 +127,20 @@ function ContactChannels() {
           <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
             WhatsApp
           </span>
-          <p className="mt-2 text-lg font-semibold text-bone" dir="ltr">
+          <p className="mt-2 break-all text-base font-semibold leading-snug text-bone sm:text-lg" dir="ltr">
+            {siteConfig.contact.phoneDisplay}
+          </p>
+        </a>
+
+        {/* Call — dials directly, same number as WhatsApp. */}
+        <a
+          href={`tel:+${siteConfig.contact.whatsapp}`}
+          className="group rounded-xl border border-brass/20 bg-ink-900/60 p-5 transition-all hover:border-brass/50 hover:bg-ink-900/80"
+        >
+          <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
+            {t("call")}
+          </span>
+          <p className="mt-2 break-all text-base font-semibold leading-snug text-bone sm:text-lg" dir="ltr">
             {siteConfig.contact.phoneDisplay}
           </p>
         </a>
@@ -140,7 +153,7 @@ function ContactChannels() {
           <span className="font-mono text-xs uppercase tracking-widest text-bone-muted group-hover:text-brass transition-colors">
             Email
           </span>
-          <p className="mt-2 text-lg font-semibold text-bone" dir="ltr">
+          <p className="mt-2 break-all text-base font-semibold leading-snug text-bone sm:text-lg" dir="ltr">
             {siteConfig.contact.email}
           </p>
         </a>

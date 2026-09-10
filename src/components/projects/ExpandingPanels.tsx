@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import Image from "next/image";
 import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { Project } from "@/config/projects";
 import { useLocale, useTranslations } from "next-intl";
 import { formatNum } from "@/lib/num";
+import { CoverImage } from "./CoverImage";
 
 type ExpandingPanelsProps = { projects: Project[] };
 
@@ -38,6 +38,7 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [expandedDetails, setExpandedDetails] = useState<Set<number>>(new Set());
+  const stripRef = useRef<HTMLUListElement>(null);
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent, idx: number) => {
@@ -75,6 +76,24 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
 
   const activeIndex = hoveredIndex ?? openIndex;
 
+  // With more featured projects than fit the viewport, the strip scrolls.
+  // Keyboard users shouldn't lose the open panel off-screen, so keep it in
+  // view whenever the active index changes. On first mount the first panel is
+  // already open — re-asserting it with `scrollIntoView({ block: "nearest" })`
+  // would yank the whole page down to the strip, so skip that first run.
+  const didMount = useRef(false);
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+    if (activeIndex === null) return;
+    const panel = stripRef.current?.querySelector<HTMLElement>(
+      `[data-panel-index="${activeIndex}"]`
+    );
+    panel?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", inline: "nearest", block: "nearest" });
+  }, [activeIndex, reduced]);
+
   if (projects.length === 0) {
     return (
       <p className="mx-auto max-w-7xl px-6 py-20 text-center leading-relaxed text-bone-muted">
@@ -85,8 +104,17 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
 
   return (
     <>
-      {/* ── DESKTOP ── */}
-      <ul className="hidden h-[100svh] w-full lg:flex" role="list" aria-label={t("title")}>
+      {/* ── DESKTOP ──
+          The strip fills the viewport and scrolls sideways when there are
+          more featured projects than fit. Collapsed panels hold a minimum
+          width so they never squeeze into an unreadable sliver; the open
+          panel takes most of the remaining room, exactly like before. */}
+      <ul
+        ref={stripRef}
+        className="hidden h-[100svh] w-full overflow-x-auto overscroll-x-contain lg:flex"
+        role="list"
+        aria-label={t("title")}
+      >
         {projects.map((project, idx) => {
           const isOpen = activeIndex === idx;
           const cover = project.images[0];
@@ -94,12 +122,20 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
           const client = project.client[locale];
           const lead = project.metrics[0];
           const isDetail = expandedDetails.has(idx);
+          // The strip re-numbers by position (01, 02, 03…) instead of
+          // carrying each project's global number, which would show gaps
+          // (01, 02, 05, 06) whenever featured projects aren't consecutive.
+          const seqNum = formatNum(String(idx + 1).padStart(2, "0"), locale);
 
           return (
             <li
               key={project.id}
+              data-panel-index={idx}
               style={{
-                flex: isOpen ? 6 : 1,
+                flex: isOpen ? "6 1 0%" : "1 1 0%",
+                // Collapsed panels stay wide enough to show the cover at a
+                // normal size (not a slim sliver); the strip scrolls to fit.
+                minWidth: isOpen ? "min(68vw, 44rem)" : "min(30vw, 26rem)",
                 transition: reduced ? "none" : "flex 0.48s cubic-bezier(0.22,1,0.36,1)",
               }}
               className="group relative overflow-hidden border-s border-brass/10 first:border-s-0"
@@ -114,17 +150,13 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
                 onKeyDown={(e) => handleKeyDown(e, idx)}
               >
                 {cover ? (
-                  <Image
+                  <CoverImage
                     src={cover}
                     alt={title}
-                    fill
-                    sizes={isOpen ? "60vw" : "18vw"}
-                    quality={isOpen ? 85 : 60}
-                    style={{
-                      objectFit: "cover",
-                      opacity: isOpen ? 1 : 0.55,
-                      transition: reduced ? "none" : "opacity 0.48s ease",
-                    }}
+                    sizes={isOpen ? "60vw" : "30vw"}
+                    quality={isOpen ? 85 : 80}
+                    opacity={1}
+                    transitionOpacity={!reduced}
                   />
                 ) : (
                   <div className="absolute inset-0 grid place-items-center bg-ink-800">
@@ -155,7 +187,7 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
                   <div className="absolute inset-x-0 bottom-0 p-5">
                     <div className="rule-seal mb-4 w-full" />
                     <p className="font-mono text-xs text-bone-muted">
-                      {formatNum(project.num, locale)}
+                      {seqNum}
                     </p>
                     <p className="mt-1 truncate text-[0.95rem] font-semibold text-bone">
                       {client}
@@ -176,7 +208,7 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
               {isOpen && (
                 <div className="absolute inset-x-0 bottom-0 z-10 p-8">
                   <p className="mb-2 font-mono text-xs uppercase tracking-widest text-bone-muted">
-                    {formatNum(project.num, locale)} · {t(`categories.${project.category}`)} ·{" "}
+                    {seqNum} · {t(`categories.${project.category}`)} ·{" "}
                     {formatNum(project.year, locale)}
                   </p>
                   <h3 className="mb-2 font-display text-2xl font-semibold text-bone">{title}</h3>
@@ -262,19 +294,13 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
           const cover = project.images[0];
           const title = project.title[locale];
           const client = project.client[locale];
+          const seqNum = formatNum(String(idx + 1).padStart(2, "0"), locale);
 
           return (
             <li key={project.id} className="border border-brass/15 bg-ink-800">
               {cover && (
                 <div className="relative aspect-[4/3] w-full overflow-hidden">
-                  <Image
-                    src={cover}
-                    alt={title}
-                    fill
-                    sizes="100vw"
-                    quality={72}
-                    style={{ objectFit: "cover", opacity: 0.8 }}
-                  />
+                  <CoverImage src={cover} alt={title} sizes="100vw" quality={72} opacity={0.8} />
                   <div
                     aria-hidden
                     className="absolute inset-0"
@@ -284,7 +310,7 @@ export function ExpandingPanels({ projects }: ExpandingPanelsProps) {
                     }}
                   />
                   <p className="absolute inset-x-0 bottom-0 p-4 font-mono text-[0.68rem] uppercase tracking-[0.18em] text-bone-muted">
-                    {formatNum(project.num, locale)} · {t(`categories.${project.category}`)} ·{" "}
+                    {seqNum} · {t(`categories.${project.category}`)} ·{" "}
                     {formatNum(project.year, locale)}
                   </p>
                 </div>

@@ -1,34 +1,56 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { AnimatePresence, m } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { brand } from "@/lib/brand";
 import { ShotFrame } from "./ShotFrame";
 
+export type ThemeSwatch = { id: string; sw: string; device?: "app" | "browser" | "phone" };
+
 // swatch color only — no names (the real theme names come with the screenshots)
-const THEMES = [
+const POS_THEMES: ThemeSwatch[] = [
   { id: "theme-dark", sw: "#1E1E22" },
   { id: "theme-gold", sw: "#C9A86A" },
   { id: "theme-light", sw: "#EDE7DA" },
   { id: "theme-blue", sw: "#3A4A5A" },
+  { id: "theme-rose", sw: "#7A2C26" },
+  { id: "theme-emerald", sw: "#2F5D50" },
+  { id: "theme-royal", sw: "#4A3A6A" },
 ];
 
 /** Big themes preview — one large frame that auto-cycles through theme
  *  placeholders (the app "re-skinning"), driven by color swatch dots. Owner
- *  drops real screenshots at public/shots/pos/theme-*.png. */
-export function ThemesShowcase({ worldKey }: { worldKey: string }) {
+ *  drops real screenshots at public/shots/<world>/<id>.png.
+ *
+ *  Defaults to POS's real color-skin set. Pass `themes` to reuse this same
+ *  carousel for a different world with a different set of shots — e.g.
+ *  e-commerce doesn't have a literal theme switcher, so it reuses real page
+ *  screenshots that happen to carry distinct colors (offers' green, best
+ *  sellers' orange...) instead of fabricating a "pick a color" feature that
+ *  doesn't exist. */
+export function ThemesShowcase({
+  worldKey,
+  themes = POS_THEMES,
+}: {
+  worldKey: string;
+  themes?: ThemeSwatch[];
+}) {
   const t = useTranslations(`Worlds.${worldKey}`);
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     if (paused) return;
-    const id = setInterval(() => setActive((a) => (a + 1) % THEMES.length), 3200);
+    const id = setInterval(() => setActive((a) => (a + 1) % themes.length), 3200);
     return () => clearInterval(id);
-  }, [paused]);
+  }, [paused, themes.length]);
 
-  const accent = THEMES[active].sw;
+  const accent = themes[active].sw;
+  const isAr = useLocale() === "ar";
+  const total = themes.length;
+  const prev = useCallback(() => setActive((v) => (v - 1 + total) % total), [total]);
+  const next = useCallback(() => setActive((v) => (v + 1) % total), [total]);
 
   return (
     <section className="relative overflow-hidden py-28">
@@ -64,7 +86,7 @@ export function ThemesShowcase({ worldKey }: { worldKey: string }) {
             >
               <AnimatePresence mode="wait">
                 <m.div
-                  key={THEMES[active].id}
+                  key={themes[active].id}
                   initial={{ opacity: 0, scale: 0.985 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 1.01 }}
@@ -72,35 +94,49 @@ export function ThemesShowcase({ worldKey }: { worldKey: string }) {
                 >
                   <ShotFrame
                     world={worldKey}
-                    shot={THEMES[active].id}
-                    device="app"
-                    label={t(`shots.${THEMES[active].id}`)}
+                    shot={themes[active].id}
+                    device={themes[active].device ?? "app"}
+                    label={t(`shots.${themes[active].id}`)}
                   />
                 </m.div>
               </AnimatePresence>
             </div>
           </div>
 
-          {/* swatch dots (color only) */}
-          <div className="mt-8 flex items-center justify-center gap-4">
-            {THEMES.map((th, i) => (
+          {/* arrows */}
+          <button
+            type="button"
+            onClick={prev}
+            aria-label={isAr ? "السابق" : "Previous"}
+            className="absolute left-1 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center border border-brass/30 bg-ink-900/80 text-brass transition-colors hover:border-brass hover:bg-ink-900"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d={isAr ? "m9 18 6-6-6-6" : "m15 18-6-6 6-6"} />
+            </svg>
+          </button>
+          <button
+            type="button"
+            onClick={next}
+            aria-label={isAr ? "التالي" : "Next"}
+            className="absolute right-1 top-1/2 z-20 flex h-10 w-10 -translate-y-1/2 items-center justify-center border border-brass/30 bg-ink-900/80 text-brass transition-colors hover:border-brass hover:bg-ink-900"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d={isAr ? "m15 18-6-6 6-6" : "m9 18 6-6-6-6"} />
+            </svg>
+          </button>
+
+          {/* dots — all one brass color */}
+          <div className="mt-8 flex items-center justify-center gap-2.5">
+            {themes.map((th, i) => (
               <button
                 key={th.id}
                 type="button"
                 aria-label={`Theme ${i + 1}`}
-                data-cursor
                 onClick={() => setActive(i)}
-                className="grid place-items-center rounded-full transition-transform duration-300 hover:scale-110"
-                style={{
-                  padding: 4,
-                  boxShadow: active === i ? `0 0 0 2px ${th.sw}` : "0 0 0 1px rgba(163,156,142,0.3)",
-                }}
-              >
-                <span
-                  className="block rounded-full transition-all duration-300"
-                  style={{ width: active === i ? 22 : 16, height: active === i ? 22 : 16, background: th.sw, border: "1px solid rgba(201,168,106,0.4)" }}
-                />
-              </button>
+                className={`block rounded-full transition-all duration-300 ${
+                  active === i ? "h-2 w-6 bg-brass" : "h-2 w-2 bg-brass/30 hover:bg-brass/60"
+                }`}
+              />
             ))}
           </div>
         </div>

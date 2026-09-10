@@ -34,9 +34,8 @@ export function HomeCta() {
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     if (reduced) return;
     const letterbox = Math.max(0, (v - 0.7) / 0.3);
-    const barH = `${letterbox * 10}svh`;
-    if (topBarRef.current) topBarRef.current.style.height = barH;
-    if (botBarRef.current) botBarRef.current.style.height = barH;
+    if (topBarRef.current) topBarRef.current.style.transform = `scaleY(${letterbox})`;
+    if (botBarRef.current) botBarRef.current.style.transform = `scaleY(${letterbox})`;
   });
 
   const waHref = `https://wa.me/${siteConfig.contact.whatsapp}`;
@@ -64,8 +63,8 @@ export function HomeCta() {
         }}
       />
 
-      <div ref={topBarRef} aria-hidden className="absolute inset-x-0 top-0 z-[5] bg-ink-900" style={{ height: 0 }} />
-      <div ref={botBarRef} aria-hidden className="absolute inset-x-0 bottom-0 z-[5] bg-ink-900" style={{ height: 0 }} />
+      <div ref={topBarRef} aria-hidden className="absolute inset-x-0 top-0 z-[5] h-[10svh] origin-top scale-y-0 bg-ink-900" />
+      <div ref={botBarRef} aria-hidden className="absolute inset-x-0 bottom-0 z-[5] h-[10svh] origin-bottom scale-y-0 bg-ink-900" />
 
       {/* On the grid, anchored to the inline-end column. */}
       <div className="relative z-10 mx-auto flex min-h-[88svh] max-w-7xl items-end px-6 pb-16 pt-28 sm:pb-24">

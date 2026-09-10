@@ -5,20 +5,37 @@ import { useLocale, useTranslations } from "next-intl";
 import { brand } from "@/lib/brand";
 import { cn } from "@/lib/cn";
 import { getWorld } from "@/config/worlds";
+import { siteConfig } from "@/config/site";
 
 /**
  * Commercial pricing block: Free preview vs Full version. Prices/plan copy live
  * in messages (`Worlds.<key>.pricing`) so the owner edits the real price with no
- * rebuild. Full CTA → the on-site order flow (/order); free CTA → download page.
+ * rebuild.
+ *
+ * World-aware by `externalHref`: a hosted product (e-commerce) points the
+ * preview card at the real running store and routes the "buy" card to a
+ * WhatsApp inquiry (that's how the sale actually closes). Desktop software
+ * (POS) keeps the on-site flow: free → download page, full → /contact order.
  */
 export function Pricing({ worldKey }: { worldKey: string }) {
   const t = useTranslations(`Worlds.${worldKey}.pricing`);
   const locale = useLocale();
-  const startHref = `/${locale}${getWorld(worldKey)?.href ?? ""}/download`;
-  const orderHref = `/${locale}/contact?product=${worldKey}&plan=full`;
+  const world = getWorld(worldKey);
+  const external = world?.externalHref;
+
+  const startHref = external ?? `/${locale}${world?.href ?? ""}/download`;
+  const orderHref = external
+    ? `https://wa.me/${siteConfig.contact.whatsapp}?text=${encodeURIComponent(
+        locale === "ar"
+          ? "مرحبًا، عايز أطلب متجر إلكتروني من الحجازي (٥٬٠٠٠ ج.م) — ممكن التفاصيل؟"
+          : "Hi, I'd like to order an ElHegazi e-commerce store (EGP 5,000) — can I get the details?",
+      )}`
+    : `/${locale}/contact?product=${worldKey}&plan=full`;
 
   const freeFeatures = t.raw("free.features") as string[];
   const fullFeatures = t.raw("full.features") as string[];
+
+  const extAnchor = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
     <section id="pricing" className="relative mx-auto max-w-5xl scroll-mt-24 px-6 py-24">
@@ -56,6 +73,7 @@ export function Pricing({ worldKey }: { worldKey: string }) {
           <a
             href={startHref}
             data-cursor
+            {...extAnchor}
             className="mt-8 rounded-full border border-brass/40 px-6 py-3 text-center text-sm font-semibold text-bone transition-colors hover:border-brass hover:text-brass"
           >
             {t("free.cta")}
@@ -100,6 +118,7 @@ export function Pricing({ worldKey }: { worldKey: string }) {
           <a
             href={orderHref}
             data-cursor
+            {...extAnchor}
             className="mt-8 rounded-full bg-brass px-6 py-3 text-center text-sm font-semibold text-ink-900 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brass-hi"
           >
             {t("full.cta")}

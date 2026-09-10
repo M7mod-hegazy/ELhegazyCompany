@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { m, useScroll, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { brand } from "@/lib/brand";
 import { cn } from "@/lib/cn";
 import { ShotFrame } from "./ShotFrame";
+import { GalleryLightbox } from "./GalleryLightbox";
 import type { Chapter } from "@/config/worlds";
 
 export function StoryChapter({
@@ -22,6 +23,13 @@ export function StoryChapter({
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const shotY = useTransform(scrollYProgress, [0, 1], [60, -60]);
   const glowY = useTransform(scrollYProgress, [0, 1], [-40, 40]);
+
+  const allShots = [
+    chapter.shot,
+    ...(chapter.extraShots ?? []),
+  ].map((s) => ({ world: worldKey, shot: s.id, device: s.device, label: t(`shots.${s.id}`) }));
+
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const bullets = (t.raw(`chapters.${chapter.id}.bullets`) as string[] | undefined) ?? [];
   const onRight = chapter.layout === "right";
@@ -108,15 +116,26 @@ export function StoryChapter({
               shot={chapter.shot.id}
               device={chapter.shot.device}
               label={t(`shots.${chapter.shot.id}`)}
+              priority={index === 0}
+              onExpand={() => setLightboxIndex(0)}
             />
-            {chapter.extraShots?.map((s) => (
+            {chapter.extraShots?.map((s, i) => (
               <div key={s.id} className="relative z-10 mx-auto mt-4 w-[74%] md:-mt-12 md:ms-auto md:me-0 md:w-[58%]">
-                <ShotFrame world={worldKey} shot={s.id} device={s.device} label={t(`shots.${s.id}`)} />
+                <ShotFrame world={worldKey} shot={s.id} device={s.device} label={t(`shots.${s.id}`)} priority={index === 0} onExpand={() => setLightboxIndex(i + 1)} />
               </div>
             ))}
           </m.div>
         </div>
       </div>
+
+      {lightboxIndex !== null && (
+        <GalleryLightbox
+          shots={allShots}
+          index={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onIndexChange={setLightboxIndex}
+        />
+      )}
     </section>
   );
 }

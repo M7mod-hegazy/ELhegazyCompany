@@ -2,61 +2,36 @@
 
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence } from "framer-motion";
+import { shotsLoading } from "@/lib/shotProgress";
+import { PreloaderPanel } from "@/components/fx/PreloaderPanel";
 
-const SESSION_KEY = "elhegazi:intro-seen";
 const MIN_MS = 520;   // the fill needs to be *seen*, not endured
-const MAX_MS = 2600;  // hard ceiling — the page is never held hostage
+const MAX_MS = 4000;  // hard ceiling — the page is never held hostage
 const FADE_MS = 520;
 
 /**
- * Preloader — the brand fill, shown once per session on first paint.
+ * Preloader — the brand fill, shown on every full page load.
  *
- * Three things were wrong before:
+ * It waits on fonts and the few critical screenshots registered through
+ * `registerShot`, with a 4s ceiling. Everything else is lazily loaded and never
+ * blocks the intro. Client-side route changes keep using RoutePreloader; this
+ * component stays mounted in the locale layout, so it only restarts when the
+ * browser performs a real reload.
  *
- *  1. It ran on **every** route, so navigating from the home page to /projects
- *     replayed a full-screen wordmark on top of a page that was already loaded.
- *     It is now gated on sessionStorage: first visit only.
- *  2. It waited on `readyState === "complete"`, which does not fire until every
+ * It previously waited on `readyState === "complete"`, which does not fire until every
  *     image and video on the page has finished. On a page with heavy media that
  *     meant several seconds of black, and it capped the counter at 96% while it
- *     waited — so the number visibly stalled. It now gates on fonts only, with a
- *     2.6s ceiling.
- *  3. It exited by sliding the panel up, which dragged a full-viewport opaque
+ *     waited — so the number visibly stalled. It also exited by sliding the
+ *     panel up, which dragged a full-viewport opaque
  *     layer across the freshly painted hero. It now fades and scales out.
  *
- * SSR renders nothing; the panel mounts on the client only if this session has
- * not seen it, so there is no flash for returning visitors.
- *
- * `active` always starts `false` so the first client render matches the
- * server render exactly — sessionStorage is read in an effect (client-only,
- * post-hydration) rather than in a lazy `useState` initialiser. The initialiser
- * ran during hydration too, on a session where sessionStorage said "first
- * visit", so the client's very first paint already showed the full-screen
- * panel while the server had rendered nothing — a hydration mismatch that
- * crashed and remounted the whole tree.
+ * `active` starts `true` on both the server and the first client render, which
+ * keeps hydration deterministic and makes the wordmark visible immediately.
  */
-function claimIntroSlot(): boolean {
-  try {
-    if (sessionStorage.getItem(SESSION_KEY) === "1") return false;
-    sessionStorage.setItem(SESSION_KEY, "1");
-    return true;
-  } catch {
-    return false; // private mode — skip the intro rather than replay it
-  }
-}
-
 export function Preloader() {
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   const [pct, setPct] = useState(0);
   const doneRef = useRef(false);
-
-  useEffect(() => {
-    // One-time client-only read (sessionStorage) after mount, deliberately —
-    // this is the only safe place to make this check without diverging from
-    // the server's render.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (claimIntroSlot()) setActive(true);
-  }, []);
 
   useEffect(() => {
     if (!active) return;
@@ -87,7 +62,7 @@ export function Preloader() {
       const ratio = Math.min(1, elapsed / MIN_MS);
       // Ease-out so the count decelerates into 100 instead of stopping dead.
       setPct(Math.round((1 - Math.pow(1 - ratio, 3)) * 100));
-      if (ratio >= 1 && fontsReady) return finish();
+      if (ratio >= 1 && fontsReady && !shotsLoading()) return finish();
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -109,32 +84,7 @@ export function Preloader() {
           exit={{ opacity: 0, scale: 1.04 }}
           transition={{ duration: FADE_MS / 1000, ease: [0.22, 1, 0.36, 1] }}
         >
-          <div className="relative leading-none" dir="rtl">
-            <span className="font-display-ar text-[14vw] font-semibold text-bone-muted/12 sm:text-[8vw]">
-              الحجازي
-            </span>
-            <span
-              className="font-display-ar absolute inset-0 text-[14vw] font-semibold sm:text-[8vw]"
-              style={{
-                backgroundImage: `linear-gradient(to top, var(--color-brass) ${pct}%, transparent ${pct}%)`,
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-              }}
-            >
-              الحجازي
-            </span>
-          </div>
-
-          <div className="mt-7 h-px w-40 bg-bone/10">
-            <div
-              className="h-px bg-brass"
-              style={{ width: `${pct}%`, transition: "width 120ms linear" }}
-            />
-          </div>
-          <div className="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.42em] text-bone-muted/60">
-            ELHEGAZI
-          </div>
+          <PreloaderPanel pct={pct} />
         </m.div>
       )}
     </AnimatePresence>

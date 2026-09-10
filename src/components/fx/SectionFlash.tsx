@@ -2,29 +2,19 @@
 
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence } from "framer-motion";
-import { resolveActive } from "@/lib/scrollSections";
+import { subscribeActive } from "@/lib/scrollSections";
 
 /** A soft brass light sweeps across whenever the active section changes. */
 export function SectionFlash() {
   const [k, setK] = useState(0);
   const last = useRef<string | null>("hero");
   useEffect(() => {
-    let raf = 0;
-    let lastCheck = 0;
-    const check = () => {
-      const now = performance.now();
-      if (now - lastCheck > 250) {
-        lastCheck = now;
-        const a = resolveActive().id;
-        if (a && a !== last.current) {
-          last.current = a;
-          setK((v) => v + 1);
-        }
+    return subscribeActive(({ id }) => {
+      if (id && id !== last.current) {
+        last.current = id;
+        setK((v) => v + 1);
       }
-      raf = requestAnimationFrame(check);
-    };
-    raf = requestAnimationFrame(check);
-    return () => cancelAnimationFrame(raf);
+    });
   }, []);
   return (
     <AnimatePresence>

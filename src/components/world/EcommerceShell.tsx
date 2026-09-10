@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { ShowroomAtmosphere } from "./ShowroomAtmosphere";
+import { WorldAtmosphere } from "./WorldAtmosphere";
 import { BackToTop, StickyCTA, WhatsAppOrb, WorldRail } from "./widgets";
 
 export function EcommerceShell({
@@ -16,7 +16,10 @@ export function EcommerceShell({
       className="relative z-10 overflow-x-clip"
       style={{ "--world-accent": accent } as CSSProperties}
     >
-      <ShowroomAtmosphere />
+      {/* Was ShowroomAtmosphere — a custom off-center-orb background unique to
+          this page. Same shared WorldAtmosphere as POS and the homepage now,
+          so the whole site reads as one consistent background treatment. */}
+      <WorldAtmosphere />
       {children}
       <WorldRail />
       <BackToTop />

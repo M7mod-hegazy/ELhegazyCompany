@@ -4,30 +4,50 @@ import { useLocale, useTranslations } from "next-intl";
 import { getWorld } from "@/config/worlds";
 import { cn } from "@/lib/cn";
 
-/** Download (free) + Pricing CTA pair — reused across the page so the offer is
- *  always one click away. Download falls back to /start until a real installer
- *  URL is set in siteConfig.downloads. */
+/** Primary + Pricing CTA pair — reused across the page so the offer is always
+ *  one click away.
+ *
+ *  Primary defaults to "Download" (`/<world>/download`), which is right for
+ *  POS — real installable software. It was wrong for e-commerce: there's
+ *  nothing to download for a hosted store, and that link 404s (no
+ *  `/download` route exists in the app). Pass `previewHref` for any world
+ *  that should offer "see the real thing running" instead — the primary
+ *  button becomes an external link to that live example. */
 export function PlanButtons({
   worldKey,
   className,
   center,
+  previewHref,
 }: {
   worldKey: string;
   className?: string;
   center?: boolean;
+  previewHref?: string;
 }) {
   const t = useTranslations("Common");
   const locale = useLocale();
   const dlPage = `/${locale}${getWorld(worldKey)?.href ?? ""}/download`;
   return (
     <div className={cn("flex flex-col gap-3 sm:flex-row sm:gap-4", center && "sm:justify-center", className)}>
-      <a
-        href={dlPage}
-        data-cursor
-        className="rounded-full bg-brass px-7 py-3.5 text-center text-sm font-semibold text-ink-900 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brass-hi"
-      >
-        {t("download")}
-      </a>
+      {previewHref ? (
+        <a
+          href={previewHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cursor
+          className="rounded-full bg-brass px-7 py-3.5 text-center text-sm font-semibold text-ink-900 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brass-hi"
+        >
+          {t("previewLive")}
+        </a>
+      ) : (
+        <a
+          href={dlPage}
+          data-cursor
+          className="rounded-full bg-brass px-7 py-3.5 text-center text-sm font-semibold text-ink-900 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brass-hi"
+        >
+          {t("download")}
+        </a>
+      )}
       <a
         href="#pricing"
         data-cursor

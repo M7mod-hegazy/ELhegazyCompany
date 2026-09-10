@@ -1,5 +1,7 @@
 "use client";
 
+import { frame } from "framer-motion";
+
 /**
  * Lightweight scroll-section registry: components call `registerSection(id, el)`
  * with their root element. On each rAF, we compute which section occupies the
@@ -78,4 +80,44 @@ export function resolveActive(): { id: string | null; local: number } {
 
   activeId = best;
   return { id: best, local: bestLocal };
+}
+
+/**
+ * Shared 250ms ticker for "what section is active" consumers (MoodTint,
+ * SectionFlash). Each of those used to run its own `requestAnimationFrame`
+ * loop — spinning every single frame just to check whether 250ms had
+ * elapsed — and, on top of that, each one called `resolveActive()`
+ * independently, so the `getBoundingClientRect()` read over every section
+ * happened twice per tick from two uncoordinated loops. Neither loop was
+ * synced with Framer Motion's own frame scheduler (the one Lenis and every
+ * `useScroll` in the app now run through), so its read could land between
+ * another component's write and force a synchronous layout — the "Forced
+ * reflow" / long 'message' handler violations during scroll. One interval,
+ * one read (routed through `frame.read` so it's batched with everything
+ * else), fanned out to every listener.
+ */
+type ActiveListener = (active: { id: string | null; local: number }) => void;
+const activeListeners = new Set<ActiveListener>();
+let activeTimer: ReturnType<typeof setInterval> | null = null;
+
+function tickActive() {
+  frame.read(() => {
+    const result = resolveActive();
+    activeListeners.forEach((listen) => listen(result));
+  });
+}
+
+export function subscribeActive(listener: ActiveListener): () => void {
+  activeListeners.add(listener);
+  if (!activeTimer) {
+    tickActive();
+    activeTimer = setInterval(tickActive, 250);
+  }
+  return () => {
+    activeListeners.delete(listener);
+    if (activeListeners.size === 0 && activeTimer) {
+      clearInterval(activeTimer);
+      activeTimer = null;
+    }
+  };
 }

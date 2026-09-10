@@ -8,8 +8,8 @@ import { cn } from "@/lib/cn";
 function Icon({ id }: { id: string }) {
   const p: Record<string, React.ReactNode> = {
     storefront: <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2zM9 22V12h6v10" />,
-    builder3d: <path d="M12 2L2 7l10 5 10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />,
-    payments: <path d="M3 6h18v12H3zM3 10h18M7 15h4" />,
+    sync: <path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16" />,
+    whatsapp: <path d="M3 21l1.65-4.95A8 8 0 1 1 8.5 19.5L3 21Z M8 10.5c0 3 2.5 5.5 5.5 5.5" />,
     analytics: <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />,
     seo: <><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /></>,
     mobile: <><rect x="5" y="2" width="14" height="20" rx="2" ry="2" /><line x1="12" y1="18" x2="12.01" y2="18" /></>,
@@ -24,8 +24,8 @@ function Icon({ id }: { id: string }) {
 
 const CARDS: { id: string; span?: string; feature?: boolean }[] = [
   { id: "storefront", span: "lg:col-span-2", feature: true },
-  { id: "builder3d" },
-  { id: "payments" },
+  { id: "sync" },
+  { id: "whatsapp" },
   { id: "analytics" },
   { id: "seo" },
   { id: "mobile", span: "lg:col-span-2", feature: true },

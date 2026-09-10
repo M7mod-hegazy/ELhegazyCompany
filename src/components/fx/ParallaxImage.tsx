@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
+import { ResilientImage } from "@/components/media/ResilientImage";
 
 export type ParallaxImageProps = {
   src: string;
@@ -23,6 +23,9 @@ export type ParallaxImageProps = {
   className?: string;
   /** Object position, e.g. "center 60%". */
   objectPosition?: string;
+  /** "cover" (default) fills the host, cropping overflow. "contain" shows
+   *  the whole image letterboxed — for shots where nothing is safe to crop. */
+  objectFit?: "cover" | "contain";
   /** Optional CSS filter, e.g. "grayscale(0.6) brightness(0.85)". */
   filter?: string;
 };
@@ -49,6 +52,7 @@ export function ParallaxImage({
   sizes = "100vw",
   className,
   objectPosition = "center",
+  objectFit = "cover",
   filter,
 }: ParallaxImageProps) {
   const reduced = useReducedMotion();
@@ -78,7 +82,7 @@ export function ParallaxImage({
         className="parallax-layer absolute inset-x-0"
         style={{ top: `-${over / 2}%`, height: `${100 + over}%` }}
       >
-        <Image
+        <ResilientImage
           src={src}
           alt={alt}
           fill
@@ -86,10 +90,10 @@ export function ParallaxImage({
           quality={quality}
           priority={priority}
           className={srcPortrait ? "portrait:hidden" : undefined}
-          style={{ objectFit: "cover", objectPosition, filter }}
+          style={{ objectFit, objectPosition, filter }}
         />
         {srcPortrait && (
-          <Image
+          <ResilientImage
             src={srcPortrait}
             alt=""
             fill
@@ -97,7 +101,7 @@ export function ParallaxImage({
             quality={quality}
             priority={priority}
             className="landscape:hidden"
-            style={{ objectFit: "cover", objectPosition }}
+            style={{ objectFit, objectPosition }}
           />
         )}
       </div>

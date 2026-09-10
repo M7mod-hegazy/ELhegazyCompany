@@ -19,6 +19,7 @@ import { Footer } from "@/components/site/Footer";
 import { FilmGrain } from "@/components/fx/FilmGrain";
 import { Preloader } from "@/components/fx/Preloader";
 import { Overlays } from "@/components/fx/Overlays";
+import { RoutePreloader } from "@/components/fx/RoutePreloader";
 
 const reemKufi = Reem_Kufi({
   subsets: ["arabic", "latin"],
@@ -99,6 +100,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <body suppressHydrationWarning className="min-h-full flex flex-col text-bone">
         <NextIntlClientProvider messages={messages}>
           <MotionProvider>
+            <RoutePreloader />
             <SmoothScroll>
               <Navbar />
               {children}

@@ -6,6 +6,15 @@
  *
  * Rules keyed by "${q1}-${q2}-${q3}". Use "*" as a wildcard for any position.
  * Rules are evaluated in order; the first match wins.
+ *
+ * Q3 ("what do you want to do now") only ever picks the CTA style in the
+ * result panel — it must never change which product gets recommended. A
+ * rule table that let "I want a free trial" downgrade someone to a product
+ * with no trial was the original bug here; product fit is Q1 × Q2 only.
+ *
+ * "branches" is a follow-up asked only when Q1 = "multi" — it doesn't
+ * change *what* gets recommended, only the POS price (multi-branch stock
+ * transfer and per-branch reporting scale with branch count).
  */
 
 export type DiagnosticOutcome = {
@@ -15,6 +24,8 @@ export type DiagnosticOutcome = {
   priceToEGP: number;     // OWNER: edit
   weeksMin: number;       // OWNER: edit
   weeksMax: number;       // OWNER: edit
+  /** Set at read time (not here) when a multi-branch surcharge was applied. */
+  multiBranch?: boolean;
 };
 
 export const diagnosticOutcomes: Record<string, DiagnosticOutcome> = {
@@ -50,6 +61,14 @@ export const diagnosticOutcomes: Record<string, DiagnosticOutcome> = {
     weeksMin: 2,           // OWNER: edit
     weeksMax: 4,           // OWNER: edit
   },
+  "pos-ecommerce": {
+    id: "pos-ecommerce",
+    products: ["pos", "ecommerce"],
+    priceFromEGP: 20000,   // OWNER: edit
+    priceToEGP: 40000,     // OWNER: edit
+    weeksMin: 3,           // OWNER: edit
+    weeksMax: 6,           // OWNER: edit
+  },
   "ecommerce-marketing": {
     id: "ecommerce-marketing",
     products: ["ecommerce", "marketing"],
@@ -69,6 +88,19 @@ export const diagnosticOutcomes: Record<string, DiagnosticOutcome> = {
 };
 
 /**
+ * Multi-branch surcharge, applied once (per tier, not per exact branch —
+ * the quiz only captures a band). 5,000 EGP per branch beyond the first,
+ * banded into three tiers so the quiz doesn't need a numeric input.
+ */
+export const BRANCH_COUNT_VALUES = ["2", "3to5", "6plus"] as const;
+
+const MULTI_BRANCH_SURCHARGE_EGP: Record<string, number> = {
+  "2": 5000,      // OWNER: edit — 1 extra branch @ 5,000
+  "3to5": 15000,  // OWNER: edit — ~3 extra branches @ 5,000
+  "6plus": 30000, // OWNER: edit — starting point; exact count is priced on the call
+};
+
+/**
  * Rule table. First match wins. "*" = any answer.
  *
  * Q1: shop situation — "1branch" | "multi" | "online" | "none"
@@ -79,7 +111,7 @@ export const diagnosticRules: { match: string; outcome: string }[] = [
   // "All of them" → full suite regardless of other answers
   { match: "*-all-*",          outcome: "all" },
 
-  // Has a physical shop + can't sell online → POS + ecommerce
+  // Has a physical shop + can't sell online → ecommerce + marketing
   { match: "1branch-sellonline-*",  outcome: "ecommerce-marketing" },
   { match: "multi-sellonline-*",    outcome: "ecommerce-marketing" },
 
@@ -91,14 +123,21 @@ export const diagnosticRules: { match: string; outcome: string }[] = [
   { match: "1branch-visibility-*", outcome: "pos-marketing" },
   { match: "multi-visibility-*",   outcome: "pos-marketing" },
 
-  // Online only → ecommerce + marketing
+  // Already sells online but can't read the numbers → they need POS-grade
+  // reporting bolted onto the store, not more marketing spend.
+  { match: "online-numbers-*",     outcome: "pos-ecommerce" },
+  // Already sells online, but orders get lost/delayed → the store itself
+  // needs work, not a marketing budget on top of a leaky checkout.
+  { match: "online-sellonline-*",  outcome: "ecommerce-only" },
+  // Online only, remaining case (visibility) → ecommerce + marketing
   { match: "online-*-*",           outcome: "ecommerce-marketing" },
 
-  // Nothing yet + wants a free trial first → start with marketing (smaller commitment)
-  { match: "none-*-trial",        outcome: "marketing-only" },
-
-  // Nothing yet + wants a call or ready to start now → full plan
-  { match: "none-*-*",             outcome: "all" },
+  // Hasn't started yet → match the specific pain they named. Pushing the
+  // full suite on everyone here regardless of what they said isn't honest
+  // and doesn't match the "quick, no BS" promise in the subtitle copy.
+  { match: "none-numbers-*",       outcome: "pos-only" },
+  { match: "none-visibility-*",    outcome: "marketing-only" },
+  { match: "none-sellonline-*",    outcome: "ecommerce-only" },
 
   // Fallback
   { match: "*-*-*",                outcome: "marketing-only" },
@@ -107,15 +146,30 @@ export const diagnosticRules: { match: string; outcome: string }[] = [
 export function getDiagnosticOutcome(
   q1: string,
   q2: string,
-  q3: string
+  q3: string,
+  branches?: string | null
 ): DiagnosticOutcome {
   const key = `${q1}-${q2}-${q3}`;
-  for (const rule of diagnosticRules) {
-    if (matchesRule(rule.match, key)) {
-      return diagnosticOutcomes[rule.outcome] ?? diagnosticOutcomes["marketing-only"];
-    }
-  }
-  return diagnosticOutcomes["marketing-only"];
+  const rule = diagnosticRules.find((r) => matchesRule(r.match, key));
+  const outcome = diagnosticOutcomes[rule?.outcome ?? "marketing-only"] ?? diagnosticOutcomes["marketing-only"];
+  return applyMultiBranchSurcharge(outcome, q1, branches);
+}
+
+function applyMultiBranchSurcharge(
+  outcome: DiagnosticOutcome,
+  q1: string,
+  branches?: string | null
+): DiagnosticOutcome {
+  // The surcharge only makes sense on the POS line — multi-branch stock
+  // transfer and per-branch reporting are POS scope, not ecommerce/marketing.
+  if (q1 !== "multi" || !outcome.products.includes("pos")) return outcome;
+  const surcharge = MULTI_BRANCH_SURCHARGE_EGP[branches ?? "2"] ?? MULTI_BRANCH_SURCHARGE_EGP["2"];
+  return {
+    ...outcome,
+    priceFromEGP: outcome.priceFromEGP + surcharge,
+    priceToEGP: outcome.priceToEGP + surcharge,
+    multiBranch: true,
+  };
 }
 
 function matchesRule(pattern: string, key: string): boolean {

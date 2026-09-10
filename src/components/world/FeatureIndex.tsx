@@ -33,29 +33,27 @@ const POS_EN = [
 ];
 
 const EC_AR = [
-  "واجهة متجر", "كتالوج منتجات", "أقسام وفئات", "بحث فوري", "فلترة ذكية", "مقاسات وألوان",
-  "معارض صور", "استيراد مجمع", "سلة تسوق", "إتمام الشراء", "بوابات دفع", "دفع عند الاستلام",
-  "مناطق شحن", "تتبع الشحن", "فواتير أوتوماتيك", "حسابات العملاء", "سجل طلبات", "قائمة مفضّلات",
-  "نقاط ولاء", "كوبونات خصم", "عروض تلقائية", "تقييمات ونجوم", "صور تقييمات", "مودريشن",
-  "لوحة تحكم", "تحليلات مبيعات", "تقارير مخزون", "رؤى العملاء", "إشعارات فورية", "إيميلات أوتوماتيك",
-  "رسائل نصية", "استرداد العربات", "SEO متكامل", "خريطة موقع", "بيانات منظمة", "مدونة ومقالات",
-  "صفحات", "وسوم ميتا", "تطبيق موبايل", "إشعارات push", "واتساب تكامل", "مشاركة اجتماعية",
-  "دخول اجتماعي", "عربي وإنجليزي", "RTL", "عملات متعددة", "تصدير تقارير", "تصدير Excel/PDF",
-  "مخطط غرف ثلاثي الأبعاد", "معاينة ثلاثي الأبعاد", "مخازن متعددة", "إدارة موردين",
-  "صلاحيات مستخدمين", "نسخ احتياطي", "تحديثات مستمرة", "دعم فني",
+  "واجهة متجر عربية", "كتالوج منتجات", "أقسام وفئات", "بحث فوري", "فلترة ذكية",
+  "عائلات منتجات", "مقاسات وأسعار", "معارض صور", "SKU لكل منتج", "مخزون لكل متجر",
+  "استيراد مجمع", "منتجات مميزة", "عروض وخصومات", "صفحة عروض", "الأكثر مبيعًا",
+  "تقييمات ونجوم", "مراجعات منتجات", "حسابات عملاء", "تسجيل دخول", "سجل طلبات",
+  "لوحة تحكم", "تحليلات مبيعات", "تقارير مخزون", "مزامنة مع الكاشير", "مخزون موحّد",
+  "ترتيب منتجات يدوي", "أسعار وأكواد متعددة", "طلب واتساب", "زرار واتساب لكل منتج",
+  "SEO متكامل", "ميتا لكل فئة", "خريطة موقع", "بيانات منظمة", "صفحة من نحن",
+  "صفحة أعمالنا", "صفحة فروعنا", "عربي وإنجليزي", "RTL", "موبايل أول",
+  "تصميم متجاوب", "نسخ احتياطي", "تحديثات مستمرة", "دعم عربي", "بدون اشتراك شهري",
 ];
 
 const EC_EN = [
-  "Storefront", "Product catalog", "Categories", "Instant search", "Smart filtering", "Size & color variants",
-  "Image galleries", "Bulk import", "Shopping cart", "Checkout", "Payment gateways", "Cash on delivery",
-  "Shipping zones", "Shipment tracking", "Auto invoices", "Customer accounts", "Order history", "Wishlists",
-  "Loyalty points", "Discount coupons", "Auto promotions", "Ratings & reviews", "Photo reviews", "Moderation",
-  "Owner dashboard", "Sales analytics", "Inventory reports", "Customer insights", "Push notifications", "Auto emails",
-  "SMS alerts", "Cart recovery", "Built-in SEO", "Sitemap", "Structured data", "Blog & articles",
-  "Pages", "Meta fields", "Mobile app", "Push notifications", "WhatsApp integration", "Social sharing",
-  "Social login", "Arabic & English", "RTL layout", "Multi-currency", "Report export", "Excel/PDF export",
-  "3D room planner", "3D product viewer", "Multi-warehouse", "Supplier management",
-  "User roles", "Backup & restore", "Continuous updates", "Technical support",
+  "Arabic storefront", "Product catalog", "Categories", "Instant search", "Smart filtering",
+  "Product families", "Sizes & prices", "Image galleries", "SKU per product", "Per-store stock",
+  "Bulk import", "Featured products", "Offers & discounts", "Offers page", "Best sellers",
+  "Ratings & reviews", "Product reviews", "Customer accounts", "Login", "Order history",
+  "Owner dashboard", "Sales analytics", "Inventory reports", "POS sync", "Unified stock",
+  "Manual product ordering", "Multi-price SKUs", "WhatsApp ordering", "WhatsApp button per product",
+  "Built-in SEO", "Category meta", "Sitemap", "Structured data", "About page",
+  "Portfolio page", "Branches page", "Arabic & English", "RTL layout", "Mobile-first",
+  "Responsive design", "Backup", "Continuous updates", "Arabic support", "No monthly subscription",
 ];
 
 function Row({ items, reverse, dur }: { items: string[]; reverse?: boolean; dur: number }) {
@@ -82,7 +80,10 @@ function Row({ items, reverse, dur }: { items: string[]; reverse?: boolean; dur:
 export function FeatureIndex({ worldKey, featuresAr, featuresEn }: { worldKey: string; featuresAr?: string[]; featuresEn?: string[] }) {
   const t = useTranslations(`Worlds.${worldKey}`);
   const locale = useLocale();
-  const all = locale === "ar" ? (featuresAr ?? POS_AR) : (featuresEn ?? POS_EN);
+  const all =
+    locale === "ar"
+      ? (featuresAr ?? (worldKey === "ecommerce" ? EC_AR : POS_AR))
+      : (featuresEn ?? (worldKey === "ecommerce" ? EC_EN : POS_EN));
   const n = Math.ceil(all.length / 4);
   const rows = [all.slice(0, n), all.slice(n, 2 * n), all.slice(2 * n, 3 * n), all.slice(3 * n)];
 

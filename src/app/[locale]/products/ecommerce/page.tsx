@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
@@ -7,26 +6,35 @@ import { getWorld } from "@/config/worlds";
 import { EcommerceShell } from "@/components/world/EcommerceShell";
 import { PlanButtons } from "@/components/world/PlanButtons";
 import { KineticStatement } from "@/components/world/KineticStatement";
-import { VideoWalkthrough } from "@/components/world/VideoWalkthrough";
 import { EcommerceAbilitiesBento } from "@/components/world/EcommerceAbilitiesBento";
+import { ThemesShowcase } from "@/components/world/ThemesShowcase";
 import { StoryChapter } from "@/components/world/StoryChapter";
-import { ModuleGallery } from "@/components/world/ModuleGallery";
 import { HorizontalFeatures } from "@/components/world/HorizontalFeatures";
 import { FeatureIndex } from "@/components/world/FeatureIndex";
-import { WorldProof } from "@/components/world/WorldProof";
 import {
-  TrustStrip,
-  BigNumbers,
   CompareTable,
   PullQuote,
   SparkDivider,
   CapabilityWheel,
+  EC_WHEEL_AR,
+  EC_WHEEL_EN,
 } from "@/components/world/sections";
 import { Pricing } from "@/components/world/Pricing";
 import { LiveStoreBand } from "@/components/world/LiveStoreBand";
 import { CtaBand } from "@/components/site/CtaBand";
 
 const KEY = "ecommerce" as const;
+
+// 4 open slots, real images to come later (owner will supply better ones) —
+// drop files at public/shots/ecommerce/theme-1.* … theme-4.* and they appear
+// automatically; until then ShotFrame shows a clean labelled placeholder
+// instead of a broken image, same as everywhere else on the site.
+const ECOMMERCE_THEME_SET = [
+  { id: "theme-1", sw: "#5B4FE5", device: "browser" as const },
+  { id: "theme-2", sw: "#1F8A56", device: "browser" as const },
+  { id: "theme-3", sw: "#D9642B", device: "browser" as const },
+  { id: "theme-4", sw: "#8B6FD9", device: "browser" as const },
+];
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -54,63 +62,46 @@ export default async function EcommerceWorldPage({ params }: Props) {
         chips={t.raw("heroChips")}
         zone="bottom-left"
         accent={world.accent}
-        actions={<PlanButtons worldKey={world.key} />}
+        actions={<PlanButtons worldKey={world.key} previewHref={world.externalHref} />}
       />
       <KineticStatement worldKey={world.key} />
       <LiveStoreBand worldKey={world.key} href={world.externalHref} />
-      <VideoWalkthrough
-        title={t("videoTitle")}
-        subtitle={t("videoSub")}
-        chapterHeading={t("chapterHeading")}
-        videos={[
-          {
-            youtubeId: "YOUTUBE_ID_HERE",
-            labelAr: "المتجر كامل",
-            labelEn: "Full store",
-          },
-          {
-            youtubeId: "YOUTUBE_ID_HERE",
-            labelAr: "المنتجات والكتالوج",
-            labelEn: "Products & catalog",
-          },
-          {
-            youtubeId: "YOUTUBE_ID_HERE",
-            labelAr: "الطلبات والشحن",
-            labelEn: "Orders & shipping",
-          },
-        ]}
-        chapters={[
-          { time: "0:00", seconds: 0, labelAr: "المقدمة", labelEn: "Introduction" },
-          { time: "1:30", seconds: 90, labelAr: "واجهة المتجر", labelEn: "Storefront" },
-          { time: "3:15", seconds: 195, labelAr: "إدارة المنتجات", labelEn: "Product management" },
-          { time: "5:00", seconds: 300, labelAr: "سلة التسوق والدفع", labelEn: "Cart & checkout" },
-          { time: "6:45", seconds: 405, labelAr: "طرق الدفع والشحن", labelEn: "Payment & shipping" },
-          { time: "8:30", seconds: 510, labelAr: "لوحة التحكم", labelEn: "Owner dashboard" },
-          { time: "10:15", seconds: 615, labelAr: "التقارير والتحليلات", labelEn: "Reports & analytics" },
-          { time: "12:00", seconds: 720, labelAr: "تطبيق الموبايل", labelEn: "Mobile app" },
-        ]}
-      />
-      <TrustStrip worldKey={world.key} />
       <EcommerceAbilitiesBento worldKey={world.key} />
-      <BigNumbers worldKey={world.key} />
+      <ThemesShowcase worldKey={world.key} themes={ECOMMERCE_THEME_SET} />
 
+      {/* A real page of the live store per chapter — home, login, a product,
+          the full catalog, categories, about, portfolio, branches, offers,
+          best-sellers — each with that page's actual desktop and mobile
+          screenshot. Replaced the old abstract-capability chapters (several
+          of which pointed at shots that were never real). */}
       {world.chapters.map((c, idx) => (
-        <Fragment key={c.id}>
-          <StoryChapter worldKey={world.key} chapter={c} index={idx} />
-          {world.modulesAfter === c.id && world.modules && (
-            <ModuleGallery worldKey={world.key} modules={world.modules} />
-          )}
-        </Fragment>
+        <StoryChapter key={c.id} worldKey={world.key} chapter={c} index={idx} />
       ))}
 
+      {/* Second, shorter mention of the same offer — POS repeats its trial
+          pitch at this exact position (PlanBand, after the first pull-quote).
+          E-commerce only pitched it once, at the very top; this closes that
+          gap with the mechanism that actually fits a hosted store. */}
+      <LiveStoreBand
+        worldKey={world.key}
+        href={world.externalHref}
+        kicker={t("midPreview.kicker")}
+        title={t("midPreview.title")}
+        cta={t("midPreview.cta")}
+        compact
+      />
       <PullQuote worldKey={world.key} id="quote1" />
-      <HorizontalFeatures worldKey={world.key} ids={["catalog","orders","customers","coupons","reviews","shipping","tax","inventory","blog","social","localization","search","notifications","export"]} />
+      <HorizontalFeatures worldKey={world.key} ids={["catalog","families","gallery","sku","import","featured","offers","bestsellers","reviews","accounts","dashboard","sync","seo","pages"]} />
       <SparkDivider />
       <CompareTable worldKey={world.key} />
-      <CapabilityWheel worldKey={world.key} />
-      <FeatureIndex worldKey={world.key} featuresAr={["واجهة متجر","كتالوج منتجات","أقسام وفئات","بحث فوري","فلترة ذكية","مقاسات وألوان","معارض صور","استيراد مجمع","سلة تسوق","إتمام الشراء","بوابات دفع","دفع عند الاستلام","مناطق شحن","تتبع الشحن","فواتير أوتوماتيك","حسابات العملاء","سجل طلبات","قائمة مفضّلات","نقاط ولاء","كوبونات خصم","عروض تلقائية","تقييمات ونجوم","صور تقييمات","مودريشن","لوحة تحكم","تحليلات مبيعات","تقارير مخزون","رؤى العملاء","إشعارات فورية","إيميلات أوتوماتيك","رسائل نصية","استرداد العربات","SEO متكامل","خريطة موقع","بيانات منظمة","مدونة ومقالات","صفحات","وسوم ميتا","تطبيق موبايل","إشعارات push","واتساب تكامل","مشاركة اجتماعية","دخول اجتماعي","عربي وإنجليزي","RTL","عملات متعددة","تصدير تقارير","تصدير Excel/PDF","مخطط غرف ثلاثي الأبعاد","معاينة ثلاثي الأبعاد","مخازن متعددة","إدارة موردين","صلاحيات مستخدمين","نسخ احتياطي","تحديثات مستمرة","دعم فني"]} featuresEn={["Storefront","Product catalog","Categories","Instant search","Smart filtering","Size & color variants","Image galleries","Bulk import","Shopping cart","Checkout","Payment gateways","Cash on delivery","Shipping zones","Shipment tracking","Auto invoices","Customer accounts","Order history","Wishlists","Loyalty points","Discount coupons","Auto promotions","Ratings & reviews","Photo reviews","Moderation","Owner dashboard","Sales analytics","Inventory reports","Customer insights","Push notifications","Auto emails","SMS alerts","Cart recovery","Built-in SEO","Sitemap","Structured data","Blog & articles","Pages","Meta fields","Mobile app","Push notifications","WhatsApp integration","Social sharing","Social login","Arabic & English","RTL layout","Multi-currency","Report export","Excel/PDF export","3D room planner","3D product viewer","Multi-warehouse","Supplier management","User roles","Backup & restore","Continuous updates","Technical support"]} />
+      <CapabilityWheel worldKey={world.key} chipsAr={EC_WHEEL_AR} chipsEn={EC_WHEEL_EN} />
+      {/* Real store capabilities only. Earlier this list included shopping
+          cart, checkout, payment gateways, cash on delivery and cart recovery
+          — none of that reflects how orders actually happen here (a customer
+          messages on WhatsApp and the sale closes there). WhatsApp ordering
+          is its own chip below. Lists live in FeatureIndex.tsx per world. */}
+      <FeatureIndex worldKey={world.key} />
       <PullQuote worldKey={world.key} id="quote2" />
-      <WorldProof worldKey={world.key} items={world.proof} />
       <Pricing worldKey={world.key} />
       <CtaBand />
     </EcommerceShell>

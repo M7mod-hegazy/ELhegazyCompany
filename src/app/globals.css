@@ -131,6 +131,22 @@ html[lang="en"] .font-display {
   background: var(--color-ink-900);
 }
 
+/* Torn receipt edge — a straight zigzag cut, never a curve (nothing is round
+   except the seal). Used where a printed slip tears away from its pad, e.g.
+   the diagnostic quiz's running answer strip. Teeth read as `--tear-color`
+   against whatever sits underneath, so set that var to the surface below. */
+.receipt-tear {
+  --tear-color: var(--color-ink-900);
+  --tear-size: 10px;
+  height: var(--tear-size);
+  background-image:
+    linear-gradient(135deg, var(--tear-color) 50%, transparent 50%),
+    linear-gradient(45deg, var(--tear-color) 50%, transparent 50%);
+  background-size: var(--tear-size) var(--tear-size);
+  background-position: 0 0, 0 0;
+  background-repeat: repeat-x;
+}
+
 /* Visible keyboard focus — brass ring everywhere. */
 :where(a, button, [tabindex]):focus-visible {
   outline: 2px solid var(--color-brass);
@@ -236,6 +252,11 @@ html[dir="ltr"] .rail-underline { transform-origin: left; }
 .content-visibility-auto {
   content-visibility: auto;
   contain-intrinsic-size: 0 300px;
+}
+
+/* No custom cursors on touch devices — the grab/pointer changes feel broken */
+@media (hover: none) and (pointer: coarse) {
+  * { cursor: auto !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import type { Project } from "@/config/projects";
 import { useLocale, useTranslations } from "next-intl";
 import { formatNum } from "@/lib/num";
+import { cn } from "@/lib/cn";
+import { CoverImage } from "./CoverImage";
+import { ResilientImage } from "@/components/media/ResilientImage";
 
 type ProjectsGridProps = { projects: Project[] };
 
@@ -116,14 +118,12 @@ function ProjectTile({
       className={`group relative overflow-hidden border border-brass/15 bg-ink-800 text-start transition-colors hover:border-brass/40 ${SPAN[size]}`}
     >
       {cover ? (
-        <Image
+        <CoverImage
           src={cover}
           alt={title}
-          fill
           sizes={size === "feature" ? "50vw" : size === "wide" ? "50vw" : "25vw"}
           quality={size === "feature" ? 82 : 72}
-          style={{ objectFit: "cover" }}
-          className="transition-transform duration-500 group-hover:scale-[1.04]"
+          hoverZoom
         />
       ) : (
         <div className="absolute inset-0 grid place-items-center bg-ink-800">
@@ -169,6 +169,96 @@ function ProjectTile({
   );
 }
 
+/* ── Gallery ────────────────────────────────────────────────────────
+ * Every image the folder holds, not just the cover — the loader always read
+ * all of them but nothing on the site ever rendered past images[0]. A
+ * swipeable strip: arrows + dot indicators on the big image, a thumbnail row
+ * to jump straight to one. `object-fit: contain` inside a fixed-height stage
+ * instead of `cover` — a portrait phone screenshot no longer gets its top and
+ * bottom sliced off to fill a 16:9 box built for a landscape photo. */
+function ProjectGallery({ images, title }: { images: string[]; title: string }) {
+  const locale = useLocale() as "ar" | "en";
+  const isRtl = locale === "ar";
+  const [active, setActive] = useState(0);
+
+  if (images.length === 0) return null;
+
+  const goTo = (i: number) => setActive(((i % images.length) + images.length) % images.length);
+  const next = () => goTo(active + (isRtl ? -1 : 1));
+  const prev = () => goTo(active - (isRtl ? -1 : 1));
+
+  return (
+    <div className="border-b border-brass/10 bg-ink-950">
+      <div className="relative flex h-[46vh] w-full items-center justify-center overflow-hidden sm:h-[420px]">
+        <ResilientImage
+          key={images[active]}
+          src={images[active]}
+          alt={`${title} — ${active + 1}/${images.length}`}
+          fill
+          sizes="672px"
+          quality={88}
+          style={{ objectFit: "contain" }}
+        />
+
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={prev}
+              aria-label="prev"
+              className="absolute start-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center border border-brass/30 bg-ink-900/80 text-bone transition-colors hover:border-brass"
+            >
+              <span aria-hidden className="rtl:-scale-x-100">‹</span>
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              aria-label="next"
+              className="absolute end-3 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center border border-brass/30 bg-ink-900/80 text-bone transition-colors hover:border-brass"
+            >
+              <span aria-hidden className="rtl:-scale-x-100">›</span>
+            </button>
+
+            <div className="absolute inset-x-0 bottom-3 flex justify-center gap-1.5">
+              {images.map((img, i) => (
+                <button
+                  key={img}
+                  type="button"
+                  aria-label={`${i + 1}/${images.length}`}
+                  onClick={() => goTo(i)}
+                  className={cn(
+                    "h-1.5 rounded-full transition-all",
+                    i === active ? "w-5 bg-brass" : "w-1.5 bg-bone/30 hover:bg-bone/50",
+                  )}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {images.length > 1 && (
+        <div className="flex gap-2 overflow-x-auto border-t border-brass/10 p-3">
+          {images.map((img, i) => (
+            <button
+              key={img}
+              type="button"
+              onClick={() => goTo(i)}
+              aria-label={`${i + 1}/${images.length}`}
+              className={cn(
+                "relative h-14 w-14 shrink-0 overflow-hidden border transition-colors",
+                i === active ? "border-brass" : "border-brass/15 opacity-60 hover:opacity-100",
+              )}
+            >
+              <ResilientImage src={img} alt="" fill sizes="56px" quality={50} style={{ objectFit: "cover" }} />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ── Dialog ─────────────────────────────────────────────────────────── */
 function ProjectDialog({
   project,
@@ -181,7 +271,6 @@ function ProjectDialog({
 }) {
   const t = useTranslations("Projects");
   const reduced = useReducedMotion();
-  const cover = project.images[0];
 
   return (
     <m.div
@@ -204,16 +293,10 @@ function ProjectDialog({
         transition={{ duration: 0.32, ease }}
         className="relative max-h-[92vh] w-full max-w-2xl overflow-y-auto border border-brass/20 bg-ink-900"
       >
-        {cover && (
-          <div className="relative aspect-[16/9] w-full">
-            <Image src={cover} alt={project.title[locale]} fill sizes="672px" quality={85} style={{ objectFit: "cover" }} />
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{ background: "linear-gradient(to top, rgba(10,10,11,0.9), transparent 60%)" }}
-            />
-          </div>
-        )}
+        {/* key=project.id — a fresh gallery instance per project, so the
+            active-image index always starts back at the cover instead of
+            carrying over from whatever was open before. */}
+        <ProjectGallery key={project.id} images={project.images} title={project.title[locale]} />
 
         <button
           type="button"

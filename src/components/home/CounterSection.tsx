@@ -1,29 +1,28 @@
 "use client";
 
-import { useRef, useState, useId } from "react";
+import { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
-import Image from "next/image";
+import { ResilientImage } from "@/components/media/ResilientImage";
 
 /**
  * CounterSection — parallax #1, "خلف الكاونتر".
  *
- * Full-bleed photograph of a real shop counter with four tappable hotspots.
- * Copy sits in the upper third, which the image reserves as dark empty space.
+ * Two redesigns back: four dots on the photograph, each hiding its label
+ * behind a hover/tap — nothing readable at a glance. That became a visible
+ * 4-up card grid instead, but it floated disconnected from the photo it sat
+ * under, and one of the four ("the oak counter") was a tangent to the
+ * section's actual claim (we run our own tech, not "we also make furniture").
  *
- * Parallax: the image is 130% of the section height and travels 22% of the
- * section height as it passes through the viewport. The previous ±60px was
- * imperceptible on a 800px-tall section, which is why it read as "not working".
- * Travel is written straight to element.style — never React state.
+ * Now: three numbered pins sit directly on the real objects in the photo
+ * (the screen, the printer, the ledger), and a matching numbered legend
+ * below spells each one out — same "nothing hidden" principle, but the
+ * numbers visually tie the claim to the actual photo instead of a floating
+ * grid. Pins are children of the same parallax layer as the image, so they
+ * track it exactly as it pans. They're hidden below `sm`: object-fit:cover
+ * crops unpredictably on portrait phone aspect ratios, so a pin could easily
+ * land off its object — the legend alone carries mobile.
  */
-
-/** Percentage positions measured against the real 16:9 photograph. */
-const HOTSPOTS = [
-  { id: "hotspot1", x: 37, y: 38 }, // the screen
-  { id: "hotspot2", x: 55, y: 57 }, // the receipt printer
-  { id: "hotspot3", x: 33, y: 73 }, // the ledger notebook
-  { id: "hotspot4", x: 65, y: 77 }, // the brass keys
-] as const;
 
 export function CounterSection() {
   const t = useTranslations("Counter");
@@ -46,11 +45,21 @@ export function CounterSection() {
     layer.style.transform = `translate3d(0, ${travel}%, 0)`;
   });
 
+  // Numbered proof points. x/y are % of the parallax image layer (same box
+  // the <Image fill> occupies), eyeballed against /bg/counter.jpg: the
+  // screen glowing left-of-center, the receipt printer right of it, the
+  // closed ledger (with the pen on top) low and left of the screen.
+  const items = [
+    { id: "hotspot1", num: 1, x: 38, y: 33 },
+    { id: "hotspot2", num: 2, x: 57, y: 55 },
+    { id: "hotspot3", num: 3, x: 33, y: 65 },
+  ] as const;
+
   return (
     <section
       ref={sectionRef}
       className="relative isolate overflow-hidden"
-      style={{ minHeight: "min(100svh, 820px)" }}
+      style={{ minHeight: "min(100svh, 900px)" }}
       aria-labelledby="counter-heading"
     >
       {/* ── Parallax image layer ── */}
@@ -59,7 +68,7 @@ export function CounterSection() {
         className="parallax-layer absolute inset-x-0"
         style={{ top: "-15%", height: "130%" }}
       >
-        <Image
+        <ResilientImage
           src="/bg/counter.jpg"
           alt=""
           fill
@@ -67,112 +76,67 @@ export function CounterSection() {
           quality={82}
           style={{ objectFit: "cover", objectPosition: "center 60%" }}
         />
+
+        {/* Numbered pins on the real objects — sits in the same box as the
+            image so it parallax-scrolls with it. Hidden below `sm`: object-
+            fit:cover crops unpredictably on portrait phones, so a pin could
+            land off its object there. */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 hidden sm:block">
+          {items.map((item) => (
+            <span
+              key={item.id}
+              className="seal-round absolute flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-brass bg-ink-900/70 font-mono text-xs text-brass-hi shadow-[0_0_0_4px_rgba(10,10,11,0.35)]"
+              style={{ left: `${item.x}%`, top: `${item.y}%` }}
+            >
+              {item.num}
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* Legibility scrim — heaviest at the top where the copy sits. */}
+      {/* Legibility scrim — heavier now: it has to hold a full text block,
+          not just a headline, over the photo's busy midground. */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(10,10,11,0.92) 0%, rgba(10,10,11,0.55) 34%, rgba(10,10,11,0.15) 58%, rgba(10,10,11,0.75) 100%)",
+            "linear-gradient(to bottom, rgba(10,10,11,0.94) 0%, rgba(10,10,11,0.72) 40%, rgba(10,10,11,0.55) 62%, rgba(10,10,11,0.88) 100%)",
         }}
       />
 
-      {/* ── Hotspots, positioned over the photograph ── */}
-      <div className="absolute inset-0">
-        {HOTSPOTS.map(({ id, x, y }) => (
-          <Hotspot
-            key={id}
-            x={x}
-            y={y}
-            title={t(`${id}.title`)}
-            body={t(`${id}.body`)}
-          />
-        ))}
-      </div>
-
-      {/* ── Copy, upper third ── */}
-      <div className="relative z-20 mx-auto max-w-7xl px-6 pt-[10svh]">
+      {/* ── Copy + proof, all in the open ── */}
+      <div className="relative z-20 mx-auto max-w-7xl px-6 py-[10svh]">
         <p className="mb-4 font-mono text-xs uppercase tracking-[0.28em] text-brass/80">
           {t("kicker")}
         </p>
         <h2
           id="counter-heading"
-          className="max-w-[18ch] text-3xl font-semibold leading-[1.15] text-bone sm:text-4xl md:text-5xl"
+          className="max-w-[20ch] text-3xl font-semibold leading-[1.15] text-bone sm:text-4xl md:text-5xl"
         >
           {t("title")}
         </h2>
-        <p className="mt-5 max-w-[46ch] leading-relaxed text-bone-muted">
+        <p className="mt-5 max-w-[52ch] leading-relaxed text-bone-muted">
           {t("body")}
         </p>
-        <p className="mt-6 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-brass/70">
-          {t("hint")}
-        </p>
+
+        {/* The legend matching the pins above — numbers instead of a
+            repeated dot, so the eye can jump photo → number → text. */}
+        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          {items.map((item) => (
+            <div key={item.id} className="border border-brass/15 bg-ink-900/60 p-5 backdrop-blur-sm">
+              <span
+                aria-hidden
+                className="seal-round mb-3 flex h-6 w-6 items-center justify-center border border-brass font-mono text-2xs text-brass"
+              >
+                {item.num}
+              </span>
+              <p className="mb-1.5 text-sm font-semibold text-bone">{t(`${item.id}.title`)}</p>
+              <p className="text-xs leading-relaxed text-bone-muted">{t(`${item.id}.body`)}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
-  );
-}
-
-/* ── Hotspot ──────────────────────────────────────────────────────── */
-
-function Hotspot({
-  x,
-  y,
-  title,
-  body,
-}: {
-  x: number;
-  y: number;
-  title: string;
-  body: string;
-}) {
-  const [open, setOpen] = useState(false);
-  const panelId = useId();
-  // Flip the panel to the other side when the dot sits past the middle.
-  const flip = x > 52;
-
-  return (
-    <div
-      className="absolute z-20"
-      style={{ left: `${x}%`, top: `${y}%`, transform: "translate(-50%, -50%)" }}
-    >
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-controls={panelId}
-        aria-label={title}
-        onClick={() => setOpen((o) => !o)}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-        className="relative grid h-11 w-11 place-items-center"
-      >
-        <span className="seal-round relative grid h-5 w-5 place-items-center border border-brass bg-ink-900/90">
-          <span className="seal-round h-1.5 w-1.5 bg-brass" />
-        </span>
-      </button>
-
-      {/* Always-visible short label — the name shouldn't be locked behind a hover. */}
-      {!open && (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute top-full mt-1.5 whitespace-nowrap border border-brass/20 bg-ink-900/80 px-2 py-1 font-mono text-[0.65rem] text-bone-muted"
-          style={flip ? { right: 0 } : { left: "50%", transform: "translateX(-50%)" }}
-        >
-          {title}
-        </span>
-      )}
-
-      <div
-        id={panelId}
-        role="tooltip"
-        hidden={!open}
-        className="absolute top-1/2 w-56 -translate-y-1/2 border border-brass/25 bg-ink-900/95 p-3.5 text-start"
-        style={flip ? { right: "calc(100% + 10px)" } : { left: "calc(100% + 10px)" }}
-      >
-        <p className="text-sm font-medium text-bone">{title}</p>
-        <p className="mt-1.5 text-xs leading-relaxed text-bone-muted">{body}</p>
-      </div>
-    </div>
   );
 }

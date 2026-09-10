@@ -12,7 +12,6 @@ import { AbilitiesBento } from "@/components/world/AbilitiesBento";
 import { StoryChapter } from "@/components/world/StoryChapter";
 
 import { HorizontalFeatures } from "@/components/world/HorizontalFeatures";
-import { ModuleGallery } from "@/components/world/ModuleGallery";
 import { FeatureIndex } from "@/components/world/FeatureIndex";
 import { WorldProof } from "@/components/world/WorldProof";
 import {
@@ -100,9 +99,7 @@ export default async function PosWorldPage({ params }: Props) {
       {world.chapters.map((c, idx) => (
         <Fragment key={c.id}>
           <StoryChapter worldKey={world.key} chapter={c} index={idx} />
-          {world.modulesAfter === c.id && world.modules && (
-            <ModuleGallery worldKey={world.key} modules={world.modules} />
-          )}
+
         </Fragment>
       ))}
 
@@ -114,7 +111,7 @@ export default async function PosWorldPage({ params }: Props) {
       <CapabilityWheel worldKey={world.key} />
       <FeatureIndex worldKey={world.key} />
       <PullQuote worldKey={world.key} id="quote2" />
-      <WorldProof worldKey={world.key} items={world.proof} />
+      {world.proof && <WorldProof worldKey={world.key} items={world.proof} />}
       <Pricing worldKey={world.key} />
       <CtaBand />
     </WorldShell>

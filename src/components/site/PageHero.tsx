@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { m, useReducedMotion, useScroll, useMotionValueEvent } from "framer-motion";
 import { AmbientFilm } from "@/components/film/AmbientFilm";
 
@@ -48,12 +49,22 @@ export function PageHero({
   bridge,
   className = "",
 }: PageHeroProps) {
+  const tMedia = useTranslations("Media");
   const reduced = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
   const filmRef = useRef<HTMLDivElement>(null);
   const barTopRef = useRef<HTMLDivElement>(null);
   const barBottomRef = useRef<HTMLDivElement>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [filmEnded, setFilmEnded] = useState(false);
+
+  const handleFilmEnded = useCallback(() => setFilmEnded(true), []);
+  const continueToContent = useCallback(() => {
+    sectionRef.current?.nextElementSibling?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "start",
+    });
+  }, [reduced]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -66,9 +77,8 @@ export function PageHero({
       filmRef.current.style.transform = `translate3d(0, ${p * -10}%, 0) scale(${1 + p * 0.05})`;
       filmRef.current.style.opacity = String(1 - p * 0.35);
     }
-    const bar = `${p * 10}svh`;
-    if (barTopRef.current) barTopRef.current.style.height = bar;
-    if (barBottomRef.current) barBottomRef.current.style.height = bar;
+    if (barTopRef.current) barTopRef.current.style.transform = `scaleY(${p})`;
+    if (barBottomRef.current) barBottomRef.current.style.transform = `scaleY(${p})`;
   });
 
   useEffect(() => {
@@ -93,6 +103,7 @@ export function PageHero({
             poster={`/films/page-${videoKey}-v4.jpg`}
             posterPortrait={`/films/page-${videoKey}-v4-portrait.jpg`}
             className="absolute inset-0"
+            onEnded={handleFilmEnded}
           />
         </div>
       )}
@@ -117,8 +128,8 @@ export function PageHero({
       />
 
       {/* Letterbox curtain bars that close slightly on scroll */}
-      <div ref={barTopRef} aria-hidden className="absolute inset-x-0 top-0 z-15 bg-ink-900 pointer-events-none" style={{ height: 0 }} />
-      <div ref={barBottomRef} aria-hidden className="absolute inset-x-0 bottom-0 z-15 bg-ink-900 pointer-events-none" style={{ height: 0 }} />
+      <div ref={barTopRef} aria-hidden className="absolute inset-x-0 top-0 z-15 h-[10svh] origin-top scale-y-0 bg-ink-900 pointer-events-none" />
+      <div ref={barBottomRef} aria-hidden className="absolute inset-x-0 bottom-0 z-15 h-[10svh] origin-bottom scale-y-0 bg-ink-900 pointer-events-none" />
 
       {/* ── 3. Content Copy Container with Safe Navbar & Scroll Padding ── */}
       <div className="relative z-20 flex h-full w-full flex-col justify-center px-6 pt-28 pb-20 sm:px-12 sm:pt-36 sm:pb-24 lg:px-20 max-w-7xl mx-auto">
@@ -201,9 +212,13 @@ export function PageHero({
         <div className="relative z-20 w-full pb-4">{bridge}</div>
       ) : (
         !scrolled && (
-          <m.div
-            aria-hidden
-            className="absolute bottom-4 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-1.5 sm:flex pointer-events-none"
+          <m.button
+            type="button"
+            onClick={continueToContent}
+            aria-label={tMedia("continue")}
+            className={`absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-1.5 ${
+              filmEnded ? "text-brass-hi" : "text-brass/80"
+            }`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.8 }}
@@ -216,14 +231,12 @@ export function PageHero({
                   : { scaleY: [0, 1, 0], transition: { duration: 2.2, repeat: Infinity, ease: "easeInOut" } }
               }
             />
-            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-brass/80">
-              SCROLL
+            <span className="font-mono text-[9px] uppercase tracking-[0.25em]">
+              {filmEnded ? tMedia("continue") : tMedia("scroll")}
             </span>
-          </m.div>
+          </m.button>
         )
       )}
     </section>
   );
 }
-
-

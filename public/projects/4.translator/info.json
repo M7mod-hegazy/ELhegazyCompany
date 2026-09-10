@@ -1,0 +1,18 @@
+{
+  "title": { "ar": "المترجم الخاص", "en": "Private Translator" },
+  "client": { "ar": "المترجم", "en": "Translator" },
+  "year": 2025,
+  "category": "apps",
+  "summary": {
+    "ar": "تطبيق ترجمة فوري خاص، مبني بالكامل بمعرفتنا من الفكرة للإطلاق.",
+    "en": "A private instant-translation app, built end to end in-house from idea to launch."
+  },
+  "body": {
+    "ar": "صممنا وطورنا تطبيق ترجمة يحول الكلام والنص بين اللغات لحظيًا، بواجهة بسيطة وسريعة الاستجابة. تولينا التصميم والبرمجة والاختبار بالكامل داخليًا دون أي طرف خارجي.",
+    "en": "We designed and built a translation app that converts speech and text between languages instantly, with a simple, responsive interface. Design, development, and testing were all handled fully in-house."
+  },
+  "services": [
+    { "ar": "تطبيقات", "en": "App Development" },
+    { "ar": "تصميم واجهات", "en": "UI/UX Design" }
+  ]
+}
