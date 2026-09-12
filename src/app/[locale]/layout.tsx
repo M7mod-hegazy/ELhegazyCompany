@@ -130,6 +130,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${siteConfig.name[l]} — ${siteConfig.tagline[l]}`,
       description: siteConfig.description[l],
     },
+    verification: {
+      google: "fT6mdprlvu44RWGGZ5mfWAqbN1I3ytqoZQFcWGpe9CU",
+    },
   };
 }
 
